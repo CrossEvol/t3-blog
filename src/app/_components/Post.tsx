@@ -21,7 +21,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   return (
     <div
       className="flex flex-col space-y-4"
-      onClick={() => router.push(`/p/${post.id}`)}
+      onClick={() => router.push(`/post/${post.id}`)}
     >
       <h2 className="text-2xl font-semibold">{post.title}</h2>
       <small>By {authorName}</small>
