@@ -1,209 +1,85 @@
 import { getServerAuthSession } from "@/server/auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, usePathname, useSearchParams } from "next/navigation";
 import React from "react";
 
-const Header: React.FC =async () => {
-  const pathname = usePathname();
-  const isActive: (pathname: string) => boolean = (path) => pathname === path;
+const Header = async () => {
+  const isActive: (pathname: string) => boolean = (path) => true;
 
   const session = await getServerAuthSession();
 
-  let left = (
-    <div className="left">
-      <Link href="/">
-        <a className="bold" data-active={isActive("/")}>
+  if (!session) {
+    const Left = () => (
+      <div className="flex items-center space-x-4">
+        <Link
+          href="/"
+          className={`font-bold ${isActive("/") && "text-gray-500"}`}
+        >
           Feed
-        </a>
+        </Link>
+
+        {/* Add more navigation links as needed */}
+      </div>
+    );
+    const Right = () => (
+      <div className="ml-auto flex items-center space-x-4">
+        <Link
+          href="/api/auth/signin"
+          className={`rounded border border-black px-4 py-2 ${
+            isActive("/signin") ? "text-gray-500" : "text-black"
+          }`}
+        >
+          Log in
+        </Link>
+      </div>
+    );
+
+    return (
+      <nav className="flex w-full items-center p-8">
+        <Left />
+        <Right />
+      </nav>
+    );
+  }
+
+  const Left = () => (
+    <div className="flex items-center space-x-4">
+      <Link
+        href="/"
+        className={`font-bold ${isActive("/") && "text-gray-500"}`}
+      >
+        Feed
       </Link>
-      <style jsx>{`
-        .bold {
-          font-weight: bold;
-        }
-
-        a {
-          text-decoration: none;
-          color: #000;
-          display: inline-block;
-        }
-
-        .left a[data-active="true"] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-      `}</style>
+      <Link
+        href="/drafts"
+        className={`${isActive("/drafts") && "text-gray-500"}`}
+      >
+        My drafts
+      </Link>
+    </div>
+  );
+  const Right = () => (
+    <div className="ml-auto flex items-center space-x-4">
+      <p className="text-sm">
+        {session.user.name} ({session.user.email})
+      </p>
+      <Link
+        href="/create"
+        className="inline-block rounded border border-black px-4 py-2"
+      >
+        New post
+      </Link>
+      <button onClick={() => signOut()} className="border-none">
+        <a className="inline-block">Log out</a>
+      </button>
     </div>
   );
 
-  let right = null;
-
-  // if (status === "loading") {
-  //   left = (
-  //     <div className="left">
-  //       <Link href="/">
-  //         <a className="bold" data-active={isActive("/")}>
-  //           Feed
-  //         </a>
-  //       </Link>
-  //       <style jsx>{`
-  //         .bold {
-  //           font-weight: bold;
-  //         }
-
-  //         a {
-  //           text-decoration: none;
-  //           color: #000;
-  //           display: inline-block;
-  //         }
-
-  //         .left a[data-active="true"] {
-  //           color: gray;
-  //         }
-
-  //         a + a {
-  //           margin-left: 1rem;
-  //         }
-  //       `}</style>
-  //     </div>
-  //   );
-  //   right = (
-  //     <div className="right">
-  //       <p>Validating session ...</p>
-  //       <style jsx>{`
-  //         .right {
-  //           margin-left: auto;
-  //         }
-  //       `}</style>
-  //     </div>
-  //   );
-  // }
-
-  if (!session) {
-    right = (
-      <div className="right">
-        <Link href="/api/auth/signin">
-          <a data-active={isActive("/signup")}>Log in</a>
-        </Link>
-        <style jsx>{`
-          a {
-            text-decoration: none;
-            color: #000;
-            display: inline-block;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-
-          .right {
-            margin-left: auto;
-          }
-
-          .right a {
-            border: 1px solid black;
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
-  if (session) {
-    left = (
-      <div className="left">
-        <Link href="/">
-          <a className="bold" data-active={isActive("/")}>
-            Feed
-          </a>
-        </Link>
-        <Link href="/drafts">
-          <a data-active={isActive("/drafts")}>My drafts</a>
-        </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
-
-          a {
-            text-decoration: none;
-            color: #000;
-            display: inline-block;
-          }
-
-          .left a[data-active="true"] {
-            color: gray;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-        `}</style>
-      </div>
-    );
-    right = (
-      <div className="right">
-        <p>
-          {session.user.name} ({session.user.email})
-        </p>
-        <Link href="/create">
-          <button>
-            <a>New post</a>
-          </button>
-        </Link>
-        <button onClick={() => signOut()}>
-          <a>Log out</a>
-        </button>
-        <style jsx>{`
-          a {
-            text-decoration: none;
-            color: #000;
-            display: inline-block;
-          }
-
-          p {
-            display: inline-block;
-            font-size: 13px;
-            padding-right: 1rem;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-
-          .right {
-            margin-left: auto;
-          }
-
-          .right a {
-            border: 1px solid black;
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-          }
-
-          button {
-            border: none;
-          }
-        `}</style>
-      </div>
-    );
-  }
-
   return (
-    <nav>
-      {left}
-      {right}
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-        }
-      `}</style>
+    <nav className="flex w-full items-center  p-8">
+      <Left />
+      <Right />
     </nav>
   );
 };

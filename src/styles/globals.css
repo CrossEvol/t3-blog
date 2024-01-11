@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* In your styles.css or styles.css.js file */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+
+  input,
+  textarea {
+    @apply text-base; /* You can adjust the font-size as needed */
+  }
+
+  button {
+    @apply cursor-pointer;
+  }
+}

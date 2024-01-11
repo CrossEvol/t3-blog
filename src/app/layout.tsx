@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
+import Header from "./_components/Header";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,9 +23,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`font-sans ${inter.variable}`}>
+    <html lang="en" className="box-border">
+      <body
+        className={`font-sans ${inter.variable} m-0 bg-black bg-opacity-5 p-0 text-base`}
+      >
         <TRPCReactProvider cookies={cookies().toString()}>
+          <Header />
           {children}
         </TRPCReactProvider>
       </body>
