@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -17,8 +19,11 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const router = useRouter();
   const authorName = post.author ? post.author.name : "Unknown author";
   return (
-    <div onClick={() => router.push(`/p/${post.id}`)}>
-      <h2>{post.title}</h2>
+    <div
+      className="flex flex-col space-y-4"
+      onClick={() => router.push(`/p/${post.id}`)}
+    >
+      <h2 className="text-2xl font-semibold">{post.title}</h2>
       <small>By {authorName}</small>
       <ReactMarkdown children={post.content} />
       <style jsx>{`

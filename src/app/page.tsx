@@ -1,40 +1,72 @@
 import { CreatePost } from "@/app/_components/create-post";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
-import Header from "./_components/Header";
-import Post from "./_components/Post";
+import Post, { PostProps } from "./_components/Post";
+
+// Post 1
+const post1: PostProps = {
+  id: 1,
+  title: "Exploring React Hooks",
+  author: {
+    name: "Alice Johnson",
+    email: "alice.j@example.com",
+  },
+  content: "In this post, we will explore the power of React Hooks...",
+  published: true,
+};
+
+// Post 2
+const post2: PostProps = {
+  id: 2,
+  title: "The Art of Debugging",
+  author: null,
+  content:
+    "Debugging is an essential skill for developers. Let's dive into some tips and tricks...",
+  published: true,
+};
+
+// Post 3
+const post3: PostProps = {
+  id: 3,
+  title: "Introduction to TypeScript",
+  author: {
+    name: "Bob Smith",
+    email: "bob.s@example.com",
+  },
+  content:
+    "Learn the basics of TypeScript and how it can enhance your JavaScript projects...",
+  published: false,
+};
+
+const postList = [post1, post2, post3];
 
 export default async function Home() {
   const hello = await api.post.hello.query({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
   return (
-    <main className="flex max-h-screen flex-col items-center justify-center ">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 ">
-        <div className="px-0 py-1">
-          <h1>Public Feed</h1>
-          <CrudShowcase />
-        </div>
-      </div>
-    </main>
-  );
-}
-
-async function CrudShowcase() {
-  const session = await getServerAuthSession();
-  if (!session?.user) return null;
-
-  const latestPost = await api.post.getLatest.query();
-
-  return (
-    <div className="w-full max-w-xs">
-      {latestPost ? (
-        <p className="truncate">Your most recent post: {latestPost.name}</p>
-      ) : (
-        <p>You have no posts yet.</p>
-      )}
-
-      <CreatePost />
+    <div className="my-4 ml-8 w-11/12">
+      <h1 className="pb-6 text-4xl font-bold">Public Feed</h1>
+      <Blog feed={postList} />
     </div>
   );
 }
+
+type Props = {
+  feed: PostProps[];
+};
+
+const Blog: React.FC<Props> = (props) => {
+  return (
+    <main className="space-y-8">
+      {props.feed.map((post) => (
+        <div
+          key={post.id}
+          className=" bg-white transition-shadow duration-100 ease-in hover:shadow-md"
+        >
+          <Post post={post} />
+        </div>
+      ))}
+    </main>
+  );
+};
