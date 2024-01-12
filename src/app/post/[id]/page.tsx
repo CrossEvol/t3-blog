@@ -1,26 +1,17 @@
-"use client";
-
-import { PostProps } from "@/app/_components/Post";
-import { useSession } from "next-auth/react";
+import { PostItem } from "@/app/page";
+import { api } from "@/trpc/server";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 
-const Post: React.FC<{ post: PostProps }> = ({ post }) => {
-  // const { data: session, status } = useSession();
-  // if (status === "loading") {
-  //   return <div>Authenticating ...</div>;
-  // }
-  // const userHasValidSession = Boolean(session);
-  const userHasValidSession = true;
-  const postBelongsToUser =
-    true; /* session?.user?.email === props.author?.email */
+interface Props {
+  post: PostItem;
+}
+
+const ShowPost = ({ post }: Props) => {
   let title = post.title;
   if (!post.published) {
     title = `${title} (Draft)`;
   }
-
-  const publishPost = (id: any) => {};
-  const deletePost = (id: any) => {};
 
   return (
     <>
@@ -31,44 +22,22 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
             By {post?.author?.name || "Unknown author"}
           </p>
           <ReactMarkdown className="mt-4" children={post.content} />
-          {/* {!props.published && userHasValidSession && postBelongsToUser && (
-          <button
-            onClick={() => publishPost(props.id)}
-            className="rounded bg-gray-300 px-4 py-2 text-gray-700"
-          >
-            Publish
-          </button>
-        )}
-        {userHasValidSession && postBelongsToUser && (
-          <button
-            onClick={() => deletePost(props.id)}
-            className="ml-4 rounded bg-red-500 px-4 py-2 text-white"
-          >
-            Delete
-          </button>
-        )} */}
         </div>
       </div>
     </>
   );
 };
 
-// Post 1
-const post1: PostProps = {
-  id: 1,
-  title: "Exploring React Hooks",
-  author: {
-    name: "Alice Johnson",
-    email: "alice.j@example.com",
-  },
-  content: "In this post, we will explore the power of React Hooks...",
-  published: true,
-};
+const Page = async ({ params }: { params: { id: string } }) => {
+  const post = await api.post.getOne.query({ id: Number(params.id) });
 
-const Page = () => {
+  if (!post) {
+    return null;
+  }
+
   return (
     <div>
-      <Post post={post1} />
+      <ShowPost post={post} />
     </div>
   );
 };
