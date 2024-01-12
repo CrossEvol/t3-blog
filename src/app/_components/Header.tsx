@@ -1,8 +1,6 @@
 import { getServerAuthSession } from "@/server/auth";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { useParams, usePathname, useSearchParams } from "next/navigation";
-import React from "react";
 
 const Header = async () => {
   const isActive: (pathname: string) => boolean = (path) => true;
