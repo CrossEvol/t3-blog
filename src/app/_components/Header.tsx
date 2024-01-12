@@ -68,9 +68,9 @@ const Header = async () => {
       >
         New post
       </Link>
-      <button className="border-none">
-        <a className="inline-block">Log out</a>
-      </button>
+      <Link className="inline-block border-none" href={"/api/auth/signout"}>
+        Log out
+      </Link>
     </div>
   );
 
