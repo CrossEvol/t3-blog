@@ -24,6 +24,7 @@ export const postRouter = createTRPCRouter({
       return ctx.db.post.create({
         data: {
           name: input.name,
+          title: input.name,
           createdBy: { connect: { id: ctx.session.user.id } },
         },
       });
@@ -45,6 +46,15 @@ export const postRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       return await ctx.db.post.delete({
         where: { id: input.id },
+      });
+    }),
+
+  publish: protectedProcedure
+    .input(z.object({ id: z.number().min(1) }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.post.update({
+        where: { id: input.id },
+        data: { published: true },
       });
     }),
 });
