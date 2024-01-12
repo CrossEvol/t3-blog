@@ -2,44 +2,22 @@ import { CreatePost } from "@/app/_components/create-post";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import Post, { PostProps } from "./_components/Post";
-import { Post as PostType} from "@prisma/client";
 
-// Post 1
-const post1: PostProps = {
-  id: 1,
-  title: "Exploring React Hooks",
+export type PostItem = {
   author: {
-    name: "Alice Johnson",
-    email: "alice.j@example.com",
-  },
-  content: "In this post, we will explore the power of React Hooks...",
-  published: true,
+    name: string | null;
+    email: string | null;
+  };
+} & {
+  id: number;
+  name: string;
+  title: string;
+  content: string | null;
+  published: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  authorId: string;
 };
-
-// Post 2
-const post2: PostProps = {
-  id: 2,
-  title: "The Art of Debugging",
-  author: null,
-  content:
-    "Debugging is an essential skill for developers. Let's dive into some tips and tricks...",
-  published: true,
-};
-
-// Post 3
-const post3: PostProps = {
-  id: 3,
-  title: "Introduction to TypeScript",
-  author: {
-    name: "Bob Smith",
-    email: "bob.s@example.com",
-  },
-  content:
-    "Learn the basics of TypeScript and how it can enhance your JavaScript projects...",
-  published: false,
-};
-
-const postList = [post1, post2, post3];
 
 export default async function Home() {
   const posts = await api.post.getMany.query();
@@ -53,7 +31,7 @@ export default async function Home() {
 }
 
 type Props = {
-  posts: PostType[];
+  posts: PostItem[];
 };
 
 const Blog: React.FC<Props> = ({ posts }) => {
