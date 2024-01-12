@@ -44,6 +44,37 @@ export const postRouter = createTRPCRouter({
     return "you can now see this secret message!";
   }),
 
+  getPostById: protectedProcedure
+    .input(z.object({ id: z.number().min(1) }))
+    .query(async ({ ctx, input }) => {
+      const post = await ctx.db.post.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          author: {
+            select: { name: true, email: true },
+          },
+        },
+      });
+      return post;
+    }),
+
+  getMany: protectedProcedure.query(async ({ ctx }) => {
+    const drafts = await ctx.db.post.findMany({
+      where: {
+        author: { email: ctx.session.user.email },
+        published: false,
+      },
+      include: {
+        author: {
+          select: { name: true },
+        },
+      },
+    });
+    return drafts;
+  }),
+
   delete: protectedProcedure
     .input(z.object({ id: z.number().min(1) }))
     .mutation(async ({ ctx, input }) => {
