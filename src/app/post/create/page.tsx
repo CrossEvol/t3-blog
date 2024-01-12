@@ -2,25 +2,34 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { api } from "@/trpc/react";
+import { clear } from "console";
 
 const Page = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const navigate = useRouter();
+  const router = useRouter();
+
+  const createPost = api.post.create.useMutation({
+    onSuccess: ({ id }) => {
+      setTitle("");
+      setContent("");
+      router.push(`/post/${id}`);
+    },
+  });
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      const body = { title, content };
-      await fetch(`/api/post`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      await navigate.push("/drafts");
+      createPost.mutate({ name: title, content });
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const clearData = () => {
+    setTitle("");
+    setContent("");
   };
 
   return (
@@ -57,7 +66,7 @@ const Page = () => {
             <a
               className="ml-4 cursor-pointer text-blue-500"
               href="#"
-              onClick={() => navigate.push("/")}
+              onClick={() => clearData()}
             >
               or Cancel
             </a>
