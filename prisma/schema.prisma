@@ -23,8 +23,8 @@ model Post {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
+    author   User   @relation(fields: [authorId], references: [id])
+    authorId String
 
     @@index([name])
 }

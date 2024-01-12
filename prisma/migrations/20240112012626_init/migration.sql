@@ -1,6 +1,8 @@
 /*
   Warnings:
 
+  - You are about to drop the column `createdById` on the `Post` table. All the data in the column will be lost.
+  - Added the required column `authorId` to the `Post` table without a default value. This is not possible if the table is not empty.
   - Added the required column `title` to the `Post` table without a default value. This is not possible if the table is not empty.
 
 */
@@ -17,10 +19,10 @@ CREATE TABLE "new_Post" (
     "published" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" DATETIME NOT NULL,
-    "createdById" TEXT NOT NULL,
-    CONSTRAINT "Post_createdById_fkey" FOREIGN KEY ("createdById") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "authorId" TEXT NOT NULL,
+    CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
-INSERT INTO "new_Post" ("createdAt", "createdById", "id", "name", "updatedAt") SELECT "createdAt", "createdById", "id", "name", "updatedAt" FROM "Post";
+INSERT INTO "new_Post" ("createdAt", "id", "name", "updatedAt") SELECT "createdAt", "id", "name", "updatedAt" FROM "Post";
 DROP TABLE "Post";
 ALTER TABLE "new_Post" RENAME TO "Post";
 CREATE INDEX "Post_name_idx" ON "Post"("name");
