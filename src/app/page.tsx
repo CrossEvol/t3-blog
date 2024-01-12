@@ -1,7 +1,7 @@
 import { CreatePost } from "@/app/_components/create-post";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
-import Post, { PostProps } from "./_components/Post";
+import Post from "./_components/Post";
 
 export type PostItem = {
   author: {
