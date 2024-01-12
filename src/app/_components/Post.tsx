@@ -3,6 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import { Post as PostType} from "@prisma/client";
 
 export type PostProps = {
   id: number;
@@ -15,7 +16,7 @@ export type PostProps = {
   published: boolean;
 };
 
-const Post: React.FC<{ post: PostProps }> = ({ post }) => {
+const Post: React.FC<{ post: PostType }> = ({ post }) => {
   const router = useRouter();
   const authorName = post.author ? post.author.name : "Unknown author";
   return (

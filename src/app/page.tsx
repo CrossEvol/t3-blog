@@ -2,6 +2,7 @@ import { CreatePost } from "@/app/_components/create-post";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import Post, { PostProps } from "./_components/Post";
+import { Post as PostType} from "@prisma/client";
 
 // Post 1
 const post1: PostProps = {
@@ -41,24 +42,24 @@ const post3: PostProps = {
 const postList = [post1, post2, post3];
 
 export default async function Home() {
-  const session = await getServerAuthSession();
+  const posts = await api.post.getMany.query();
 
   return (
     <div className="my-4 ml-8 w-11/12">
       <h1 className="pb-6 text-4xl font-bold">Public Feed</h1>
-      <Blog feed={postList} />
+      <Blog posts={posts} />
     </div>
   );
 }
 
 type Props = {
-  feed: PostProps[];
+  posts: PostType[];
 };
 
-const Blog: React.FC<Props> = (props) => {
+const Blog: React.FC<Props> = ({ posts }) => {
   return (
     <main className="space-y-8">
-      {props.feed.map((post) => (
+      {posts.map((post) => (
         <div
           key={post.id}
           className=" bg-white transition-shadow duration-100 ease-in hover:shadow-md"
