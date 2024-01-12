@@ -7,14 +7,6 @@ import {
 } from "@/server/api/trpc";
 
 export const postRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   create: protectedProcedure
     .input(
       z.object({ name: z.string().min(1), content: z.string().optional() }),
@@ -33,18 +25,7 @@ export const postRouter = createTRPCRouter({
       });
     }),
 
-  getLatest: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.post.findFirst({
-      orderBy: { createdAt: "desc" },
-      where: { author: { id: ctx.session.user.id } },
-    });
-  }),
-
-  getSecretMessage: protectedProcedure.query(() => {
-    return "you can now see this secret message!";
-  }),
-
-  getPostById: protectedProcedure
+  getOne: protectedProcedure
     .input(z.object({ id: z.number().min(1) }))
     .query(async ({ ctx, input }) => {
       const post = await ctx.db.post.findUnique({
@@ -60,7 +41,7 @@ export const postRouter = createTRPCRouter({
       return post;
     }),
 
-  getMany: protectedProcedure.query(async ({ ctx }) => {
+  getManyForAuthor: protectedProcedure.query(async ({ ctx }) => {
     const drafts = await ctx.db.post.findMany({
       where: {
         author: { email: ctx.session.user.email },
@@ -72,6 +53,11 @@ export const postRouter = createTRPCRouter({
         },
       },
     });
+    return drafts;
+  }),
+
+  getMany: protectedProcedure.query(async ({ ctx }) => {
+    const drafts = await ctx.db.post.findMany({});
     return drafts;
   }),
 
