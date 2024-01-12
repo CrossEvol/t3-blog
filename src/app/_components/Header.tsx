@@ -63,12 +63,12 @@ const Header = async () => {
         {session.user.name} ({session.user.email})
       </p>
       <Link
-        href="/create"
+        href="/post/create"
         className="inline-block rounded border border-black px-4 py-2"
       >
         New post
       </Link>
-      <button onClick={() => signOut()} className="border-none">
+      <button className="border-none">
         <a className="inline-block">Log out</a>
       </button>
     </div>

@@ -41,7 +41,6 @@ const post3: PostProps = {
 const postList = [post1, post2, post3];
 
 export default async function Home() {
-  const hello = await api.post.hello.query({ text: "from tRPC" });
   const session = await getServerAuthSession();
 
   return (
