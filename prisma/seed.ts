@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 
-
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -24,6 +23,18 @@ const main = async () => {
         author: {
           connect: {
             id: user.id,
+          },
+        },
+        comments: {
+          create: {
+            created_at: Date.now(),
+            url: faker.internet.url(),
+            text: faker.string.alpha({ length: { min: 10, max: 20 } }),
+            user: {
+              connect: {
+                id: user.id,
+              },
+            },
           },
         },
       },

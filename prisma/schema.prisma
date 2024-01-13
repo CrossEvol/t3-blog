@@ -23,8 +23,9 @@ model Post {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    author   User   @relation(fields: [authorId], references: [id])
+    author   User      @relation(fields: [authorId], references: [id])
     authorId String
+    comments  Comment[]
 
     @@index([name])
 }
@@ -66,6 +67,7 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    comments       Comment[]
 }
 
 model VerificationToken {
@@ -74,4 +76,15 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Comment {
+    id         Int    @id @default(autoincrement())
+    created_at Int
+    url        String @default("")
+    text       String @default("")
+    userId     String
+    user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    post       Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+    postId     Int
 }
