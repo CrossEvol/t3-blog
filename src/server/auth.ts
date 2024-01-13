@@ -100,6 +100,11 @@ export const authOptions: NextAuthOptions = {
               password: encryptPwd(password),
               email: faker.internet.email(),
               image: faker.internet.avatar(),
+              role: {
+                connect: {
+                  id: 2,
+                },
+              },
             },
           });
           return {

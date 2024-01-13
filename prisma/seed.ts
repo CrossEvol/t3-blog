@@ -4,12 +4,35 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const main = async () => {
+  const adminRole = await prisma.role.create({
+    data: {
+      name: "admin",
+    },
+  });
+
+  const userRole = await prisma.role.create({
+    data: {
+      name: "user",
+    },
+  });
+
+  const guestRole = await prisma.role.create({
+    data: {
+      name: "guest",
+    },
+  });
+
   const user = await prisma.user.create({
     data: {
       name: faker.internet.userName(),
       password: faker.string.alphanumeric(10),
       email: faker.internet.email(),
       image: faker.internet.avatar(),
+      role: {
+        connect: {
+          id: userRole.id,
+        },
+      },
     },
   });
 
