@@ -1,8 +1,9 @@
 import CommentList from "@/app/_components/comment/CommentList";
-import React from "react";
-import { faker } from "@faker-js/faker";
 import type { Comment } from "@/interfaces";
+import { getServerAuthSession } from "@/server/auth";
+import { faker } from "@faker-js/faker";
 import Container from "../_components/comment/container";
+import CommentFormWrapper from "./CommentFormWrapper";
 
 const comments: () => Comment[] = () => {
   let comments: Comment[] = [];
@@ -22,10 +23,13 @@ const comments: () => Comment[] = () => {
   return comments;
 };
 
-const Page = () => {
+const Page = async () => {
+  const session = await getServerAuthSession();
+
   return (
     <>
       <Container>
+        <CommentFormWrapper session={session} />
         <CommentList comments={comments()} />
       </Container>
     </>
