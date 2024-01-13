@@ -26,4 +26,22 @@ export const commentRouter = createTRPCRouter({
         },
       });
     }),
+
+  getMany: publicProcedure
+    .input(z.object({ postId: z.number().min(0) }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.comment.findMany({
+        where: {
+          postId: input.postId,
+        },
+        include:{
+          user:{
+            select:{
+              name:true,
+              image:true
+            }
+          }
+        }
+      });
+    }),
 });
