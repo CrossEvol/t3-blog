@@ -2,7 +2,7 @@
 
 import { Session } from "next-auth";
 import { useState } from "react";
-import CommentForm from "../_components/comment/CommentForm";
+import CommentForm from "./CommentForm";
 
 interface IProps {
   session: Session | null;
