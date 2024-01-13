@@ -34,14 +34,28 @@ export const commentRouter = createTRPCRouter({
         where: {
           postId: input.postId,
         },
-        include:{
-          user:{
-            select:{
-              name:true,
-              image:true
-            }
-          }
-        }
+        include: {
+          user: {
+            select: {
+              name: true,
+              image: true,
+            },
+          },
+        },
+      });
+    }),
+
+  deleteOne: protectedProcedure
+    .input(z.object({ commentId: z.number().min(0) }))
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session;
+
+      // TODO: only the role ADMIN can delete comment
+
+      return await ctx.db.comment.delete({
+        where: {
+          id: input.commentId,
+        },
       });
     }),
 });
