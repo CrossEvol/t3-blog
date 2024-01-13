@@ -20,6 +20,7 @@ export const postRouter = createTRPCRouter({
           name: input.name,
           title: input.name,
           content: input.content,
+          published: false,
           author: { connect: { id: ctx.session.user.id } },
         },
       });
@@ -84,6 +85,7 @@ export const postRouter = createTRPCRouter({
         id: z.number().min(1),
         name: z.string().min(1),
         content: z.string().optional(),
+        published: z.boolean(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -93,6 +95,7 @@ export const postRouter = createTRPCRouter({
           title: input.name,
           name: input.name,
           content: input.content,
+          published: input.published,
         },
       });
     }),
