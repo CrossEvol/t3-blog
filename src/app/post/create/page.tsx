@@ -61,7 +61,7 @@ const Page = () => {
               disabled={!content || !title}
               type="submit"
               value="Create"
-              className="cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500"
+              className="cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-500 hover:text-white"
             />
             <a
               className="ml-4 cursor-pointer text-blue-500"
