@@ -46,7 +46,6 @@ export const postRouter = createTRPCRouter({
     const drafts = await ctx.db.post.findMany({
       where: {
         author: { email: ctx.session.user.email },
-        // published: false,
       },
       include: {
         author: {
@@ -59,6 +58,9 @@ export const postRouter = createTRPCRouter({
 
   getMany: publicProcedure.query(async ({ ctx }) => {
     const drafts = await ctx.db.post.findMany({
+      where: {
+        published: true,
+      },
       include: {
         author: {
           select: {

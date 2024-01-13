@@ -20,7 +20,7 @@ const main = async () => {
         name: faker.string.alpha({ length: { min: 10, max: 20 } }),
         title: faker.string.alpha({ length: { min: 10, max: 20 } }),
         content: faker.string.alpha({ length: { min: 20, max: 50 } }),
-        published: false,
+        published: true,
         author: {
           connect: {
             id: user.id,
