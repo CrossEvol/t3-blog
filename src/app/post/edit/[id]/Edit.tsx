@@ -14,10 +14,8 @@ const PostEdit = ({ post }: Props) => {
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
 
-  const createPost = api.post.create.useMutation({
+  const updatePost = api.post.update.useMutation({
     onSuccess: ({ id }) => {
-      setTitle("");
-      setContent("");
       router.push(`/post/${id}`);
     },
   });
@@ -25,7 +23,7 @@ const PostEdit = ({ post }: Props) => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      createPost.mutate({ name: title, content: content ?? "" });
+      updatePost.mutate({ id: post.id, name: title, content: content ?? "" });
     } catch (error) {
       console.error(error);
     }
