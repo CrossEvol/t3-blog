@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
-interface Action {
+export type Action = {
   label: string;
   type: "confirm" | "cancel";
   onClick: () => void;
-}
+};
 
 interface DialogProps {
   title: string;
