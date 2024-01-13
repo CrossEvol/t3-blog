@@ -42,10 +42,11 @@ const Dialog = ({ title, content, actions, open, setOpen }: DialogProps) => {
           </div>
         </div>
       </div>
-      <div
+      {/* TODO: how to stop to  this cover all the view */}
+      {/* <div
         className={`fixed inset-0  ${open ? "block" : "hidden"}`}
         onClick={() => setOpen(false)}
-      ></div>
+      ></div> */}
     </div>
   );
 };

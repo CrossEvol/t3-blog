@@ -22,7 +22,6 @@ const DeleteButton = ({ post }: Props) => {
   });
 
   const handleConfirm = () => {
-    console.log(post.id);
     // Your confirm logic here
     deletePost.mutateAsync({ id: post.id });
     setOpen(false);
