@@ -1,78 +1,16 @@
-"use client";
+import { api } from "@/trpc/server";
+import React from "react";
+import PostEdit from "./Edit";
 
-import { api } from "@/trpc/react";
-import { useParams, useRouter } from "next/navigation";
-import React, { useState } from "react";
+const Page = async ({ params }: { params: { id: string } }) => {
+  const post = await api.post.getOne.query({ id: Number(params.id) });
 
-const Page = () => {
-  const a = useParams();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const router = useRouter();
-
-  const createPost = api.post.create.useMutation({
-    onSuccess: ({ id }) => {
-      setTitle("");
-      setContent("");
-      router.push(`/post/${id}`);
-    },
-  });
-
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
-    try {
-      createPost.mutate({ name: title, content });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const clearData = () => {
-    setTitle("");
-    setContent("");
-  };
-
+  if (!post) {
+    return null;
+  }
   return (
     <>
-      <div className="ml-8 flex flex-col items-center justify-center p-3">
-        <form
-          onSubmit={submitData}
-          className="mx-auto flex min-w-full flex-col space-y-4"
-        >
-          <h1 className="mb-4 text-2xl font-bold">New Draft</h1>
-          <input
-            autoFocus
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title"
-            type="text"
-            value={title}
-            className="mb-2 w-full rounded border p-2"
-          />
-          <textarea
-            cols={50}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Content"
-            rows={8}
-            value={content}
-            className="mb-2 w-full rounded border p-2"
-          />
-          <div>
-            <input
-              disabled={!content || !title}
-              type="submit"
-              value="Create"
-              className="cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-500 hover:text-white"
-            />
-            <a
-              className="ml-4 cursor-pointer text-blue-500"
-              href="#"
-              onClick={() => clearData()}
-            >
-              or Cancel
-            </a>
-          </div>
-        </form>
-      </div>
+      <PostEdit post={post} />
     </>
   );
 };
