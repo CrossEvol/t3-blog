@@ -1,4 +1,5 @@
 import { PostItem } from "@/app/page";
+import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import Link from "next/link";
 import React from "react";
@@ -31,6 +32,7 @@ const ShowPost = ({ post }: Props) => {
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const post = await api.post.getOne.query({ id: Number(params.id) });
+  const session = await getServerAuthSession();
 
   if (!post) {
     return null;
@@ -39,20 +41,22 @@ const Page = async ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <ShowPost post={post} />
-      <div className="ml-8 mt-12 flex w-1/5 justify-between">
-        <Link href={`/post/edit/${post.id}`}>
+      {session?.user.name === post.author.name && (
+        <div className="ml-8 mt-12 flex w-1/5 justify-between">
+          <Link href={`/post/edit/${post.id}`}>
+            <input
+              type="text"
+              value="Edit"
+              className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-blue-600 hover:text-white"
+            />
+          </Link>
           <input
             type="text"
-            value="Edit"
-            className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-blue-600 hover:text-white"
+            value="Delete"
+            className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-red-600 hover:text-white"
           />
-        </Link>
-        <input
-          type="text"
-          value="Delete"
-          className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-red-600 hover:text-white"
-        />
-      </div>
+        </div>
+      )}
     </div>
   );
 };
