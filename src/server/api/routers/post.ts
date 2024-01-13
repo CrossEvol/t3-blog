@@ -56,7 +56,7 @@ export const postRouter = createTRPCRouter({
     return drafts;
   }),
 
-  getMany: protectedProcedure.query(async ({ ctx }) => {
+  getMany: publicProcedure.query(async ({ ctx }) => {
     const drafts = await ctx.db.post.findMany({
       include: {
         author: {
