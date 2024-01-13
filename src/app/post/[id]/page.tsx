@@ -38,6 +38,18 @@ const Page = async ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <ShowPost post={post} />
+      <div className="ml-8 mt-12 flex w-1/5 justify-between">
+        <input
+          type="submit"
+          value="Edit"
+          className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-600 hover:text-white"
+        />
+        <input
+          type="submit"
+          value="Delete"
+          className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-red-600 hover:text-white"
+        />
+      </div>
     </div>
   );
 };
