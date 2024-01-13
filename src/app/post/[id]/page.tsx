@@ -1,5 +1,6 @@
 import { PostItem } from "@/app/page";
 import { api } from "@/trpc/server";
+import Link from "next/link";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 
@@ -39,15 +40,17 @@ const Page = async ({ params }: { params: { id: string } }) => {
     <div>
       <ShowPost post={post} />
       <div className="ml-8 mt-12 flex w-1/5 justify-between">
+        <Link href={`/post/edit/${post.id}`}>
+          <input
+            type="text"
+            value="Edit"
+            className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-blue-600 hover:text-white"
+          />
+        </Link>
         <input
-          type="submit"
-          value="Edit"
-          className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-600 hover:text-white"
-        />
-        <input
-          type="submit"
+          type="text"
           value="Delete"
-          className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-red-600 hover:text-white"
+          className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-red-600 hover:text-white"
         />
       </div>
     </div>

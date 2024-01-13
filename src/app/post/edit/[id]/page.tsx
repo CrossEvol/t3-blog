@@ -1,10 +1,11 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Page = () => {
+  const a = useParams();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const router = useRouter();
