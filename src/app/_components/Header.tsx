@@ -1,6 +1,6 @@
 import { getServerAuthSession } from "@/server/auth";
-import { signOut } from "next-auth/react";
 import Link from "next/link";
+import LeftNav from "./LeftNav";
 
 const Header = async () => {
   const isActive: (pathname: string) => boolean = (path) => true;
@@ -8,18 +8,6 @@ const Header = async () => {
   const session = await getServerAuthSession();
 
   if (!session) {
-    const Left = () => (
-      <div className="flex items-center space-x-4">
-        <Link
-          href="/"
-          className={`font-bold ${isActive("/") && "text-gray-500"}`}
-        >
-          Feed
-        </Link>
-
-        {/* Add more navigation links as needed */}
-      </div>
-    );
     const Right = () => (
       <div className="ml-auto flex items-center space-x-4">
         <Link
@@ -35,28 +23,11 @@ const Header = async () => {
 
     return (
       <nav className="flex w-full items-center p-8">
-        <Left />
+        <LeftNav session={session} />
         <Right />
       </nav>
     );
   }
-
-  const Left = () => (
-    <div className="flex items-center space-x-4">
-      <Link
-        href="/"
-        className={`font-bold ${isActive("/") && "text-gray-500"}`}
-      >
-        Feed
-      </Link>
-      <Link
-        href="/drafts"
-        className={`${isActive("/drafts") && "text-gray-500"}`}
-      >
-        My drafts
-      </Link>
-    </div>
-  );
   const Right = () => (
     <div className="ml-auto flex items-center space-x-4">
       <p className="text-sm">
@@ -76,7 +47,7 @@ const Header = async () => {
 
   return (
     <nav className="flex w-full items-center  p-8">
-      <Left />
+      <LeftNav session={session} />
       <Right />
     </nav>
   );
