@@ -10,7 +10,7 @@ const Post: React.FC<{ post: PostItem }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
   return (
     <Link href={`/post/${post.id}`}>
-      <div className="m-2 flex flex-col space-y-4 bg-inherit p-4 text-inherit">
+      <div className="m-2 flex flex-col space-y-6 bg-inherit px-8 py-12 text-inherit">
         <h2 className="text-2xl font-semibold">{post.title}</h2>
         <small>By {authorName}</small>
         <ReactMarkdown children={post.content} />

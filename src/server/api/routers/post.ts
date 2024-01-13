@@ -41,15 +41,15 @@ export const postRouter = createTRPCRouter({
       return post;
     }),
 
-  getManyForAuthor: protectedProcedure.query(async ({ ctx }) => {
+  getDrafts: protectedProcedure.query(async ({ ctx }) => {
     const drafts = await ctx.db.post.findMany({
       where: {
         author: { email: ctx.session.user.email },
-        published: false,
+        // published: false,
       },
       include: {
         author: {
-          select: { name: true },
+          select: { name: true, email: true },
         },
       },
     });
