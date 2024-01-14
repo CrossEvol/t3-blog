@@ -19,7 +19,6 @@ export const commentRouter = createTRPCRouter({
 
       return ctx.db.comment.create({
         data: {
-          created_at: Date.now(),
           userId: user.id,
           postId: input.postId,
           text: input.text,

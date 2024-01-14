@@ -63,7 +63,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       )}
       <>
         <Container>
-          <CommentFormWrapper session={session} />
+          <CommentFormWrapper session={session} postId={post.id} />
           <CommentList comments={comments} />
         </Container>
       </>
