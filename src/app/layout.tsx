@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
-import Header from "./_components/Header";
+import Header from "./_components/layout/Header";
 
 const inter = Inter({
   subsets: ["latin"],

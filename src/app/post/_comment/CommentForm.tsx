@@ -1,21 +1,26 @@
+import { api } from "@/trpc/react";
 import { Session } from "next-auth";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 type CommentFormProps = {
-  text: string;
-  setText: Function;
-  onSubmit: (e: React.FormEvent) => Promise<void>;
   session: Session | null;
+  postId: number;
 };
 
-export default function CommentForm({
-  text,
-  setText,
-  onSubmit,
-  session,
-}: CommentFormProps) {
+export default function CommentForm({ session, postId }: CommentFormProps) {
+  const router = useRouter();
+  const [text, setText] = useState("");
+  const createComment = api.comment.create.useMutation({
+    onSuccess: ({}) => {
+      setText("");
+      router.refresh();
+    },
+  });
+
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={async () => createComment.mutate({ text, postId })}>
       <textarea
         className="flex max-h-40 w-full resize-y rounded bg-gray-200 p-3 text-gray-900 placeholder-gray-500"
         rows={2}

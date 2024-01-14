@@ -1,8 +1,6 @@
-import { CreatePost } from "@/app/_components/create-post";
-import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
-import { PostItem } from "../page";
 import Post from "../_components/Post";
+import { PostItem } from "../page";
 
 export default async function Home() {
   const posts = await api.post.getDrafts.query();

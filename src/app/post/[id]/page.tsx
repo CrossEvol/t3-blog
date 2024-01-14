@@ -1,14 +1,11 @@
-import CommentList from "@/app/_components/comment/CommentList";
+import CommentFormWrapper from "@/app/post/_comment/CommentFormWrapper";
+import CommentList from "@/app/post/_comment/CommentList";
+import Container from "@/app/post/_comment/Container";
 import { PostItem } from "@/app/page";
-import type { Comment } from "@/interfaces";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
-import { faker } from "@faker-js/faker";
-import Link from "next/link";
 import ReactMarkdown from "react-markdown";
-import Container from "@/app/_components/comment/Container";
-import CommentFormWrapper from "@/app/_components/comment/CommentFormWrapper";
-import DeleteButton from "./DeleteButton";
+import { PostActions } from "./PostActions";
 
 interface Props {
   post: PostItem;
@@ -48,19 +45,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <ShowPost post={post} />
-      {session?.user.name === post.author.name && (
-        <div className="ml-8 mt-12 flex w-1/5 justify-between">
-          <Link href={`/post/edit/${post.id}`}>
-            <button
-              value="Edit"
-              className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-blue-600 hover:text-white"
-            >
-              {"Edit"}
-            </button>
-          </Link>
-          <DeleteButton post={post} />
-        </div>
-      )}
+      <PostActions post={post} />
       <>
         <Container>
           <CommentFormWrapper session={session} postId={post.id} />
