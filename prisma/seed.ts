@@ -63,7 +63,6 @@ const main = async () => {
         },
         comments: {
           create: {
-            created_at: Date.now(),
             url: faker.internet.url(),
             text: faker.string.alpha({ length: { min: 10, max: 20 } }),
             user: {

@@ -28,15 +28,19 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
+      role: string;
       // ...other properties
       // role: UserRole;
     } & DefaultSession["user"];
   }
 
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User {
+    id: string;
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+    role?: string | null;
+  }
 }
 
 /**
@@ -92,9 +96,16 @@ export const authOptions: NextAuthOptions = {
           where: {
             name: username,
           },
+          include: {
+            role: {
+              select: {
+                name: true,
+              },
+            },
+          },
         });
         if (user == null) {
-          const res = await db.user.create({
+          const newUser = await db.user.create({
             data: {
               name: username,
               password: encryptPwd(password),
@@ -106,12 +117,20 @@ export const authOptions: NextAuthOptions = {
                 },
               },
             },
+            include: {
+              role: {
+                select: {
+                  name: true,
+                },
+              },
+            },
           });
           return {
-            id: res.id,
-            name: res.name,
-            email: res.email,
-            image: res.image,
+            id: newUser.id,
+            name: newUser.name,
+            email: newUser.email,
+            image: newUser.image,
+            role: newUser.role.name,
           };
         }
         if (user.password !== encryptPwd(password)) {
@@ -123,6 +142,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           email: user.email,
           image: user.image,
+          role: user.role.name,
         };
       },
     }),

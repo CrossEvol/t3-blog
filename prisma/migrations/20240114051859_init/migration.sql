@@ -11,7 +11,7 @@
 -- CreateTable
 CREATE TABLE "Comment" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "created_at" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "url" TEXT NOT NULL DEFAULT '',
     "text" TEXT NOT NULL DEFAULT '',
     "userId" TEXT NOT NULL,

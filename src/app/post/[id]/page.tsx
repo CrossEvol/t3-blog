@@ -10,24 +10,6 @@ import Container from "@/app/_components/comment/Container";
 import CommentFormWrapper from "@/app/_components/comment/CommentFormWrapper";
 import DeleteButton from "./DeleteButton";
 
-const comments: () => Comment[] = () => {
-  let comments: Comment[] = [];
-  for (let i = 1; i < 10; i++) {
-    comments.push({
-      id: String(i),
-      created_at: faker.date.recent().getTime(),
-      url: faker.internet.url(),
-      text: faker.string.alpha({ length: { min: 10, max: 30 } }),
-      user: {
-        name: faker.internet.userName(),
-        picture: faker.internet.avatar(),
-        sub: faker.string.alphanumeric({ length: { min: 5, max: 20 } }),
-      },
-    });
-  }
-  return comments;
-};
-
 interface Props {
   post: PostItem;
 }
@@ -61,6 +43,8 @@ const Page = async ({ params }: { params: { id: string } }) => {
     return null;
   }
 
+  const comments = await api.comment.getMany.query({ postId: post.id });
+
   return (
     <div>
       <ShowPost post={post} />
@@ -80,7 +64,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       <>
         <Container>
           <CommentFormWrapper session={session} />
-          <CommentList comments={comments()} />
+          <CommentList comments={comments} />
         </Container>
       </>
     </div>

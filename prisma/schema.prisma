@@ -80,14 +80,14 @@ model VerificationToken {
 }
 
 model Comment {
-    id         Int    @id @default(autoincrement())
-    created_at Int
-    url        String @default("")
-    text       String @default("")
-    userId     String
-    user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-    post       Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-    postId     Int
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    url       String   @default("")
+    text      String   @default("")
+    userId    String
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+    postId    Int
 }
 
 model Role {

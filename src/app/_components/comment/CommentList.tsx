@@ -28,11 +28,11 @@ export default async function CommentList({
           //   session.user.email === process.env.NEXT_PUBLIC_AUTH0_ADMIN_EMAIL;
 
           return (
-            <div key={comment.created_at} className="flex space-x-4">
+            <div key={comment.id} className="flex space-x-4">
               <div className="flex-shrink-0">
                 <img
-                  src={comment.user.picture}
-                  alt={comment.user.name}
+                  src={comment.user.image as string}
+                  alt={comment.user.name as string}
                   width={40}
                   height={40}
                   className="rounded-full"
@@ -43,7 +43,7 @@ export default async function CommentList({
                 <div className="flex space-x-2">
                   <b>{comment.user.name}</b>
                   <time className="text-gray-400">
-                    {distanceToNow(comment.created_at)}
+                    {distanceToNow(comment.createdAt.getTime())}
                   </time>
                   {/* {(isAdmin || isAuthor) && (
                     <button
