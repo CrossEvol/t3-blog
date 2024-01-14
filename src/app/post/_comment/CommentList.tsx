@@ -1,15 +1,17 @@
+import { PostItem } from "@/app/page";
 import type { Comment } from "@/interfaces";
 import distanceToNow from "@/lib/dateRelative";
 import { getServerAuthSession } from "@/server/auth";
+import CommentDelete from "./CommentDelete";
 
 type CommentListProps = {
   comments?: Comment[];
-  // onDelete: (comment: Comment) => Promise<void>;
+  post: PostItem;
 };
 
 export default async function CommentList({
   comments,
-  // onDelete,
+  post,
 }: CommentListProps) {
   const session = await getServerAuthSession();
 
@@ -21,11 +23,9 @@ export default async function CommentList({
     <div className="mt-10 space-y-6">
       {comments &&
         comments.map((comment) => {
-          // const isAuthor =
-          //   session.user && session.user.sub === comment.user.sub;
-          // const isAdmin =
-          //   session.user &&
-          //   session.user.email === process.env.NEXT_PUBLIC_AUTH0_ADMIN_EMAIL;
+          const isAuthor =
+            session.user && session.user.name === post.author.name;
+          const isAdmin = session.user && session.user.role === "admin";
 
           return (
             <div key={comment.id} className="flex space-x-4">
@@ -45,15 +45,11 @@ export default async function CommentList({
                   <time className="text-gray-400">
                     {distanceToNow(comment.createdAt.getTime())}
                   </time>
-                  {/* {(isAdmin || isAuthor) && (
-                    <button
-                      className="text-gray-400 hover:text-red-500"
-                      onClick={() => onDelete(comment)}
-                      aria-label="Close"
-                    >
-                      x
-                    </button>
-                  )} */}
+                  {(isAuthor || isAdmin) && (
+                    <CommentDelete
+                      commentId={comment.id}
+                    />
+                  )}
                 </div>
 
                 <div>{comment.text}</div>

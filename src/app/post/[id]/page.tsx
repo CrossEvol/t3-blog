@@ -6,6 +6,7 @@ import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import ReactMarkdown from "react-markdown";
 import { PostActions } from "./PostActions";
+import Post from "@/app/_components/Post";
 
 interface Props {
   post: PostItem;
@@ -49,7 +50,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       <>
         <Container>
           <CommentFormWrapper session={session} postId={post.id} />
-          <CommentList comments={comments} />
+          <CommentList post={post} comments={comments} />
         </Container>
       </>
     </div>
