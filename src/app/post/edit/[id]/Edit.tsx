@@ -67,12 +67,13 @@ const PostEdit = ({ post }: Props) => {
             setSelectedOption={setSelectedOption}
           />
           <div>
-            <input
-              disabled={!content || !title}
+            <button
+              disabled={!content || !title || updatePost.isLoading}
               type="submit"
-              value="Publish"
               className="cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-500 hover:text-white"
-            />
+            >
+              {updatePost.isLoading ? "Publishing..." : "Publish"}
+            </button>
             <a
               className="ml-4 cursor-pointer text-blue-500"
               href="#"

@@ -37,8 +37,11 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
       <div className="mt-4 flex items-center">
         {session ? (
           <div className="flex items-center space-x-6">
-            <button className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-40">
-              Send
+            <button
+              disabled={createComment.isLoading || !text}
+              className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-40"
+            >
+              {createComment.isLoading ? "Sending..." : "Send"}
             </button>
             <Link href={session && "/api/auth/signout"}>
               <button className="text-gray-500">Log Out</button>

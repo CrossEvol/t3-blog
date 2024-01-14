@@ -56,12 +56,13 @@ const Page = () => {
             className="mb-2 w-full rounded border p-2"
           />
           <div>
-            <input
-              disabled={!content || !title}
+            <button
+              disabled={!content || !title || createPost.isLoading}
               type="submit"
-              value="Create"
               className="cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-500 hover:text-white"
-            />
+            >
+              {createPost.isLoading ? "Creating..." : "Create"}
+            </button>
             <a
               className="ml-4 cursor-pointer text-blue-500"
               href="#"

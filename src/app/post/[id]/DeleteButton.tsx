@@ -43,7 +43,7 @@ const DeleteButton = ({ post }: Props) => {
         onClick={() => setOpen(true)}
         className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-red-600 hover:text-white"
       >
-        {"Delete"}
+        {deletePost.isLoading ? "Deleting..." : "Delete"}
       </button>
       <Dialog
         title={post.title}
