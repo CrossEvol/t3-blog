@@ -61,11 +61,27 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
       }
 
+      const role = await db.role.findFirst({
+        where: {
+          User: {
+            some: {
+              id: {
+                equals: token.id as string,
+              },
+            },
+          },
+        },
+      });
+
+      token.role = role?.name;
+
       return token;
     },
     session: async ({ session, token, user }) => {
+      console.log("token = ?", token);
       if (session?.user && token) {
         session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
