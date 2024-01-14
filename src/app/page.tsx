@@ -16,17 +16,6 @@ export type PostItem = {
   authorId: string;
 };
 
-export default async function Home() {
-  const posts = await api.post.getMany.query();
-
-  return (
-    <div className="my-4 ml-8 w-11/12">
-      <h1 className="pb-6 text-4xl font-bold">Public Feed</h1>
-      <Blog posts={posts} />
-    </div>
-  );
-}
-
 type Props = {
   posts: PostItem[];
 };
@@ -45,3 +34,16 @@ const Blog: React.FC<Props> = ({ posts }) => {
     </main>
   );
 };
+
+const Home = async () => {
+  const posts = await api.post.getMany.query();
+
+  return (
+    <div className="my-4 ml-8 w-11/12">
+      <h1 className="pb-6 text-4xl font-bold">Public Feed</h1>
+      <Blog posts={posts} />
+    </div>
+  );
+};
+
+export default Home;

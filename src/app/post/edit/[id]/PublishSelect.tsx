@@ -25,10 +25,7 @@ interface Props {
   >;
 }
 
-export default function PublishButton({
-  selectedOption,
-  setSelectedOption,
-}: Props) {
+const PublishButton = ({ selectedOption, setSelectedOption }: Props) => {
   return (
     <div className="App">
       <Select
@@ -39,4 +36,6 @@ export default function PublishButton({
       />
     </div>
   );
-}
+};
+
+export default PublishButton;

@@ -9,10 +9,7 @@ type CommentListProps = {
   post: PostItem;
 };
 
-export default async function CommentList({
-  comments,
-  post,
-}: CommentListProps) {
+const CommentList = async ({ comments, post }: CommentListProps) => {
   const session = await getServerAuthSession();
 
   if (!session) {
@@ -46,9 +43,7 @@ export default async function CommentList({
                     {distanceToNow(comment.createdAt.getTime())}
                   </time>
                   {(isAuthor || isAdmin) && (
-                    <CommentDelete
-                      commentId={comment.id}
-                    />
+                    <CommentDelete commentId={comment.id} />
                   )}
                 </div>
 
@@ -59,4 +54,6 @@ export default async function CommentList({
         })}
     </div>
   );
-}
+};
+
+export default CommentList;

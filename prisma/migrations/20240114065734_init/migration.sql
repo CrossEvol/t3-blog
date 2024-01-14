@@ -3,9 +3,9 @@
 
   - You are about to drop the column `createdById` on the `Post` table. All the data in the column will be lost.
   - You are about to drop the column `name` on the `Post` table. All the data in the column will be lost.
+  - Added the required column `roleId` to the `User` table without a default value. This is not possible if the table is not empty.
   - Added the required column `authorId` to the `Post` table without a default value. This is not possible if the table is not empty.
   - Added the required column `title` to the `Post` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `roleId` to the `User` table without a default value. This is not possible if the table is not empty.
 
 */
 -- CreateTable
@@ -28,20 +28,6 @@ CREATE TABLE "Role" (
 
 -- RedefineTables
 PRAGMA foreign_keys=OFF;
-CREATE TABLE "new_Post" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "title" TEXT NOT NULL,
-    "content" TEXT,
-    "published" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
-    "authorId" TEXT NOT NULL,
-    CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
-INSERT INTO "new_Post" ("createdAt", "id", "updatedAt") SELECT "createdAt", "id", "updatedAt" FROM "Post";
-DROP TABLE "Post";
-ALTER TABLE "new_Post" RENAME TO "Post";
-CREATE INDEX "Post_title_idx" ON "Post"("title");
 CREATE TABLE "new_User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT,
@@ -56,5 +42,19 @@ INSERT INTO "new_User" ("email", "emailVerified", "id", "image", "name") SELECT 
 DROP TABLE "User";
 ALTER TABLE "new_User" RENAME TO "User";
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE TABLE "new_Post" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "title" TEXT NOT NULL,
+    "content" TEXT,
+    "published" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL,
+    "authorId" TEXT NOT NULL,
+    CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+INSERT INTO "new_Post" ("createdAt", "id", "updatedAt") SELECT "createdAt", "id", "updatedAt" FROM "Post";
+DROP TABLE "Post";
+ALTER TABLE "new_Post" RENAME TO "Post";
+CREATE INDEX "Post_title_idx" ON "Post"("title");
 PRAGMA foreign_key_check;
 PRAGMA foreign_keys=ON;

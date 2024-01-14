@@ -7,7 +7,7 @@ interface IProps {
   post: PostItem;
 }
 
-export const PostActions = async ({ post }: IProps) => {
+const PostActions = async ({ post }: IProps) => {
   const session = await getServerAuthSession();
 
   return (
@@ -28,3 +28,5 @@ export const PostActions = async ({ post }: IProps) => {
     </>
   );
 };
+
+export default PostActions;

@@ -9,7 +9,7 @@ type CommentFormProps = {
   postId: number;
 };
 
-export default function CommentForm({ session, postId }: CommentFormProps) {
+const CommentForm = ({ session, postId }: CommentFormProps) => {
   const router = useRouter();
   const [text, setText] = useState("");
   const createComment = api.comment.create.useMutation({
@@ -60,4 +60,6 @@ export default function CommentForm({ session, postId }: CommentFormProps) {
       </div>
     </form>
   );
-}
+};
+
+export default CommentForm;

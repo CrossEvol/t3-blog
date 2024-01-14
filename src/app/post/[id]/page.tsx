@@ -1,12 +1,11 @@
+import { PostItem } from "@/app/page";
 import CommentFormWrapper from "@/app/post/_comment/CommentFormWrapper";
 import CommentList from "@/app/post/_comment/CommentList";
 import Container from "@/app/post/_comment/Container";
-import { PostItem } from "@/app/page";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import ReactMarkdown from "react-markdown";
-import { PostActions } from "./PostActions";
-import Post from "@/app/_components/Post";
+import PostActions from "./PostActions";
 
 interface Props {
   post: PostItem;

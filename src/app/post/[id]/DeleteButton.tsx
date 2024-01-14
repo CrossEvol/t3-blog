@@ -4,7 +4,7 @@ import Dialog, { Action } from "@/app/_components/Dialog";
 import { PostItem } from "@/app/page";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface Props {
   post: PostItem;
