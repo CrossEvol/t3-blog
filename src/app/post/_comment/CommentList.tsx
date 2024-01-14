@@ -12,18 +12,10 @@ type CommentListProps = {
 const CommentList = async ({ comments, post }: CommentListProps) => {
   const session = await getServerAuthSession();
 
-  if (!session) {
-    return null;
-  }
-
   return (
     <div className="mt-10 space-y-6">
       {comments &&
         comments.map((comment) => {
-          const isAuthor =
-            session.user && session.user.name === post.author.name;
-          const isAdmin = session.user && session.user.role === "admin";
-
           return (
             <div key={comment.id} className="flex space-x-4">
               <div className="flex-shrink-0">
@@ -42,9 +34,11 @@ const CommentList = async ({ comments, post }: CommentListProps) => {
                   <time className="text-gray-400">
                     {distanceToNow(comment.createdAt.getTime())}
                   </time>
-                  {(isAuthor || isAdmin) && (
-                    <CommentDelete commentId={comment.id} />
-                  )}
+                  <CommentDelete
+                    session={session}
+                    post={post}
+                    commentId={comment.id}
+                  />
                 </div>
 
                 <div>{comment.text}</div>

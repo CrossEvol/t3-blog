@@ -1,8 +1,8 @@
-import CommentFormWrapper from "@/app/post/_comment/CommentFormWrapper";
 import CommentList from "@/app/post/_comment/CommentList";
 import Container from "@/app/post/_comment/Container";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
+import CommentForm from "../_comment/CommentForm";
 import PostActions from "./PostActions";
 import ShowPost from "./ShowPost";
 
@@ -22,7 +22,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       <PostActions post={post} />
       <>
         <Container>
-          <CommentFormWrapper session={session} postId={post.id} />
+          <CommentForm session={session} postId={post.id} />
           <CommentList post={post} comments={comments} />
         </Container>
       </>

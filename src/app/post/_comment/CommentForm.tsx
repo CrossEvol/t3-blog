@@ -1,3 +1,5 @@
+"use client";
+
 import { api } from "@/trpc/react";
 import { Session } from "next-auth";
 import Link from "next/link";
