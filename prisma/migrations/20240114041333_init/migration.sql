@@ -2,6 +2,7 @@
   Warnings:
 
   - You are about to drop the column `createdById` on the `Post` table. All the data in the column will be lost.
+  - You are about to drop the column `name` on the `Post` table. All the data in the column will be lost.
   - Added the required column `authorId` to the `Post` table without a default value. This is not possible if the table is not empty.
   - Added the required column `title` to the `Post` table without a default value. This is not possible if the table is not empty.
   - Added the required column `roleId` to the `User` table without a default value. This is not possible if the table is not empty.
@@ -29,7 +30,6 @@ CREATE TABLE "Role" (
 PRAGMA foreign_keys=OFF;
 CREATE TABLE "new_Post" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "name" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "content" TEXT,
     "published" BOOLEAN NOT NULL DEFAULT false,
@@ -38,10 +38,10 @@ CREATE TABLE "new_Post" (
     "authorId" TEXT NOT NULL,
     CONSTRAINT "Post_authorId_fkey" FOREIGN KEY ("authorId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
-INSERT INTO "new_Post" ("createdAt", "id", "name", "updatedAt") SELECT "createdAt", "id", "name", "updatedAt" FROM "Post";
+INSERT INTO "new_Post" ("createdAt", "id", "updatedAt") SELECT "createdAt", "id", "updatedAt" FROM "Post";
 DROP TABLE "Post";
 ALTER TABLE "new_Post" RENAME TO "Post";
-CREATE INDEX "Post_name_idx" ON "Post"("name");
+CREATE INDEX "Post_title_idx" ON "Post"("title");
 CREATE TABLE "new_User" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "name" TEXT,

@@ -36,10 +36,23 @@ const main = async () => {
     },
   });
 
+  const admin = await prisma.user.create({
+    data: {
+      name: "admin",
+      password: "admin",
+      email: "admin@admin.admin",
+      image: faker.internet.avatar(),
+      role: {
+        connect: {
+          id: adminRole.id,
+        },
+      },
+    },
+  });
+
   for (let i = 0; i < 10; i++) {
     await prisma.post.create({
       data: {
-        name: faker.string.alpha({ length: { min: 10, max: 20 } }),
         title: faker.string.alpha({ length: { min: 10, max: 20 } }),
         content: faker.string.alpha({ length: { min: 20, max: 50 } }),
         published: true,

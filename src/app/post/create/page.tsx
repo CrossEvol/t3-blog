@@ -20,7 +20,7 @@ const Page = () => {
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     try {
-      createPost.mutate({ name: title, content });
+      createPost.mutate({ title, content });
     } catch (error) {
       console.error(error);
     }

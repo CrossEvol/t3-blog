@@ -29,7 +29,7 @@ const PostEdit = ({ post }: Props) => {
     try {
       updatePost.mutate({
         id: post.id,
-        name: title,
+        title,
         content: content ?? "",
         published: selectedOption!.value,
       });

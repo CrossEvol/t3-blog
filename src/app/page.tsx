@@ -1,5 +1,3 @@
-import { CreatePost } from "@/app/_components/create-post";
-import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import Post from "./_components/Post";
 
@@ -10,7 +8,6 @@ export type PostItem = {
   };
 } & {
   id: number;
-  name: string;
   title: string;
   content: string | null;
   published: boolean;

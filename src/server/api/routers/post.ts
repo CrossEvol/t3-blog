@@ -9,7 +9,7 @@ import {
 export const postRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
-      z.object({ name: z.string().min(1), content: z.string().optional() }),
+      z.object({ title: z.string().min(1), content: z.string().optional() }),
     )
     .mutation(async ({ ctx, input }) => {
       // simulate a slow db call
@@ -17,8 +17,7 @@ export const postRouter = createTRPCRouter({
 
       return ctx.db.post.create({
         data: {
-          name: input.name,
-          title: input.name,
+          title: input.title,
           content: input.content,
           published: false,
           author: { connect: { id: ctx.session.user.id } },
@@ -85,7 +84,7 @@ export const postRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.number().min(1),
-        name: z.string().min(1),
+        title: z.string().min(1),
         content: z.string().optional(),
         published: z.boolean(),
       }),
@@ -94,8 +93,7 @@ export const postRouter = createTRPCRouter({
       return await ctx.db.post.update({
         where: { id: input.id },
         data: {
-          title: input.name,
-          name: input.name,
+          title: input.title,
           content: input.content,
           published: input.published,
         },
