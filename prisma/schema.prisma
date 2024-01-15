@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "sqlite"
+    provider = "postgresql"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -67,8 +67,7 @@ model User {
     sessions      Session[]
     posts         Post[]
     comments      Comment[]
-    roleId        Int
-    role          Role      @relation(fields: [roleId], references: [id], onDelete: Cascade)
+    role          Role      @default(GUEST)
 }
 
 model VerificationToken {
@@ -90,8 +89,9 @@ model Comment {
     postId    Int
 }
 
-model Role {
-    id   Int    @id @default(autoincrement())
-    name String
-    User User[]
+enum Role {
+    ADMIN
+    USER
+    GUEST
+    UNKNOWN
 }

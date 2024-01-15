@@ -17,7 +17,7 @@ const CommentDelete = ({ commentId, session, post }: IProps) => {
   }
 
   const isAuthor = session.user && session.user.name === post.author.name;
-  const isAdmin = session.user && session.user.role === "admin";
+  const isAdmin = session.user && session.user.role === "ADMIN";
   const router = useRouter();
   const deleteComment = api.comment.deleteOne.useMutation({
     onSuccess: ({}) => {

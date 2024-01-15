@@ -61,19 +61,16 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
       }
 
-      const role = await db.role.findFirst({
+      const dbUser = await db.user.findUnique({
         where: {
-          User: {
-            some: {
-              id: {
-                equals: token.id as string,
-              },
-            },
-          },
+          id: token.id as string,
+        },
+        select: {
+          role: true,
         },
       });
 
-      token.role = role?.name;
+      token.role = dbUser?.role;
 
       return token;
     },
@@ -112,13 +109,6 @@ export const authOptions: NextAuthOptions = {
           where: {
             name: username,
           },
-          include: {
-            role: {
-              select: {
-                name: true,
-              },
-            },
-          },
         });
         if (user == null) {
           const newUser = await db.user.create({
@@ -127,18 +117,7 @@ export const authOptions: NextAuthOptions = {
               password: encryptPwd(password),
               email: faker.internet.email(),
               image: faker.internet.avatar(),
-              role: {
-                connect: {
-                  id: 2,
-                },
-              },
-            },
-            include: {
-              role: {
-                select: {
-                  name: true,
-                },
-              },
+              role: "USER",
             },
           });
           return {
@@ -146,7 +125,7 @@ export const authOptions: NextAuthOptions = {
             name: newUser.name,
             email: newUser.email,
             image: newUser.image,
-            role: newUser.role.name,
+            role: newUser.role,
           };
         }
         if (user.password !== encryptPwd(password)) {
@@ -158,7 +137,7 @@ export const authOptions: NextAuthOptions = {
           name: user.name,
           email: user.email,
           image: user.image,
-          role: user.role.name,
+          role: user.role,
         };
       },
     }),
