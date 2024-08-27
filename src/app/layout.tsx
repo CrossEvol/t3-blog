@@ -19,7 +19,10 @@ export const metadata = {
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html lang="en" className="box-border">
+    <html
+      lang="en"
+      className="scrollbar-thumb-sky-700 scrollbar-thin scrollbar-track-sky-300 box-border"
+    >
       <body
         className={`font-sans ${inter.variable} m-0 bg-black bg-opacity-5 p-0 text-base`}
       >
