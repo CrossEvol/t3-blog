@@ -1,6 +1,6 @@
 "use client";
 
-import { PostItem } from "@/app/page";
+import type { PostItem } from "@/app/page";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";

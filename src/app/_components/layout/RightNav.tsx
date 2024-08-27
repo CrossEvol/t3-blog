@@ -1,6 +1,5 @@
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 interface Props {
   session: Session | null;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 export type Action = {
   label: string;
@@ -14,7 +14,7 @@ interface DialogProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const Dialog = ({ title, content, actions, open, setOpen }: DialogProps) => {
+const Dialog = ({ title, content, actions, open }: DialogProps) => {
   return (
     <div
       className={`fixed inset-0 z-50 overflow-auto ${

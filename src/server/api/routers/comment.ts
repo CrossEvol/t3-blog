@@ -48,6 +48,9 @@ export const commentRouter = createTRPCRouter({
     .input(z.object({ commentId: z.number().min(0) }))
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx.session;
+      if (!user.name) {
+        return;
+      }
 
       // TODO: only the role ADMIN can delete comment
 

@@ -1,6 +1,7 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import {
   getServerSession,
+  type User,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
@@ -56,7 +57,7 @@ export const authOptions: NextAuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
   },
   callbacks: {
-    async jwt({ token, user, account, profile, trigger }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
       }
@@ -74,7 +75,7 @@ export const authOptions: NextAuthOptions = {
 
       return token;
     },
-    session: async ({ session, token, user }) => {
+    session: async ({ session, token }) => {
       console.log("token = ?", token);
       if (session?.user && token) {
         session.user.id = token.id as string;
@@ -97,9 +98,9 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         // Add logic here to look up the user from the credentials supplied
-        let username = credentials?.username;
+        const username = credentials?.username;
         let password = credentials?.password;
         z.string().parse(username);
         z.string().optional().parse(password);
@@ -166,9 +167,9 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
       },
-      async authorize(credentials, req) {
+      async authorize() {
         const resp = await fetch("http://localhost:4000/auth");
-        const user = await resp.json();
+        const user = (await resp.json()) as User;
 
         if (user) {
           return user;

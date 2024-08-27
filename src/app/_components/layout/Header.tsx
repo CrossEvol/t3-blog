@@ -1,5 +1,4 @@
 import { getServerAuthSession } from "@/server/auth";
-import Link from "next/link";
 import LeftNav from "./LeftNav";
 import RightNav from "./RightNav";
 

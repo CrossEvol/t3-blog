@@ -1,4 +1,4 @@
-import { PostItem } from "@/app/page";
+import type { PostItem } from "@/app/page";
 import { getServerAuthSession } from "@/server/auth";
 import Link from "next/link";
 import DeleteButton from "./DeleteButton";

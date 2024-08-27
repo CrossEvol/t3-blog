@@ -1,7 +1,7 @@
 "use client";
 
 import { api } from "@/trpc/react";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

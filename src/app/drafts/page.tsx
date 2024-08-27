@@ -1,6 +1,6 @@
 import { api } from "@/trpc/server";
 import Post from "../_components/Post";
-import { PostItem } from "../page";
+import type { PostItem } from "../page";
 
 type Props = {
   posts: PostItem[];

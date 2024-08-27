@@ -1,7 +1,8 @@
 "use client";
 
-import Dialog, { Action } from "@/app/_components/Dialog";
-import { PostItem } from "@/app/page";
+import Dialog from "@/app/_components/Dialog";
+import type { Action } from "@/app/_components/Dialog";
+import type { PostItem } from "@/app/page";
 import { api } from "@/trpc/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -23,7 +24,7 @@ const DeleteButton = ({ post }: Props) => {
 
   const handleConfirm = () => {
     // Your confirm logic here
-    deletePost.mutateAsync({ id: post.id });
+    deletePost.mutate({ id: post.id });
     setOpen(false);
   };
 

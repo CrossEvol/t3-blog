@@ -30,7 +30,7 @@ const PublishButton = ({ selectedOption, setSelectedOption }: Props) => {
     <div className="App">
       <Select
         defaultValue={selectedOption}
-        //@ts-ignore
+        //@ts-expect-error, needed optional metadata
         onChange={setSelectedOption}
         options={options}
       />
