@@ -13,8 +13,8 @@
     "db:gen": "npx prisma generate",
     "db:clean": "shx rm -rf node_modules/.prisma && shx rm -rf prisma/db.sqlite* && shx rm -rf prisma/migrations/*_init",
     "db:init": "prisma migrate dev --schema prisma/schema.prisma --name init",
-    "db:seed": "ts-node --esm prisma/seed.ts",
-    "db:test": "ts-node --esm prisma/test.ts",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:test": "tsx prisma/test.ts",
     "db:reset": "npm run db:clean && npm run db:init && npm run db:seed"
   },
   "dependencies": {
@@ -75,6 +75,7 @@
     "prisma": "^5.11.0",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.3.5",
+    "tsx": "^4.19.0",
     "typescript": "^5.1.6"
   },
   "ct3aMetadata": {
