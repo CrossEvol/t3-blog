@@ -1,9 +1,10 @@
 import "@/styles/globals.css";
 
 import { cn } from "@/lib/utils";
-import { cookies } from "next/headers";
 import { Inter as FontSans } from "next/font/google";
+import { cookies } from "next/headers";
 
+import { JotaiProvider } from "@/providers/jotai-provider";
 import { TRPCReactProvider } from "@/trpc/react";
 import Header from "./_components/layout/Header";
 
@@ -23,7 +24,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     <html
       lang="en"
       className={cn(
-        "bg-background box-border min-h-screen font-sans antialiased",
+        "box-border min-h-screen bg-background font-sans antialiased",
         fontSans.variable,
       )}
     >
@@ -32,8 +33,10 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
         className={` m-0 bg-black bg-opacity-5 p-0 text-base`}
       >
         <TRPCReactProvider cookies={cookies().toString()}>
-          <Header />
-          {children}
+          <JotaiProvider>
+            <Header />
+            {children}
+          </JotaiProvider>
         </TRPCReactProvider>
       </body>
     </html>

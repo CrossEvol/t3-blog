@@ -1,18 +1,26 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { type PropsWithChildren, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { type PropsWithChildren, useContext, useEffect, useState } from "react";
 import { TabsEnum } from "./constants";
+import { EditContext } from "./edit-provider";
 import NewPublishSelect from "./new-publish-select";
 
 export default function FloatingButtonContainer({
   children,
 }: PropsWithChildren) {
+  const { handleSubmit } = useContext(EditContext);
+  const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
 
   // Toggle visibility on Enter key press
   useEffect(() => {
-    const handleKeyPress = (event: { key: string }) => {
+    const handleKeyPress = (event: {
+      preventDefault: () => void;
+      key: string;
+    }) => {
+      event.preventDefault();
       if (event.key === "Enter") {
         setIsVisible((prev) => !prev);
       }
@@ -34,8 +42,18 @@ export default function FloatingButtonContainer({
             <TabsTrigger value={TabsEnum.editor}>RichEditor</TabsTrigger>
           </TabsList>
           <NewPublishSelect />
-          <Button>Publish</Button>
-          <Button className="opacity-50">Cancel</Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              debugger;
+              handleSubmit();
+            }}
+          >
+            Publish
+          </Button>
+          <Button className="opacity-50" onClick={() => router.back()}>
+            Cancel
+          </Button>
           <button className=" rounded-full bg-blue-500 p-4 text-white shadow-lg hover:bg-blue-600">
             Floating Button
           </button>

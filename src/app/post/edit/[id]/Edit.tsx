@@ -6,9 +6,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/trpc/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { options } from "./PublishSelect";
 import { TabsEnum } from "./constants";
+import { EditContext } from "./edit-provider";
 
 const Editor = dynamic(() => import("./rich-text-editor"), { ssr: false });
 
@@ -17,6 +18,8 @@ interface Props {
 }
 
 const PostEdit = ({ post }: Props) => {
+  const editContext = useContext(EditContext);
+  const formRef = useRef<HTMLFormElement>(null);
   const router = useRouter();
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
@@ -32,22 +35,37 @@ const PostEdit = ({ post }: Props) => {
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    try {
-      updatePost.mutate({
-        id: post.id,
-        title,
-        content: content ?? "",
-        published: selectedOption!.value,
-      });
-    } catch (error) {
-      console.error(error);
-    }
+    // try {
+    //   updatePost.mutate({
+    //     id: post.id,
+    //     title,
+    //     content: content ?? "",
+    //     published: selectedOption!.value,
+    //   });
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
+
+  React.useEffect(() => {
+    editContext.setHandleSubmit(() => {
+      return () =>
+        console.log({
+          id: post.id,
+          title,
+          content: content ?? "",
+          published: selectedOption!.value,
+        });
+    });
+
+    return () => {};
+  }, []);
 
   return (
     <>
       <div className="ml-8 flex flex-col items-center justify-center p-3">
         <form
+          ref={formRef}
           onSubmit={submitData}
           className="mx-auto flex min-w-full flex-col space-y-4"
         >
