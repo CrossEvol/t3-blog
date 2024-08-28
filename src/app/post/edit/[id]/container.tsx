@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { type PropsWithChildren, useEffect, useState } from "react";
+import { TabsEnum } from "./constants";
 import NewPublishSelect from "./new-publish-select";
 
 export default function FloatingButtonContainer({
@@ -29,8 +30,8 @@ export default function FloatingButtonContainer({
       {isVisible && (
         <div className="fixed bottom-1/2 right-1/2 flex translate-x-1/2 flex-row items-center justify-center space-x-4">
           <TabsList>
-            <TabsTrigger value="account">Account</TabsTrigger>
-            <TabsTrigger value="password">Password</TabsTrigger>
+            <TabsTrigger value={TabsEnum.markdown}>Markdown</TabsTrigger>
+            <TabsTrigger value={TabsEnum.editor}>RichEditor</TabsTrigger>
           </TabsList>
           <NewPublishSelect />
           <Button>Publish</Button>

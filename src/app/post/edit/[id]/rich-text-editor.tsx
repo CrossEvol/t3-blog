@@ -1,8 +1,10 @@
 "use client"; // this registers <Editor> as a Client Component
+import { useEditorStorage } from "@/hooks/useEditorStorage";
 import "@blocknote/core/fonts/inter.css";
 import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
+import React from "react";
 
 type TmpFilesResponse = {
   status: string;
@@ -28,8 +30,15 @@ async function uploadFile(file: File) {
   );
 }
 
+interface IProps {
+  postId: number;
+  initialMarkdown: string;
+}
+
 // Our <Editor> component we can reuse later
-export default function RichTextEditor() {
+export default function RichTextEditor({ postId, initialMarkdown }: IProps) {
+  const { saveContent } = useEditorStorage();
+
   // Creates a new editor instance.
   const editor = useCreateBlockNote({
     initialContent: [
@@ -45,6 +54,22 @@ export default function RichTextEditor() {
     uploadFile,
   });
 
+  // For initialization; on mount, convert the initial Markdown to blocks and replace the default editor's content
+  React.useEffect(() => {
+    async function loadInitialMarkdown() {
+      const blocks = await editor.tryParseMarkdownToBlocks(initialMarkdown);
+      editor.replaceBlocks(editor.document, blocks);
+    }
+    loadInitialMarkdown();
+  }, [editor]);
+
   // Renders the editor instance using a React component.
-  return <BlockNoteView editor={editor} />;
+  return (
+    <BlockNoteView
+      editor={editor}
+      onChange={async () =>
+        await saveContent(`post-${postId}`, editor.document)
+      }
+    />
+  );
 }

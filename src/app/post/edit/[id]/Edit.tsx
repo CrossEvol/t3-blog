@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { options } from "./PublishSelect";
+import { TabsEnum } from "./constants";
 
 const Editor = dynamic(() => import("./rich-text-editor"), { ssr: false });
 
@@ -79,7 +80,7 @@ const PostEdit = ({ post }: Props) => {
               or Cancel
             </a>
           </div> */}
-          <TabsContent value="account">
+          <TabsContent value={TabsEnum.markdown}>
             <Textarea
               cols={50}
               onChange={(e) => setContent(e.target.value)}
@@ -89,9 +90,9 @@ const PostEdit = ({ post }: Props) => {
               className="mb-2 w-full rounded border p-2"
             />
           </TabsContent>
-          <TabsContent value="password">
+          <TabsContent value={TabsEnum.editor}>
             <div className="min-h-96 bg-white">
-              <Editor />
+              <Editor postId={post.id} initialMarkdown={content!} />
             </div>
           </TabsContent>
         </form>
