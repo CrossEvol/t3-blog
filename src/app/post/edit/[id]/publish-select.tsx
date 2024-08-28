@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Select,
   SelectContent,
@@ -7,10 +6,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const NewPublishSelect = () => {
+interface IProps {
+  pub: string;
+  setPub: (value: string) => void;
+}
+
+const PublishSelect = ({ pub, setPub }: IProps) => {
   return (
     <div>
-      <Select>
+      <Select defaultValue={pub} onValueChange={setPub}>
         <SelectTrigger className="w-[180px]">
           <SelectValue placeholder="Public" />
         </SelectTrigger>
@@ -23,4 +27,4 @@ const NewPublishSelect = () => {
   );
 };
 
-export default NewPublishSelect;
+export default PublishSelect;

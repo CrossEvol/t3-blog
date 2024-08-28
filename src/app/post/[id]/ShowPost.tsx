@@ -1,5 +1,6 @@
 import type { PostItem } from "@/app/page";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface Props {
   post: PostItem;
@@ -19,7 +20,11 @@ const ShowPost = ({ post }: Props) => {
           <p className="text-gray-600">
             By {post?.author?.name ?? "Unknown author"}
           </p>
-          <ReactMarkdown className="mt-4">{post.content}</ReactMarkdown>
+          <div className="prose prose-slate bg-white p-8">
+            <ReactMarkdown remarkPlugins={[remarkGfm]} className="mt-4">
+              {post.content}
+            </ReactMarkdown>
+          </div>
         </div>
       </div>
     </>

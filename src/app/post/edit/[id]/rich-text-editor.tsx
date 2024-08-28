@@ -33,10 +33,15 @@ async function uploadFile(file: File) {
 interface IProps {
   postId: number;
   initialMarkdown: string;
+  setContent: (content: string) => void;
 }
 
 // Our <Editor> component we can reuse later
-export default function RichTextEditor({ postId, initialMarkdown }: IProps) {
+export default function RichTextEditor({
+  postId,
+  initialMarkdown,
+  setContent,
+}: IProps) {
   const { saveContent } = useEditorStorage();
 
   // Creates a new editor instance.
@@ -60,16 +65,24 @@ export default function RichTextEditor({ postId, initialMarkdown }: IProps) {
       const blocks = await editor.tryParseMarkdownToBlocks(initialMarkdown);
       editor.replaceBlocks(editor.document, blocks);
     }
-    loadInitialMarkdown();
-  }, [editor]);
+    
+    loadInitialMarkdown()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [editor, initialMarkdown]);
 
   // Renders the editor instance using a React component.
   return (
     <BlockNoteView
       editor={editor}
-      onChange={async () =>
-        await saveContent(`post-${postId}`, editor.document)
-      }
+      onChange={async () => {
+        setContent(await editor.blocksToMarkdownLossy(editor.document));
+        await saveContent(`post-${postId}`, editor.document);
+      }}
     />
   );
 }

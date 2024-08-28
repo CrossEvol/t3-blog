@@ -9,7 +9,7 @@ export type PostItem = {
 } & {
   id: number;
   title: string;
-  content: string | null;
+  content: string;
   published: boolean;
   createdAt: Date;
   updatedAt: Date;

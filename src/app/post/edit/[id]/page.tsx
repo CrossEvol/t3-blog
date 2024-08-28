@@ -1,5 +1,4 @@
 import { api } from "@/trpc/server";
-import React from "react";
 import PostEdit from "./Edit";
 
 const Page = async ({ params }: { params: { id: string } }) => {

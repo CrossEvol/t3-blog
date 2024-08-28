@@ -1,16 +1,26 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
-import { type PropsWithChildren, useContext, useEffect, useState } from "react";
+import { type PropsWithChildren, useEffect, useState } from "react";
 import { TabsEnum } from "./constants";
-import { EditContext } from "./edit-provider";
-import NewPublishSelect from "./new-publish-select";
+import PublishSelect from "./publish-select";
 
-export default function FloatingButtonContainer({
+interface IProps extends PropsWithChildren {
+  invokeSubmit: (e: React.SyntheticEvent) => void;
+  pub: string;
+  setPub: (value: string) => void;
+  isPublishing: boolean;
+}
+
+export default function FabContainer({
   children,
-}: PropsWithChildren) {
-  const { handleSubmit } = useContext(EditContext);
+  invokeSubmit,
+  pub,
+  setPub,
+  isPublishing,
+}: IProps) {
   const router = useRouter();
   const [isVisible, setIsVisible] = useState(false);
 
@@ -20,7 +30,6 @@ export default function FloatingButtonContainer({
       preventDefault: () => void;
       key: string;
     }) => {
-      event.preventDefault();
       if (event.key === "Enter") {
         setIsVisible((prev) => !prev);
       }
@@ -36,27 +45,25 @@ export default function FloatingButtonContainer({
     <div className="relative">
       {children}
       {isVisible && (
-        <div className="fixed bottom-1/2 right-1/2 flex translate-x-1/2 flex-row items-center justify-center space-x-4">
+        <div className="fixed bottom-3/4 right-1/2 flex h-8 translate-x-1/2 flex-row items-center justify-center space-x-4">
           <TabsList>
             <TabsTrigger value={TabsEnum.markdown}>Markdown</TabsTrigger>
             <TabsTrigger value={TabsEnum.editor}>RichEditor</TabsTrigger>
           </TabsList>
-          <NewPublishSelect />
+          <Separator orientation="vertical" />
+          <PublishSelect pub={pub} setPub={setPub} />
+          <Separator orientation="vertical" />
           <Button
             onClick={(e) => {
-              e.preventDefault();
-              debugger;
-              handleSubmit();
+              invokeSubmit(e);
             }}
           >
-            Publish
+            {isPublishing ? "Publishing..." : "Publish"}
           </Button>
+          <Separator orientation="vertical" />
           <Button className="opacity-50" onClick={() => router.back()}>
             Cancel
           </Button>
-          <button className=" rounded-full bg-blue-500 p-4 text-white shadow-lg hover:bg-blue-600">
-            Floating Button
-          </button>
         </div>
       )}
     </div>

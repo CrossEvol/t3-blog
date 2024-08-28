@@ -1,23 +1,23 @@
-import { Block, PartialBlock } from '@blocknote/core'
-import { useCallback } from 'react'
-import useLocalForage from './useLocalForage'
+import type { Block, PartialBlock } from "@blocknote/core";
+import { useCallback } from "react";
+import useLocalForage from "./useLocalForage";
 
 export function useEditorStorage() {
-  const { saveToForage, loadFromForage } = useLocalForage()
+  const { saveToForage, loadFromForage } = useLocalForage();
 
   const saveContent = useCallback(
     async (key: string, jsonBlocks: Block[]) => {
-      await saveToForage<string, Block[]>(key, jsonBlocks)
+      await saveToForage<string, Block[]>(key, jsonBlocks);
     },
-    [saveToForage]
-  )
+    [saveToForage],
+  );
 
   const loadContent = useCallback(
     async (key: string) => {
-      return await loadFromForage<string, PartialBlock[]>(key)
+      return await loadFromForage<string, PartialBlock[]>(key);
     },
-    [loadFromForage]
-  )
+    [loadFromForage],
+  );
 
-  return { saveContent, loadContent }
+  return { saveContent, loadContent };
 }
