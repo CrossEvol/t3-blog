@@ -26,7 +26,7 @@ const Home = async () => {
 
   return (
     <div className="my-4 ml-8 w-11/12">
-      <h1 className="pb-6 text-4xl font-bold">My Drafts</h1>
+      <h1 className="pb-6 text-4xl font-bold">Drafts</h1>
       <Blog posts={posts} />
     </div>
   );

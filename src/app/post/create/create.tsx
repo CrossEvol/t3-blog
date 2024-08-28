@@ -1,6 +1,5 @@
 "use client";
 
-import type { PostItem } from "@/app/page";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,32 +8,38 @@ import { api } from "@/trpc/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { TabsEnum } from "../../constants";
-import FabContainer from "../../fab-container";
-import PublishSelect from "./publish-select";
+import { TabsEnum } from "../constants";
+import FabContainer from "../fab-container";
 
-const Editor = dynamic(() => import("../../../_components/rich-text-editor"), {
+const Editor = dynamic(() => import("@/app/_components/rich-text-editor"), {
   ssr: false,
 });
 
-interface Props {
-  post: PostItem;
-}
-
-const PostEdit = ({ post }: Props) => {
+const Create = () => {
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const router = useRouter();
-  const [title, setTitle] = useState(post.title);
-  const [content, setContent] = useState(post.content);
-  const [pub, setPub] = useState("public");
 
-  const updatePost = api.post.update.useMutation({
+  const createPost = api.post.create.useMutation({
     onSuccess: ({ id }) => {
+      setTitle("");
+      setContent("");
       router.push(`/post/${id}`);
     },
   });
 
   const submitData = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    try {
+      createPost.mutate({ title, content });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const clearData = () => {
+    setTitle("");
+    setContent("");
   };
 
   const FabContent = (
@@ -44,25 +49,18 @@ const PostEdit = ({ post }: Props) => {
         <TabsTrigger value={TabsEnum.editor}>RichEditor</TabsTrigger>
       </TabsList>
       <Separator orientation="vertical" />
-      <PublishSelect pub={pub} setPub={setPub} />
-      <Separator orientation="vertical" />
       <Button
         onClick={() => {
           try {
-            updatePost.mutate({
-              id: post.id,
-              title,
-              content: content,
-              published: pub === "public",
-            });
+            createPost.mutate({ title, content });
           } catch (error) {
             console.error(error);
           }
         }}
       >
-        {updatePost.isLoading ? "Publishing..." : "Publish"}
+        {createPost.isLoading ? "Creating..." : "Create"}
       </Button>
-      <Button className="opacity-50" onClick={() => router.back()}>
+      <Button className="opacity-50" onClick={clearData}>
         Cancel
       </Button>
     </>
@@ -76,7 +74,7 @@ const PostEdit = ({ post }: Props) => {
             onSubmit={submitData}
             className="mx-auto flex min-w-full flex-col space-y-4"
           >
-            <h1 className="mb-4 text-2xl font-bold">Edit Draft</h1>
+            <h1 className="mb-4 text-2xl font-bold">New Draft</h1>
             <input
               autoFocus
               onChange={(e) => setTitle(e.target.value)}
@@ -90,7 +88,7 @@ const PostEdit = ({ post }: Props) => {
                 cols={50}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Content"
-                rows={40}
+                rows={20}
                 value={content ?? ""}
                 className="mb-2 w-full rounded border p-2"
               />
@@ -98,12 +96,28 @@ const PostEdit = ({ post }: Props) => {
             <TabsContent value={TabsEnum.editor}>
               <div className="min-h-96 bg-white">
                 <Editor
-                  postId={post.id}
+                  postId={0}
                   content={content}
                   setContent={setContent}
                 />
               </div>
             </TabsContent>
+            <div>
+              <button
+                disabled={!content || !title || createPost.isLoading}
+                type="submit"
+                className="cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-500 hover:text-white"
+              >
+                {createPost.isLoading ? "Creating..." : "Create"}
+              </button>
+              <a
+                className="ml-4 cursor-pointer text-blue-500"
+                href="#"
+                onClick={() => clearData()}
+              >
+                or Cancel
+              </a>
+            </div>
           </form>
         </div>
       </FabContainer>
@@ -111,4 +125,4 @@ const PostEdit = ({ post }: Props) => {
   );
 };
 
-export default PostEdit;
+export default Create;

@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 
 import { JotaiProvider } from "@/providers/jotai-provider";
 import { TRPCReactProvider } from "@/trpc/react";
-import Header from "./_components/layout/Header";
+import Header from "@/app/_components/layout/header";
 
 const fontSans = FontSans({
   subsets: ["latin"],

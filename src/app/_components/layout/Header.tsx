@@ -1,6 +1,6 @@
 import { getServerAuthSession } from "@/server/auth";
-import LeftNav from "./LeftNav";
-import RightNav from "./RightNav";
+import LeftNav from "./left-nav";
+import RightNav from "./right-nav";
 
 const Header = async () => {
   const session = await getServerAuthSession();

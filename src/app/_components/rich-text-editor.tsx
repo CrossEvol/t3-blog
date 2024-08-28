@@ -32,16 +32,11 @@ async function uploadFile(file: File) {
 
 interface IProps {
   postId: number;
-  initialMarkdown: string;
+  content: string;
   setContent: (content: string) => void;
 }
 
-// Our <Editor> component we can reuse later
-export default function RichTextEditor({
-  postId,
-  initialMarkdown,
-  setContent,
-}: IProps) {
+const InnerRichTextEditor = ({ postId, content, setContent }: IProps) => {
   const { saveContent } = useEditorStorage();
 
   // Creates a new editor instance.
@@ -49,11 +44,7 @@ export default function RichTextEditor({
     initialContent: [
       {
         type: "paragraph",
-        content: "Welcome to this demo!",
-      },
-      {
-        type: "paragraph",
-        content: "Upload an image using the button below",
+        content: "...",
       },
     ],
     uploadFile,
@@ -62,10 +53,10 @@ export default function RichTextEditor({
   // For initialization; on mount, convert the initial Markdown to blocks and replace the default editor's content
   React.useEffect(() => {
     async function loadInitialMarkdown() {
-      const blocks = await editor.tryParseMarkdownToBlocks(initialMarkdown);
+      const blocks = await editor.tryParseMarkdownToBlocks(content);
       editor.replaceBlocks(editor.document, blocks);
     }
-    
+
     loadInitialMarkdown()
       .then((res) => {
         console.log(res);
@@ -73,7 +64,7 @@ export default function RichTextEditor({
       .catch((err) => {
         console.error(err);
       });
-  }, [editor, initialMarkdown]);
+  }, [editor]);
 
   // Renders the editor instance using a React component.
   return (
@@ -85,4 +76,9 @@ export default function RichTextEditor({
       }}
     />
   );
-}
+};
+
+// Our <Editor> component we can reuse later
+const RichTextEditor = React.memo(InnerRichTextEditor);
+
+export default RichTextEditor;

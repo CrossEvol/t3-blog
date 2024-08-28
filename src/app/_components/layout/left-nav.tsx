@@ -25,7 +25,7 @@ const LeftNav = ({ session }: Props) => {
           href="/drafts"
           className={`${isActive("/drafts") && "font-semibold text-black"}`}
         >
-          My drafts
+          Drafts
         </Link>
       )}
     </div>
