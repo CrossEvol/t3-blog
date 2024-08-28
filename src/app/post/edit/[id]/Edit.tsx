@@ -1,10 +1,15 @@
 "use client";
 
 import type { PostItem } from "@/app/page";
+import { TabsContent } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
 import { api } from "@/trpc/react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import PublishButton, { options } from "./PublishSelect";
+import { options } from "./PublishSelect";
+
+const Editor = dynamic(() => import("./rich-text-editor"), { ssr: false });
 
 interface Props {
   post: PostItem;
@@ -14,7 +19,7 @@ const PostEdit = ({ post }: Props) => {
   const router = useRouter();
   const [title, setTitle] = useState(post.title);
   const [content, setContent] = useState(post.content);
-  const [selectedOption, setSelectedOption] = useState(
+  const [selectedOption, _setSelectedOption] = useState(
     post.published ? options[0] : options[1],
   );
 
@@ -54,19 +59,11 @@ const PostEdit = ({ post }: Props) => {
             value={title}
             className="mb-2 w-full rounded border p-2"
           />
-          <textarea
-            cols={50}
-            onChange={(e) => setContent(e.target.value)}
-            placeholder="Content"
-            rows={8}
-            value={content ?? ""}
-            className="mb-2 w-full rounded border p-2"
-          />
-          <PublishButton
+          {/* <PublishButton
             selectedOption={selectedOption}
             setSelectedOption={setSelectedOption}
-          />
-          <div>
+          /> */}
+          {/* <div>
             <button
               disabled={!content || !title || updatePost.isLoading}
               type="submit"
@@ -81,7 +78,22 @@ const PostEdit = ({ post }: Props) => {
             >
               or Cancel
             </a>
-          </div>
+          </div> */}
+          <TabsContent value="account">
+            <Textarea
+              cols={50}
+              onChange={(e) => setContent(e.target.value)}
+              placeholder="Content"
+              rows={40}
+              value={content ?? ""}
+              className="mb-2 w-full rounded border p-2"
+            />
+          </TabsContent>
+          <TabsContent value="password">
+            <div className="min-h-96 bg-white">
+              <Editor />
+            </div>
+          </TabsContent>
         </form>
       </div>
     </>
