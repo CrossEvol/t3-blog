@@ -49,3 +49,7 @@ yarn-error.log*
 /blob-report/
 /playwright/.cache/
 /e2e/screenshots/
+
+# tmp
+tmp/
+public/images
