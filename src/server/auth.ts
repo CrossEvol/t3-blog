@@ -70,7 +70,7 @@ const providers: (Provider | null)[] = [
     },
     from: process.env.EMAIL_FROM,
   }),
-  env.NODE_ENV === 'production'
+  env.PROFILE === 'prod'
     ? null
     : CredentialsProvider({
         id: 'Credentials',

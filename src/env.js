@@ -18,6 +18,9 @@ export const env = createEnv({
     NODE_ENV: z
       .enum(['development', 'test', 'production'])
       .default('development'),
+    PROFILE: z
+      .enum(['dev', 'test', 'prod'])
+      .default('dev'),
     NEXTAUTH_SECRET:
       process.env.NODE_ENV === 'production'
         ? z.string()
@@ -63,6 +66,7 @@ export const env = createEnv({
   runtimeEnv: {
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
+    PROFILE: process.env.PROFILE,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 
