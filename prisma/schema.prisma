@@ -26,6 +26,11 @@ model Post {
     authorId String
     comments Comment[]
 
+    topic   Topic?        @relation(fields: [topicId], references: [id])
+    topicId Int?
+    tags    TagsOnPosts[]
+
+    @@index([topicId])
     @@index([title])
 }
 
@@ -94,4 +99,28 @@ enum Role {
     USER
     GUEST
     UNKNOWN
+}
+
+model Topic {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    name      String
+    posts     Post[]
+}
+
+model Tag {
+    id        Int           @id @default(autoincrement())
+    createdAt DateTime      @default(now())
+    name      String
+    posts     TagsOnPosts[]
+}
+
+model TagsOnPosts {
+    post       Post     @relation(fields: [postId], references: [id])
+    postId     Int
+    tag        Tag      @relation(fields: [tagId], references: [id])
+    tagId      Int
+    assignedAt DateTime @default(now())
+
+    @@id([postId, tagId])
 }
