@@ -1,10 +1,10 @@
-import { z } from "zod";
+import { z } from 'zod'
 
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
-} from "@/server/api/trpc";
+} from '@/server/api/trpc'
 
 export const commentRouter = createTRPCRouter({
   create: protectedProcedure
@@ -15,7 +15,7 @@ export const commentRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      const { user } = ctx.session;
+      const { user } = ctx.session
 
       return ctx.db.comment.create({
         data: {
@@ -23,7 +23,7 @@ export const commentRouter = createTRPCRouter({
           postId: input.postId,
           text: input.text,
         },
-      });
+      })
     }),
 
   getMany: publicProcedure
@@ -41,15 +41,15 @@ export const commentRouter = createTRPCRouter({
             },
           },
         },
-      });
+      })
     }),
 
   deleteOne: protectedProcedure
     .input(z.object({ commentId: z.number().min(0) }))
     .mutation(async ({ ctx, input }) => {
-      const { user } = ctx.session;
+      const { user } = ctx.session
       if (!user.name) {
-        return;
+        return
       }
 
       // TODO: only the role ADMIN can delete comment
@@ -58,6 +58,6 @@ export const commentRouter = createTRPCRouter({
         where: {
           id: input.commentId,
         },
-      });
+      })
     }),
-});
+})

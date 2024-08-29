@@ -1,9 +1,9 @@
-import type { PostItem } from "@/app/page";
-import type { Comment } from "@/interfaces";
-import distanceToNow from "@/lib/dateRelative";
-import { getServerAuthSession } from "@/server/auth";
-import CommentDelete from "./CommentDelete";
-import Image from "next/image";
+import type { PostItem } from '@/app/page'
+import type { Comment } from '@/interfaces'
+import distanceToNow from '@/lib/dateRelative'
+import { getServerAuthSession } from '@/server/auth'
+import CommentDelete from './CommentDelete'
+import Image from 'next/image'
 
 type CommentListProps = {
   comments?: Comment[];
@@ -11,7 +11,7 @@ type CommentListProps = {
 };
 
 const CommentList = async ({ comments, post }: CommentListProps) => {
-  const session = await getServerAuthSession();
+  const session = await getServerAuthSession()
 
   return (
     <div className="mt-10 space-y-6">
@@ -44,10 +44,10 @@ const CommentList = async ({ comments, post }: CommentListProps) => {
               <div>{comment.text}</div>
             </div>
           </div>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-export default CommentList;
+export default CommentList

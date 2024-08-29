@@ -1,6 +1,6 @@
-import { api } from "@/trpc/server";
-import Post from "../_components/Post";
-import type { PostItem } from "../page";
+import { api } from '@/trpc/server'
+import Post from '../_components/Post'
+import type { PostItem } from '../page'
 
 type Props = {
   posts: PostItem[];
@@ -18,18 +18,18 @@ const Blog: React.FC<Props> = ({ posts }) => {
         </div>
       ))}
     </main>
-  );
-};
+  )
+}
 
 const Home = async () => {
-  const posts = await api.post.getDrafts.query();
+  const posts = await api.post.getDrafts.query()
 
   return (
     <div className="my-4 ml-8 w-11/12">
       <h1 className="pb-6 text-4xl font-bold">Drafts</h1>
       <Blog posts={posts} />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

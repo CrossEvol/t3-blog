@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { api } from "@/trpc/react";
-import type { Session } from "next-auth";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { api } from '@/trpc/react'
+import type { Session } from 'next-auth'
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 type CommentFormProps = {
   session: Session | null;
@@ -12,14 +12,14 @@ type CommentFormProps = {
 };
 
 const CommentForm = ({ session, postId }: CommentFormProps) => {
-  const router = useRouter();
-  const [text, setText] = useState("");
+  const router = useRouter()
+  const [text, setText] = useState('')
   const createComment = api.comment.create.useMutation({
     onSuccess: ({}) => {
-      setText("");
-      router.refresh();
+      setText('')
+      router.refresh()
     },
-  });
+  })
 
   return (
     <form onSubmit={async () => createComment.mutate({ text, postId })}>
@@ -28,8 +28,8 @@ const CommentForm = ({ session, postId }: CommentFormProps) => {
         rows={2}
         placeholder={
           session
-            ? `What are your thoughts?`
-            : "Please login to leave a comment"
+            ? 'What are your thoughts?'
+            : 'Please login to leave a comment'
         }
         onChange={(e) => setText(e.target.value)}
         value={text}
@@ -43,14 +43,14 @@ const CommentForm = ({ session, postId }: CommentFormProps) => {
               disabled={createComment.isLoading || !text}
               className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-40"
             >
-              {createComment.isLoading ? "Sending..." : "Send"}
+              {createComment.isLoading ? 'Sending...' : 'Send'}
             </button>
-            <Link href={session && "/api/auth/signout"}>
+            <Link href={session && '/api/auth/signout'}>
               <button className="text-gray-500">Log Out</button>
             </Link>
           </div>
         ) : (
-          <Link href={!session && "/api/auth/signin"}>
+          <Link href={!session && '/api/auth/signin'}>
             <button
               type="button"
               className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-40"
@@ -61,7 +61,7 @@ const CommentForm = ({ session, postId }: CommentFormProps) => {
         )}
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default CommentForm;
+export default CommentForm

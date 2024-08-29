@@ -1,20 +1,20 @@
-import CommentList from "@/app/post/_comment/CommentList";
-import Container from "@/app/post/_comment/Container";
-import { getServerAuthSession } from "@/server/auth";
-import { api } from "@/trpc/server";
-import CommentForm from "../_comment/CommentForm";
-import PostActions from "./PostActions";
-import ShowPost from "./ShowPost";
+import CommentList from '@/app/post/_comment/CommentList'
+import Container from '@/app/post/_comment/Container'
+import { getServerAuthSession } from '@/server/auth'
+import { api } from '@/trpc/server'
+import CommentForm from '../_comment/CommentForm'
+import PostActions from './PostActions'
+import ShowPost from './ShowPost'
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const post = await api.post.getOne.query({ id: Number(params.id) });
-  const session = await getServerAuthSession();
+  const post = await api.post.getOne.query({ id: Number(params.id) })
+  const session = await getServerAuthSession()
 
   if (!post) {
-    return null;
+    return null
   }
 
-  const comments = await api.comment.getMany.query({ postId: post.id });
+  const comments = await api.comment.getMany.query({ postId: post.id })
 
   return (
     <div>
@@ -27,7 +27,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
         </Container>
       </>
     </div>
-  );
-};
+  )
+}
 
-export default Page;
+export default Page

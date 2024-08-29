@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select'
 
 interface IProps {
   pub: string;
@@ -24,7 +24,7 @@ const PublishSelect = ({ pub, setPub }: IProps) => {
         </SelectContent>
       </Select>
     </div>
-  );
-};
+  )
+}
 
-export default PublishSelect;
+export default PublishSelect

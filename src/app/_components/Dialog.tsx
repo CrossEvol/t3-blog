@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react'
 
 export type Action = {
   label: string;
-  type: "confirm" | "cancel";
+  type: 'confirm' | 'cancel';
   onClick: () => void;
 };
 
@@ -18,7 +18,7 @@ const Dialog = ({ title, content, actions, open }: DialogProps) => {
   return (
     <div
       className={`fixed inset-0 z-50 overflow-auto ${
-        open ? "block" : "hidden"
+        open ? 'block' : 'hidden'
       }`}
     >
       <div className="flex min-h-screen items-center justify-center">
@@ -32,7 +32,7 @@ const Dialog = ({ title, content, actions, open }: DialogProps) => {
               <button
                 key={index}
                 className={`mr-2 px-4 py-2 text-white ${
-                  action.type === "confirm" ? "bg-blue-500" : "bg-gray-500"
+                  action.type === 'confirm' ? 'bg-blue-500' : 'bg-gray-500'
                 }`}
                 onClick={action.onClick}
               >
@@ -48,7 +48,7 @@ const Dialog = ({ title, content, actions, open }: DialogProps) => {
         onClick={() => setOpen(false)}
       ></div> */}
     </div>
-  );
-};
+  )
+}
 
-export default Dialog;
+export default Dialog

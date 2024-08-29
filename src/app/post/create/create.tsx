@@ -1,46 +1,46 @@
-"use client";
+'use client'
 
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
-import { api } from "@/trpc/react";
-import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import { TabsEnum } from "../constants";
-import FabContainer from "../fab-container";
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
+import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Textarea } from '@/components/ui/textarea'
+import { api } from '@/trpc/react'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/navigation'
+import React, { useState } from 'react'
+import { TabsEnum } from '../constants'
+import FabContainer from '../fab-container'
 
-const Editor = dynamic(() => import("@/app/_components/rich-text-editor"), {
+const Editor = dynamic(() => import('@/app/_components/rich-text-editor'), {
   ssr: false,
-});
+})
 
 const Create = () => {
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const router = useRouter();
+  const [title, setTitle] = useState('')
+  const [content, setContent] = useState('')
+  const router = useRouter()
 
   const createPost = api.post.create.useMutation({
     onSuccess: ({ id }) => {
-      setTitle("");
-      setContent("");
-      router.push(`/post/${id}`);
+      setTitle('')
+      setContent('')
+      router.push(`/post/${id}`)
     },
-  });
+  })
 
   const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     try {
-      createPost.mutate({ title, content });
+      createPost.mutate({ title, content })
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const clearData = () => {
-    setTitle("");
-    setContent("");
-  };
+    setTitle('')
+    setContent('')
+  }
 
   const FabContent = (
     <>
@@ -52,19 +52,19 @@ const Create = () => {
       <Button
         onClick={() => {
           try {
-            createPost.mutate({ title, content });
+            createPost.mutate({ title, content })
           } catch (error) {
-            console.error(error);
+            console.error(error)
           }
         }}
       >
-        {createPost.isLoading ? "Creating..." : "Create"}
+        {createPost.isLoading ? 'Creating...' : 'Create'}
       </Button>
       <Button className="opacity-50" onClick={clearData}>
         Cancel
       </Button>
     </>
-  );
+  )
 
   return (
     <>
@@ -89,7 +89,7 @@ const Create = () => {
                 onChange={(e) => setContent(e.target.value)}
                 placeholder="Content"
                 rows={20}
-                value={content ?? ""}
+                value={content ?? ''}
                 className="mb-2 w-full rounded border p-2"
               />
             </TabsContent>
@@ -108,7 +108,7 @@ const Create = () => {
                 type="submit"
                 className="cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-500 hover:text-white"
               >
-                {createPost.isLoading ? "Creating..." : "Create"}
+                {createPost.isLoading ? 'Creating...' : 'Create'}
               </button>
               <a
                 className="ml-4 cursor-pointer text-blue-500"
@@ -122,7 +122,7 @@ const Create = () => {
         </div>
       </FabContainer>
     </>
-  );
-};
+  )
+}
 
-export default Create;
+export default Create

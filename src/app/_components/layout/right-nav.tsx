@@ -1,5 +1,5 @@
-import type { Session } from "next-auth";
-import Link from "next/link";
+import type { Session } from 'next-auth'
+import Link from 'next/link'
 
 interface Props {
   session: Session | null;
@@ -23,12 +23,12 @@ const RightNav = ({ session }: Props) => {
       )}
       <Link
         className="inline-block rounded border border-black px-4 py-2"
-        href={session ? "/api/auth/signout" : "/api/auth/signin"}
+        href={session ? '/api/auth/signout' : '/api/auth/signin'}
       >
-        {session ? "Log out" : "Log in"}
+        {session ? 'Log out' : 'Log in'}
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default RightNav;
+export default RightNav

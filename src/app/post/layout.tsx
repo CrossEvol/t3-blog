@@ -1,6 +1,6 @@
-import { Tabs } from "@/components/ui/tabs";
-import { type PropsWithChildren } from "react";
-import { TabsEnum } from "./constants";
+import { Tabs } from '@/components/ui/tabs'
+import { type PropsWithChildren } from 'react'
+import { TabsEnum } from './constants'
 
 const Layout = ({ children }: PropsWithChildren) => {
   return (
@@ -9,7 +9,7 @@ const Layout = ({ children }: PropsWithChildren) => {
         {children}
       </Tabs>
     </div>
-  );
-};
+  )
+}
 
-export default Layout;
+export default Layout

@@ -1,42 +1,42 @@
-"use client";
+'use client'
 
-import Dialog from "@/app/_components/Dialog";
-import type { Action } from "@/app/_components/Dialog";
-import type { PostItem } from "@/app/page";
-import { api } from "@/trpc/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import Dialog from '@/app/_components/Dialog'
+import type { Action } from '@/app/_components/Dialog'
+import type { PostItem } from '@/app/page'
+import { api } from '@/trpc/react'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 interface Props {
   post: PostItem;
 }
 
 const DeleteButton = ({ post }: Props) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
   const deletePost = api.post.delete.useMutation({
     onSuccess: ({ id, title }) => {
-      console.log(`${id}:${title} has been removed`);
-      router.push("/drafts");
+      console.log(`${id}:${title} has been removed`)
+      router.push('/drafts')
     },
-  });
+  })
 
   const handleConfirm = () => {
     // Your confirm logic here
-    deletePost.mutate({ id: post.id });
-    setOpen(false);
-  };
+    deletePost.mutate({ id: post.id })
+    setOpen(false)
+  }
 
   const handleCancel = () => {
     // Your cancel logic here
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const actions: Action[] = [
-    { label: "Cancel", type: "cancel", onClick: handleCancel },
-    { label: "Confirm", type: "confirm", onClick: handleConfirm },
-  ];
+    { label: 'Cancel', type: 'cancel', onClick: handleCancel },
+    { label: 'Confirm', type: 'confirm', onClick: handleConfirm },
+  ]
 
   return (
     <>
@@ -44,7 +44,7 @@ const DeleteButton = ({ post }: Props) => {
         onClick={() => setOpen(true)}
         className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-red-600 hover:text-white"
       >
-        {deletePost.isLoading ? "Deleting..." : "Delete"}
+        {deletePost.isLoading ? 'Deleting...' : 'Delete'}
       </button>
       <Dialog
         title={post.title}
@@ -54,7 +54,7 @@ const DeleteButton = ({ post }: Props) => {
         setOpen={setOpen}
       />
     </>
-  );
-};
+  )
+}
 
-export default DeleteButton;
+export default DeleteButton

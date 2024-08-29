@@ -1,9 +1,9 @@
-"use client";
+'use client'
 
-import type { PostItem } from "@/app/page";
-import { api } from "@/trpc/react";
-import type { Session } from "next-auth";
-import { useRouter } from "next/navigation";
+import type { PostItem } from '@/app/page'
+import { api } from '@/trpc/react'
+import type { Session } from 'next-auth'
+import { useRouter } from 'next/navigation'
 
 interface IProps {
   session: Session | null;
@@ -12,19 +12,19 @@ interface IProps {
 }
 
 const CommentDelete = ({ commentId, session, post }: IProps) => {
-  const router = useRouter();
+  const router = useRouter()
 
   if (!session) {
-    return null;
+    return null
   }
 
-  const isAuthor = session.user && session.user.name === post.author.name;
-  const isAdmin = session.user && session.user.role === "ADMIN";
+  const isAuthor = session.user && session.user.name === post.author.name
+  const isAdmin = session.user && session.user.role === 'ADMIN'
   const deleteComment = api.comment.deleteOne.useMutation({
     onSuccess: () => {
-      router.refresh();
+      router.refresh()
     },
-  });
+  })
 
   return (
     <>
@@ -34,11 +34,11 @@ const CommentDelete = ({ commentId, session, post }: IProps) => {
           onClick={async () => await deleteComment.mutateAsync({ commentId })}
           aria-label="Close"
         >
-          {deleteComment.isLoading ? "Deleting..." : "X"}
+          {deleteComment.isLoading ? 'Deleting...' : 'X'}
         </button>
       )}
     </>
-  );
-};
+  )
+}
 
-export default CommentDelete;
+export default CommentDelete

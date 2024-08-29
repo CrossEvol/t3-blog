@@ -1,5 +1,5 @@
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 interface IProps {
   content: string;
@@ -10,7 +10,7 @@ const Markdown = ({ content }: IProps) => {
     <div className="prose prose-slate">
       <ReactMarkdown remarkPlugins={[remarkGfm]}>{content}</ReactMarkdown>
     </div>
-  );
-};
+  )
+}
 
-export default Markdown;
+export default Markdown

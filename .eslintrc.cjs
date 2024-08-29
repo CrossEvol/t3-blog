@@ -32,6 +32,8 @@ const config = {
         checksVoidReturn: { attributes: false },
       },
     ],
+    "semi": ["error", "never"],
+    "quotes": ["error", "single"]
   },
 };
 
