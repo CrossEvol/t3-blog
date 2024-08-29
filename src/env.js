@@ -43,6 +43,9 @@ export const env = createEnv({
 
     UPLOAD_ACTION_URL: z.string(),
     GITHUB_STORE_TOKEN: z.string(),
+    GITHUB_STORE_OWNER: z.string(),
+    GITHUB_STORE_REPO: z.string(),
+    GITHUB_STORE_PATH_PREFIX: z.string(),
   },
 
   /**
@@ -78,6 +81,9 @@ export const env = createEnv({
 
     UPLOAD_ACTION_URL: process.env.UPLOAD_ACTION_URL,
     GITHUB_STORE_TOKEN: process.env.GITHUB_STORE_TOKEN,
+    GITHUB_STORE_OWNER: process.env.GITHUB_STORE_OWNER,
+    GITHUB_STORE_REPO: process.env.GITHUB_STORE_REPO,
+    GITHUB_STORE_PATH_PREFIX: process.env.GITHUB_STORE_PATH_PREFIX,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

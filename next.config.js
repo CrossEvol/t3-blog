@@ -20,6 +20,12 @@ const config = {
                 port: '',
                 pathname: '/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'https://raw.githubusercontent.com',
+                port: '',
+                pathname: '/**',
+            },
         ],
     },
 };

@@ -5,8 +5,8 @@ import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
 import React from "react";
-import { Result } from "../api/upload/route";
 import { API_URL } from "../client/config";
+import type { IResult } from "@/common/result";
 
 type TmpFilesResponse = {
   status: string;
@@ -42,9 +42,9 @@ async function uploadFile(file: File) {
     body: body,
   });
 
-  const result = (await response.json()) as Result<unknown>;
+  const result = (await response.json()) as IResult<string>;
   if (result.status === 200) {
-    return result.data as string;
+    return result.data;
   } else {
     throw new Error(result.message);
   }
@@ -71,6 +71,7 @@ const InnerRichTextEditor = ({ postId, content, setContent }: IProps) => {
   });
 
   // For initialization; on mount, convert the initial Markdown to blocks and replace the default editor's content
+  // here must not put the content in useEffect dependency array
   React.useEffect(() => {
     async function loadInitialMarkdown() {
       const blocks = await editor.tryParseMarkdownToBlocks(content);
