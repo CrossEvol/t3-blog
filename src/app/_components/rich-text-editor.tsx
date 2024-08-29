@@ -5,6 +5,8 @@ import { BlockNoteView } from "@blocknote/mantine";
 import "@blocknote/mantine/style.css";
 import { useCreateBlockNote } from "@blocknote/react";
 import React from "react";
+import { Result } from "../api/upload/route";
+import { API_URL } from "../client/config";
 
 type TmpFilesResponse = {
   status: string;
@@ -16,7 +18,7 @@ type TmpFilesData = {
 };
 
 // Uploads a file to tmpfiles.org and returns the URL to the uploaded file.
-async function uploadFile(file: File) {
+export async function uploadFileToTmpfiles(file: File) {
   const body = new FormData();
   body.append("file", file);
 
@@ -28,6 +30,24 @@ async function uploadFile(file: File) {
     "tmpfiles.org/",
     "tmpfiles.org/dl/",
   );
+}
+
+// Uploads a file to tmpfiles.org and returns the URL to the uploaded file.
+async function uploadFile(file: File) {
+  const body = new FormData();
+  body.append("file", file);
+
+  const response = await fetch(`${API_URL}/api/upload`, {
+    method: "POST",
+    body: body,
+  });
+
+  const result = (await response.json()) as Result<unknown>;
+  if (result.status === 200) {
+    return result.data as string;
+  } else {
+    throw new Error(result.message);
+  }
 }
 
 interface IProps {

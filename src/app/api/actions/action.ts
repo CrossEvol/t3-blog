@@ -1,5 +1,6 @@
 "use server";
 
+import { env } from "@/env";
 import fs from "fs";
 import { Buffer } from "node:buffer";
 import path from "path";
@@ -13,5 +14,5 @@ export async function saveData(formData: FormData) {
   const filePath = path.join(`./public/images/${file.name}`);
   await writeFile(filePath, Buffer.from(fileBuffer) as unknown as Uint8Array);
 
-  return { url: filePath };
+  return `${env.UPLOAD_ACTION_URL}/${path.join("images", file.name)}`;
 }

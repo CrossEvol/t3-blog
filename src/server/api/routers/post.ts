@@ -8,9 +8,7 @@ import {
 
 export const postRouter = createTRPCRouter({
   create: protectedProcedure
-    .input(
-      z.object({ title: z.string().min(1), content: z.string().optional() }),
-    )
+    .input(z.object({ title: z.string().min(1), content: z.string() }))
     .mutation(async ({ ctx, input }) => {
       // simulate a slow db call
       await new Promise((resolve) => setTimeout(resolve, 1000));

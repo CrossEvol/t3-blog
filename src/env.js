@@ -40,6 +40,9 @@ export const env = createEnv({
     EMAIL_SERVER_HOST: z.string(),
     EMAIL_SERVER_PORT: z.string(),
     EMAIL_FROM: z.string(),
+
+    UPLOAD_ACTION_URL: z.string(),
+    GITHUB_STORE_TOKEN: z.string(),
   },
 
   /**
@@ -71,7 +74,10 @@ export const env = createEnv({
     EMAIL_SERVER_PASSWORD: process.env.EMAIL_SERVER_PASSWORD,
     EMAIL_SERVER_HOST: process.env.EMAIL_SERVER_USER,
     EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT,
-    EMAIL_FROM: process.env.EMAIL_FROM
+    EMAIL_FROM: process.env.EMAIL_FROM,
+
+    UPLOAD_ACTION_URL: process.env.UPLOAD_ACTION_URL,
+    GITHUB_STORE_TOKEN: process.env.GITHUB_STORE_TOKEN,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
