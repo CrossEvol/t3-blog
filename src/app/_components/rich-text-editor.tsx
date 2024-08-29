@@ -1,21 +1,21 @@
 'use client' // this registers <Editor> as a Client Component
+import type { IResult } from '@/common/result'
+import { env } from '@/env'
 import { useEditorStorage } from '@/hooks/useEditorStorage'
 import '@blocknote/core/fonts/inter.css'
 import { BlockNoteView } from '@blocknote/mantine'
 import '@blocknote/mantine/style.css'
 import { useCreateBlockNote } from '@blocknote/react'
 import React from 'react'
-import { API_URL } from '../client/config'
-import type { IResult } from '@/common/result'
 
 type TmpFilesResponse = {
-  status: string;
-  data: TmpFilesData;
-};
+  status: string
+  data: TmpFilesData
+}
 
 type TmpFilesData = {
-  url: string;
-};
+  url: string
+}
 
 // Uploads a file to tmpfiles.org and returns the URL to the uploaded file.
 export async function uploadFileToTmpfiles(file: File) {
@@ -37,7 +37,7 @@ async function uploadFile(file: File) {
   const body = new FormData()
   body.append('file', file)
 
-  const response = await fetch(`${API_URL}/api/upload`, {
+  const response = await fetch(`${env.NEXT_PUBLIC_UPLOAD_URL}/api/upload`, {
     method: 'POST',
     body: body,
   })
@@ -51,9 +51,9 @@ async function uploadFile(file: File) {
 }
 
 interface IProps {
-  postId: number;
-  content: string;
-  setContent: (content: string) => void;
+  postId: number
+  content: string
+  setContent: (content: string) => void
 }
 
 const InnerRichTextEditor = ({ postId, content, setContent }: IProps) => {
