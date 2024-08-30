@@ -5,7 +5,7 @@ import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
 export const tagRouter = createTRPCRouter({
   statistics: publicProcedure
     .input(z.object({}))
-    .mutation(async ({ ctx, input }) => {
+    .query(async ({ ctx, input }) => {
       return (
         await ctx.db.tag.findMany({
           select: {
@@ -18,7 +18,7 @@ export const tagRouter = createTRPCRouter({
             },
           },
         })
-      ).map((tag) => ({ ...tag, count: tag._count.posts }))
+      ).map((tag) => ({ id: tag.id, name: tag.name, count: tag._count.posts }))
     }),
   getOne: publicProcedure
     .input(z.object({ id: z.number() }))
