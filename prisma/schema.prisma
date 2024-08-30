@@ -104,14 +104,14 @@ enum Role {
 model Topic {
     id        Int      @id @default(autoincrement())
     createdAt DateTime @default(now())
-    name      String
+    name      String   @unique
     posts     Post[]
 }
 
 model Tag {
     id        Int           @id @default(autoincrement())
     createdAt DateTime      @default(now())
-    name      String
+    name      String        @unique
     posts     TagsOnPosts[]
 }
 

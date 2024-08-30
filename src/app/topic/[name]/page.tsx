@@ -1,8 +1,7 @@
 import { api } from '@/trpc/server'
-import React from 'react'
-import TopicList from '../_components/topic-list'
+import TopicList from '../../_components/topic-list'
 
-const Page = async () => {
+const Page = async ({ params }: { params: { name: string } }) => {
   const topics = await api.topic.statistics.query({})
 
   return (

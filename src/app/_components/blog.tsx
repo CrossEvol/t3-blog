@@ -1,36 +1,26 @@
-import Post from './Post'
+import PostList, { PostItem } from './post-list'
+import TagList, { Tag } from './tag-list'
+import TopicList, { Topic } from './topic-list'
 
-export type PostItem = {
-  author: {
-    name: string | null
-    email: string | null
-  }
-} & {
-  id: number
-  title: string
-  content: string
-  published: boolean
-  createdAt: Date
-  updatedAt: Date
-  authorId: string
-}
-
-type Props = {
+interface IProps {
   posts: PostItem[]
+  tags: Tag[]
+  topics: Topic[]
 }
 
-const Blog = ({ posts }: Props) => {
+const Blog = async ({ posts, tags, topics }: IProps) => {
   return (
-    <main className="space-y-8">
-      {posts.map((post) => (
-        <div
-          key={post.id}
-          className=" bg-white transition-shadow duration-100 ease-in hover:shadow-md"
-        >
-          <Post post={post} />
+    <div className="grid grid-cols-12 space-x-2">
+      <div className="col-span-8">
+        <PostList posts={posts} />
+      </div>
+      <div className="col-span-4">
+        <div className="flex flex-col ml-2 pl-4 border-l-2 border-solid">
+          <TopicList topics={topics} />
+          <TagList tags={tags} />
         </div>
-      ))}
-    </main>
+      </div>
+    </div>
   )
 }
 

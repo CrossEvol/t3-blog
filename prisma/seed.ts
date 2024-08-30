@@ -11,7 +11,7 @@ const initData = async () => {
         name: faker.internet.userName(),
         password: faker.string.alphanumeric(10),
         email: faker.internet.email(),
-        image: faker.internet.avatar(),
+        image: faker.image.avatar(),
         role: 'USER',
       },
     })
@@ -21,7 +21,7 @@ const initData = async () => {
         name: 'admin',
         password: 'admin',
         email: 'admin@admin.admin',
-        image: faker.internet.avatar(),
+        image: faker.image.avatar(),
         role: 'ADMIN',
       },
     })

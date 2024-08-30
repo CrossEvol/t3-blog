@@ -36,4 +36,16 @@ export const topicRouter = createTRPCRouter({
         },
       })
     }),
+  getByName: publicProcedure
+    .input(z.object({ name: z.string() }))
+    .query(async ({ ctx, input }) => {
+      return await ctx.db.topic.findUnique({
+        where: {
+          name: input.name,
+        },
+        include: {
+          posts: true,
+        },
+      })
+    }),
 })

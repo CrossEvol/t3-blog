@@ -1,7 +1,7 @@
 import { api } from '@/trpc/server'
-import TagList from '../_components/tag-list'
+import TagList from '../../_components/tag-list'
 
-const Page = async () => {
+const Page = async ({ params }: { params: { name: string } }) => {
   const tags = await api.tag.statistics.query({})
 
   return (
