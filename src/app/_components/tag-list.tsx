@@ -15,8 +15,13 @@ interface IProps {
 
 const TagList = ({ tags }: IProps) => {
   return (
-    <div className="space-y-2">
-      <h1 className="font-bold text-3xl text-gray-600">Tags</h1>
+    <div className="space-y-2 my-2">
+      <div className="w-1/2 flex flex-row justify-between">
+        <h1 className="font-bold text-3xl text-gray-600">Tags</h1>
+        <Button>
+          <Link href={'/'}>All Tags</Link>
+        </Button>
+      </div>
       <Separator />
       <div className="flex-wrap space-x-4 space-y-2">
         {tags.map((tag) => (
@@ -33,9 +38,6 @@ const TagList = ({ tags }: IProps) => {
         ))}
       </div>
       <Separator />
-      <Button>
-        <Link href={'/'}>All Tags</Link>
-      </Button>
     </div>
   )
 }

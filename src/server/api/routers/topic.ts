@@ -6,6 +6,11 @@ export const topicRouter = createTRPCRouter({
   statistics: publicProcedure.input(z.object({})).query(async ({ ctx }) => {
     return (
       await ctx.db.topic.findMany({
+        orderBy: {
+          posts: {
+            _count: 'desc',
+          },
+        },
         select: {
           id: true,
           name: true,

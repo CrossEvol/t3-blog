@@ -15,8 +15,13 @@ interface IProps {
 
 const TopicList = ({ topics }: IProps) => {
   return (
-    <div className="space-y-2">
-      <h1 className="font-bold text-3xl text-gray-600">Topics</h1>
+    <div className="space-y-2 my-2">
+      <div className="w-1/2 flex flex-row justify-between">
+        <h1 className="font-bold text-3xl text-gray-600">Topics</h1>
+        <Button>
+          <Link href={'/'}>All Topics</Link>
+        </Button>
+      </div>
       <Separator />
       <div className="flex-wrap space-x-4 space-y-2">
         {topics.map((topic) => (
@@ -33,9 +38,6 @@ const TopicList = ({ topics }: IProps) => {
         ))}
       </div>
       <Separator />
-      <Button>
-        <Link href={'/'}>All Topics</Link>
-      </Button>
     </div>
   )
 }
