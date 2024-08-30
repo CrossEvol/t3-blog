@@ -1,9 +1,9 @@
-import type { PostItem } from '@/app/page'
+import type { PostItem } from '@/app/_components/post-list'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
 interface Props {
-  post: PostItem;
+  post: PostItem
 }
 
 const ShowPost = ({ post }: Props) => {

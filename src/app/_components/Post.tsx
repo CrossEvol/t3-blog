@@ -1,6 +1,6 @@
 import Markdown from '@/components/markdown'
 import React from 'react'
-import type { PostItem } from '../page'
+import { type PostItem } from './post-list'
 
 const Post: React.FC<{ post: PostItem }> = ({ post }) => {
   const authorName = post.author ? post.author.name : 'Unknown author'

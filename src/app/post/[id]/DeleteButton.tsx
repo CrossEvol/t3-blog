@@ -2,13 +2,13 @@
 
 import Dialog from '@/app/_components/Dialog'
 import type { Action } from '@/app/_components/Dialog'
-import type { PostItem } from '@/app/page'
+import type { PostItem } from '@/app/_components/post-list'
 import { api } from '@/trpc/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 interface Props {
-  post: PostItem;
+  post: PostItem
 }
 
 const DeleteButton = ({ post }: Props) => {

@@ -34,7 +34,7 @@ const TopicList = ({ topics }: IProps) => {
       </div>
       <Separator />
       <Button>
-        <Link href={`/`}>All Topics</Link>
+        <Link href={'/'}>All Topics</Link>
       </Button>
     </div>
   )

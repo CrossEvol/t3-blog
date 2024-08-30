@@ -1,6 +1,5 @@
 'use client'
 
-import type { PostItem } from '@/app/page'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -12,13 +11,14 @@ import React, { useState } from 'react'
 import { TabsEnum } from '../../constants'
 import FabContainer from '../../fab-container'
 import PublishSelect from './publish-select'
+import type { PostItem } from '@/app/_components/post-list'
 
 const Editor = dynamic(() => import('../../../_components/rich-text-editor'), {
   ssr: false,
 })
 
 interface Props {
-  post: PostItem;
+  post: PostItem
 }
 
 const PostEdit = ({ post }: Props) => {

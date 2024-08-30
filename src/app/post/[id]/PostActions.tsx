@@ -1,10 +1,10 @@
-import type { PostItem } from '@/app/page'
 import { getServerAuthSession } from '@/server/auth'
 import Link from 'next/link'
 import DeleteButton from './DeleteButton'
+import type { PostItem } from '@/app/_components/post-list'
 
 interface IProps {
-  post: PostItem;
+  post: PostItem
 }
 
 const PostActions = async ({ post }: IProps) => {

@@ -1,6 +1,6 @@
-import PostList, { PostItem } from './post-list'
-import TagList, { Tag } from './tag-list'
-import TopicList, { Topic } from './topic-list'
+import PostList, { type PostItem } from './post-list'
+import TagList, { type Tag } from './tag-list'
+import TopicList, { type Topic } from './topic-list'
 
 interface IProps {
   posts: PostItem[]

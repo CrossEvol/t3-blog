@@ -10,10 +10,10 @@ import EmailProvider from 'next-auth/providers/email'
 import { env } from '@/env'
 import { db } from '@/server/db'
 import { faker } from '@faker-js/faker'
-import Github from 'next-auth/providers/github'
+import Github, { type GithubProfile } from 'next-auth/providers/github'
 import { z } from 'zod'
 import { Role } from '@prisma/client'
-import { Provider } from 'next-auth/providers/index'
+import { type Provider } from 'next-auth/providers/index'
 
 const encryptPwd = (password: string): string => {
   return password
@@ -46,10 +46,10 @@ declare module 'next-auth' {
 
 // TODO: how to define the NODE_ENV as 'test' or 'production'?
 const providers: (Provider | null)[] = [
-  Github({
+  Github<GithubProfile>({
     clientId: env.GITHUB_CLIENT_ID,
     clientSecret: env.GITHUB_CLIENT_SECRET,
-    profile(profile, tokens) {
+    profile(profile) {
       return {
         id: profile.id.toString(),
         name: profile.name ?? profile.login,

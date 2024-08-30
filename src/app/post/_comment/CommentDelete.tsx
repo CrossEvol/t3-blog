@@ -1,14 +1,14 @@
 'use client'
 
-import type { PostItem } from '@/app/page'
+import type { PostItem } from '@/app/_components/post-list'
 import { api } from '@/trpc/react'
 import type { Session } from 'next-auth'
 import { useRouter } from 'next/navigation'
 
 interface IProps {
-  session: Session | null;
-  commentId: number;
-  post: PostItem;
+  session: Session | null
+  commentId: number
+  post: PostItem
 }
 
 const CommentDelete = ({ commentId, session, post }: IProps) => {

@@ -1,10 +1,10 @@
 import { api } from '@/trpc/server'
 import Post from '../_components/Post'
-import type { PostItem } from '../page'
+import type { PostItem } from '../_components/post-list'
 
 type Props = {
-  posts: PostItem[];
-};
+  posts: PostItem[]
+}
 
 const Blog: React.FC<Props> = ({ posts }) => {
   return (
