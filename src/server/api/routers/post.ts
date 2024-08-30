@@ -70,6 +70,31 @@ export const postRouter = createTRPCRouter({
     return drafts
   }),
 
+  getPage: publicProcedure
+    .input(z.object({ current: z.number() }))
+    .query(async ({ ctx, input }) => {
+      const posts = await ctx.db.post.findMany({
+        where: {
+          published: true,
+        },
+        orderBy: {
+          updatedAt: 'desc',
+        },
+        include: {
+          author: {
+            select: {
+              name: true,
+              email: true,
+            },
+          },
+        },
+        skip: 10 * (input.current - 1),
+        take: 10,
+      })
+      const count = await ctx.db.post.count({})
+      return { posts, count, current: input.current }
+    }),
+
   delete: protectedProcedure
     .input(z.object({ id: z.number().min(1) }))
     .mutation(async ({ ctx, input }) => {
