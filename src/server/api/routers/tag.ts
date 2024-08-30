@@ -39,14 +39,21 @@ export const tagRouter = createTRPCRouter({
   getByName: publicProcedure
     .input(z.object({ name: z.string() }))
     .query(async ({ ctx, input }) => {
-      return await ctx.db.tag.findUnique({
+      return await ctx.db.post.findMany({
         where: {
-          name: input.name,
+          tags: {
+            some: {
+              tag: {
+                name: input.name,
+              },
+            },
+          },
         },
         include: {
-          posts: {
+          author: {
             select: {
-              post: true,
+              name: true,
+              email: true,
             },
           },
         },

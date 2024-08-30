@@ -1,7 +1,7 @@
-import React from 'react'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+import Link from 'next/link'
 
 export type Topic = {
   id: number
@@ -25,13 +25,17 @@ const TopicList = ({ topics }: IProps) => {
             className="bg-gray-300 text-blue-500"
             key={topic.id}
           >
-            {topic.name}
-            <Badge className="ml-2 bg-blue-600">{topic.count}</Badge>
+            <Link href={`/topic/${topic.name}`}>
+              {topic.name}
+              <Badge className="ml-2 bg-blue-600">{topic.count}</Badge>
+            </Link>
           </Button>
         ))}
       </div>
       <Separator />
-      <Button>All Topics</Button>
+      <Button>
+        <Link href={`/`}>All Topics</Link>
+      </Button>
     </div>
   )
 }
