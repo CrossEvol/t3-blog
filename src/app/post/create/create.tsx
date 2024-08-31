@@ -50,6 +50,7 @@ const Create = () => {
       </TabsList>
       <Separator orientation="vertical" />
       <Button
+        disabled={!content || !title || createPost.isLoading}
         onClick={() => {
           try {
             createPost.mutate({ title, content })
@@ -95,29 +96,9 @@ const Create = () => {
             </TabsContent>
             <TabsContent value={TabsEnum.editor}>
               <div className="min-h-96 bg-white">
-                <Editor
-                  postId={0}
-                  content={content}
-                  setContent={setContent}
-                />
+                <Editor postId={0} content={content} setContent={setContent} />
               </div>
             </TabsContent>
-            <div>
-              <button
-                disabled={!content || !title || createPost.isLoading}
-                type="submit"
-                className="cursor-pointer border-0 bg-gray-200 px-8 py-4 text-gray-500 hover:bg-blue-500 hover:text-white"
-              >
-                {createPost.isLoading ? 'Creating...' : 'Create'}
-              </button>
-              <a
-                className="ml-4 cursor-pointer text-blue-500"
-                href="#"
-                onClick={() => clearData()}
-              >
-                or Cancel
-              </a>
-            </div>
           </form>
         </div>
       </FabContainer>
