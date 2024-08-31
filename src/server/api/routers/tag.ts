@@ -23,6 +23,16 @@ export const tagRouter = createTRPCRouter({
       })
     ).map((tag) => ({ id: tag.id, name: tag.name, count: tag._count.posts }))
   }),
+
+  getManyOrderByName: publicProcedure.query(async ({ ctx }) => {
+    const tags = await ctx.db.tag.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    })
+    return tags
+  }),
+
   getOne: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {

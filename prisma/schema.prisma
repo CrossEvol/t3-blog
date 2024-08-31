@@ -106,6 +106,8 @@ model Topic {
     createdAt DateTime @default(now())
     name      String   @unique
     posts     Post[]
+
+    @@index([name])
 }
 
 model Tag {
@@ -113,6 +115,8 @@ model Tag {
     createdAt DateTime      @default(now())
     name      String        @unique
     posts     TagsOnPosts[]
+
+    @@index([name])
 }
 
 model TagsOnPosts {

@@ -27,6 +27,16 @@ export const topicRouter = createTRPCRouter({
       count: topic._count.posts,
     }))
   }),
+
+  getManyOrderByName: publicProcedure.query(async ({ ctx }) => {
+    const topics = await ctx.db.topic.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+    })
+    return topics
+  }),
+
   getOne: publicProcedure
     .input(z.object({ id: z.number() }))
     .query(async ({ ctx, input }) => {
