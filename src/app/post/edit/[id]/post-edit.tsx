@@ -20,6 +20,7 @@ import PublishSelect from './publish-select'
 import UpdateOptions from './update-options'
 import { type Tag, type Topic } from '@prisma/client'
 import chroma from 'chroma-js'
+import { safeOption } from '@/common/select-option'
 
 const Editor = dynamic(() => import('../../../_components/rich-text-editor'), {
   ssr: false,
@@ -37,11 +38,13 @@ const PostEdit = ({ post }: Props) => {
       title: post.title,
       content: post.content,
       published: post.published,
-      topic: {
-        value: post.topic?.id.toString(),
-        label: post.topic?.name,
-        color: chroma.random().hex(),
-      },
+      topic: !!post.topic
+        ? {
+            value: post.topic?.id.toString(),
+            label: post.topic?.name,
+            color: chroma.random().hex(),
+          }
+        : safeOption,
       tags: post.tags.map((tag) => ({
         value: tag.id.toString(),
         label: tag.name,

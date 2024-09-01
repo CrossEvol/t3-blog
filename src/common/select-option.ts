@@ -16,3 +16,9 @@ export type SelectOption = {
 export type SelectOptions = SelectOption[]
 
 export const CREATE_MARK = '$$$'
+
+export const safeOption = {
+  value: '',
+  label: '',
+  color: '#f5eded',
+} satisfies ColorOption
