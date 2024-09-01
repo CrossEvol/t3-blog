@@ -1,6 +1,5 @@
 import { api } from '@/trpc/server'
-import { Topic } from '@prisma/client'
-import React from 'react'
+import { type Topic } from '@prisma/client'
 import TopicGrid from './topic-grid'
 
 export type TopicWithCount = Topic & { count: number }

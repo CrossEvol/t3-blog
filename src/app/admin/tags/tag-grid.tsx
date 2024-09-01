@@ -4,16 +4,17 @@ import { Button } from '@/components/ui/button'
 import { api } from '@/trpc/react'
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model'
 import {
-  ColDef,
-  ICellRendererParams,
+  type ColDef,
+  type ICellRendererParams,
   ModuleRegistry,
+  type NewValueParams,
 } from '@ag-grid-community/core'
 import { AgGridReact } from '@ag-grid-community/react'
 import '@ag-grid-community/styles/ag-grid.css'
 import '@ag-grid-community/styles/ag-theme-quartz.css'
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
-import { TagWithCount } from './page'
+import { type TagWithCount } from './page'
 
 ModuleRegistry.registerModules([ClientSideRowModelModule])
 
@@ -23,35 +24,35 @@ interface IProps {
   tags: TagWithCount[]
 }
 
+type TagColDef = TagWithCount & { actions: unknown }
+
 const TagGrid = ({ tags }: IProps) => {
   const [rowData, setRowData] = useState(
     tags.map((tag) => ({ ...tag, actions: {} })),
   )
   const updateTopic = api.tag.update.useMutation({
-    onSuccess(data, variables, context) {
+    onSuccess(data, _variables, _context) {
       setRowData(
         rowData.map((item) =>
           item.id === data.id ? { ...item, ...data } : item,
         ),
       )
     },
-    onError(error, variables, context) {
+    onError(error, _variables, _context) {
       console.log(error)
     },
   })
 
   const deleteTopic = api.tag.delete.useMutation({
-    onSuccess(data, variables, context) {
+    onSuccess(data, _variables, _context) {
       setRowData(rowData.filter((item) => item.id !== data.id))
     },
-    onError(error, variables, context) {
+    onError(error, _variables, _context) {
       console.log(error)
     },
   })
 
-  const [columnDefs, setColumnDefs] = useState<
-    ColDef<TagWithCount & { actions: unknown }>[]
-  >([
+  const [columnDefs] = useState<ColDef<TagColDef>[]>([
     {
       field: 'id',
       checkboxSelection: true,
@@ -63,11 +64,11 @@ const TagGrid = ({ tags }: IProps) => {
       field: 'name',
       flex: 1,
       editable: true,
-      onCellValueChanged(event) {
+      onCellValueChanged(event: NewValueParams<TagColDef, string>) {
         console.log(event)
         updateTopic.mutate({
           id: event.data.id,
-          name: event.newValue,
+          name: event.newValue!,
           description: event.data.description,
         })
       },
@@ -76,12 +77,12 @@ const TagGrid = ({ tags }: IProps) => {
       field: 'description',
       editable: true,
       flex: 1,
-      onCellValueChanged(event) {
+      onCellValueChanged(event: NewValueParams<TagColDef, string>) {
         console.log(event)
         updateTopic.mutate({
           id: event.data.id,
           name: event.data.name,
-          description: event.newValue,
+          description: event.newValue!,
         })
       },
     },
@@ -91,14 +92,14 @@ const TagGrid = ({ tags }: IProps) => {
       headerName: 'Actions',
       filter: null,
       field: 'actions',
-      cellRenderer: (params: ICellRendererParams) => (
+      cellRenderer: (params: ICellRendererParams<TagColDef>) => (
         <div className="space-x-4">
           <Button variant={'outline'}>
-            <Link href={`/tag/${params.data.name}`}>Posts</Link>
+            <Link href={`/tag/${params.data?.name}`}>Posts</Link>
           </Button>
           <Button
             variant={'destructive'}
-            onClick={() => deleteTopic.mutate({ id: params.data.id })}
+            onClick={() => deleteTopic.mutate({ id: params.data!.id })}
           >
             Delete
           </Button>

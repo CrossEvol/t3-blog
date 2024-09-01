@@ -1,5 +1,5 @@
 import { api } from '@/trpc/server'
-import { Tag } from '@prisma/client'
+import { type Tag } from '@prisma/client'
 import TagGrid from './tag-grid'
 
 export type TagWithCount = Tag & { count: number }

@@ -1,7 +1,6 @@
 import { MonitorCog } from 'lucide-react'
 import type { Session } from 'next-auth'
 import Link from 'next/link'
-import TooltipWrapper from '../tooltip-wrapper'
 
 interface Props {
   session: Session | null
