@@ -1,6 +1,10 @@
 import { z } from 'zod'
 
-import { type ColorOption, type ColorOptions, CREATE_MARK } from '@/common/select-option'
+import {
+  type ColorOption,
+  type ColorOptions,
+  CREATE_MARK,
+} from '@/common/select-option'
 import { createPostSchema, updatePostSchema } from '@/common/trpc-schema'
 import {
   createTRPCRouter,
@@ -130,8 +134,27 @@ export const postRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(z.object({ id: z.number().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      return await ctx.db.post.delete({
-        where: { id: input.id },
+      return ctx.db.$transaction(async (tx) => {
+        const disconnectTags = await tx.tagsOnPosts.deleteMany({
+          where: {
+            postId: input.id,
+          },
+        })
+        const disconnectComments = await tx.comment.deleteMany({
+          where: {
+            postId: input.id,
+          },
+        })
+        if (!disconnectTags || !disconnectComments) {
+          throw new Error(
+            `Failed to delete related record for Post#${input.id}`,
+          )
+        }
+
+        const deletePost = await tx.post.delete({
+          where: { id: input.id },
+        })
+        return deletePost
       })
     }),
 
