@@ -1,11 +1,12 @@
 'use client'
 
+import { Role } from '@prisma/client'
 import type { Session } from 'next-auth'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 interface Props {
-  session: Session | null;
+  session: Session | null
 }
 
 const LeftNav = ({ session }: Props) => {
@@ -20,7 +21,7 @@ const LeftNav = ({ session }: Props) => {
       >
         Feed
       </Link>
-      {session && (
+      {session?.user.role === Role.ADMIN && (
         <Link
           href="/drafts"
           className={`${isActive('/drafts') && 'font-semibold text-black'}`}

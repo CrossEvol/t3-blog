@@ -49,7 +49,7 @@ export const tagRouter = createTRPCRouter({
       ).map((tag) => ({ ...tag, count: tag._count.posts, _count: undefined }))
     }),
 
-  getManyOrderByName: publicProcedure.query(async ({ ctx }) => {
+  getManyOrderByName: protectedProcedure.query(async ({ ctx }) => {
     const tags = await ctx.db.tag.findMany({
       orderBy: {
         name: 'asc',

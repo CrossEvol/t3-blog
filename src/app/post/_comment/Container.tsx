@@ -1,9 +1,9 @@
 type ContainerProps = {
-  children: React.ReactNode;
-};
+  children: React.ReactNode
+}
 
 const Container = ({ children }: ContainerProps) => {
-  return <div className="container m-auto max-w-2xl px-4">{children}</div>
+  return <div className="container m-auto max-w-2xl px-4 mt-4">{children}</div>
 }
 
 export default Container

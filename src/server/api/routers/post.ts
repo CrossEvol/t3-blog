@@ -1,9 +1,9 @@
 import { z } from 'zod'
 
 import {
+  CREATE_MARK,
   type ColorOption,
   type ColorOptions,
-  CREATE_MARK,
 } from '@/common/select-option'
 import { createPostSchema, updatePostSchema } from '@/common/trpc-schema'
 import {
@@ -12,7 +12,7 @@ import {
   publicProcedure,
 } from '@/server/api/trpc'
 import { type PrismaTX } from '@/server/db'
-import { type Post } from '@prisma/client'
+import { Role, type Post } from '@prisma/client'
 
 export const postRouter = createTRPCRouter({
   create: protectedProcedure
@@ -77,9 +77,17 @@ export const postRouter = createTRPCRouter({
   getDrafts: protectedProcedure.query(async ({ ctx }) => {
     const drafts = await ctx.db.post.findMany({
       where: {
-        author: { email: ctx.session.user.email! },
+        author: { id: ctx.session.user.id },
         published: false,
       },
+      orderBy: [
+        {
+          updatedAt: 'desc',
+        },
+        {
+          createdAt: 'desc',
+        },
+      ],
       include: {
         author: {
           select: { name: true, email: true },
@@ -90,10 +98,21 @@ export const postRouter = createTRPCRouter({
   }),
 
   getMany: publicProcedure.query(async ({ ctx }) => {
-    const drafts = await ctx.db.post.findMany({
+    const posts = await ctx.db.post.findMany({
       where: {
         published: true,
+        author: {
+          role: Role.ADMIN,
+        },
       },
+      orderBy: [
+        {
+          updatedAt: 'desc',
+        },
+        {
+          createdAt: 'desc',
+        },
+      ],
       include: {
         author: {
           select: {
@@ -103,7 +122,7 @@ export const postRouter = createTRPCRouter({
         },
       },
     })
-    return drafts
+    return posts
   }),
 
   getPage: publicProcedure
@@ -113,9 +132,14 @@ export const postRouter = createTRPCRouter({
         where: {
           published: true,
         },
-        orderBy: {
-          updatedAt: 'desc',
-        },
+        orderBy: [
+          {
+            updatedAt: 'desc',
+          },
+          {
+            createdAt: 'desc',
+          },
+        ],
         include: {
           author: {
             select: {
