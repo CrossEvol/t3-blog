@@ -102,19 +102,23 @@ enum Role {
 }
 
 model Topic {
-    id        Int      @id @default(autoincrement())
-    createdAt DateTime @default(now())
-    name      String   @unique
-    posts     Post[]
+    id          Int      @id @default(autoincrement())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String   @unique
+    description String   @default("(Empty Topic)")
+    posts       Post[]
 
     @@index([name])
 }
 
 model Tag {
-    id        Int           @id @default(autoincrement())
-    createdAt DateTime      @default(now())
-    name      String        @unique
-    posts     TagsOnPosts[]
+    id          Int           @id @default(autoincrement())
+    createdAt   DateTime      @default(now())
+    updatedAt   DateTime      @updatedAt
+    name        String        @unique
+    description String        @default("(Empty Tag)")
+    posts       TagsOnPosts[]
 
     @@index([name])
 }

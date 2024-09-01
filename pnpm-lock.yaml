@@ -8,6 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@ag-grid-community/client-side-row-model':
+        specifier: ^32.1.0
+        version: 32.1.0
+      '@ag-grid-community/core':
+        specifier: ^32.1.0
+        version: 32.1.0
+      '@ag-grid-community/react':
+        specifier: ^32.1.0
+        version: 32.1.0(@ag-grid-community/core@32.1.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@ag-grid-community/styles':
+        specifier: ^32.1.0
+        version: 32.1.0
       '@atlaskit/tooltip':
         specifier: ^18.7.2
         version: 18.7.2(@types/react@18.3.4)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -224,6 +236,22 @@ importers:
         version: 5.5.4
 
 packages:
+
+  '@ag-grid-community/client-side-row-model@32.1.0':
+    resolution: {integrity: sha512-R/IA3chA/w9fy6/EeZhi42PTwVnb6bNjGMah1GWGvuNDTvfbPO4X9r4nhOMj6YH483bO+C7pPb4EoLECx0dfRQ==}
+
+  '@ag-grid-community/core@32.1.0':
+    resolution: {integrity: sha512-fHpgSZa/aBjg2DdOzooDxILFZqxmxP8vsjRfeZVtqby19mTKwNAclE7Z6rWzOA0GYjgN9s8JwLFcNA5pvfswMg==}
+
+  '@ag-grid-community/react@32.1.0':
+    resolution: {integrity: sha512-ObaMk+g5IpfuiHSNar56IhJ0dLKkHaeMQYI9H1JlJyf5+3IafY1DiuGZ5mZTU7GyfNBgmMuRWrUxwOyt0tp7Lw==}
+    peerDependencies:
+      '@ag-grid-community/core': 32.1.0
+      react: ^16.3.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.3.0 || ^17.0.0 || ^18.0.0
+
+  '@ag-grid-community/styles@32.1.0':
+    resolution: {integrity: sha512-OjakLetS/zr0g5mJWpnjldk/RjGnl7Rv3I/5cGuvtgdmSgS+4FNZMr8ZmyR8Bl34s0RM63OSIphpVaFGlnJM4w==}
 
   '@alloc/quick-lru@5.2.0':
     resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
@@ -1594,6 +1622,9 @@ packages:
     resolution: {integrity: sha512-tcpGyI9zbizT9JbV6oYE477V6mTlXvvi0T0G3SNIYE2apm/G5huBa1+K89VGeovbg+jycCrfhl3ADxErOuO6Jg==}
     engines: {node: '>=0.4.0'}
     hasBin: true
+
+  ag-charts-types@10.1.0:
+    resolution: {integrity: sha512-pk9ft8hbgTXJ/thI/SEUR1BoauNplYExpcHh7tMOqVikoDsta1O15TB1ZL4XWnl4TPIzROBmONKsz7d8a2HBuQ==}
 
   ajv@6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
@@ -4176,6 +4207,25 @@ packages:
 
 snapshots:
 
+  '@ag-grid-community/client-side-row-model@32.1.0':
+    dependencies:
+      '@ag-grid-community/core': 32.1.0
+      tslib: 2.7.0
+
+  '@ag-grid-community/core@32.1.0':
+    dependencies:
+      ag-charts-types: 10.1.0
+      tslib: 2.7.0
+
+  '@ag-grid-community/react@32.1.0(@ag-grid-community/core@32.1.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@ag-grid-community/core': 32.1.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+
+  '@ag-grid-community/styles@32.1.0': {}
+
   '@alloc/quick-lru@5.2.0': {}
 
   '@atlaskit/analytics-next-stable-react-context@1.0.1(react@18.2.0)':
@@ -5652,6 +5702,8 @@ snapshots:
     optional: true
 
   acorn@8.12.1: {}
+
+  ag-charts-types@10.1.0: {}
 
   ajv@6.12.6:
     dependencies:
