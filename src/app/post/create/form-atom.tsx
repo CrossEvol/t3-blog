@@ -1,4 +1,4 @@
-import { CreatePostForm } from '@/common/trpc-schema'
+import { type CreatePostForm } from '@/common/trpc-schema'
 import { atom } from 'jotai'
 
 const formObjectAtom = atom<CreatePostForm>()

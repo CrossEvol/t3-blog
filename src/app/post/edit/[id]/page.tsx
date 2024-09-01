@@ -1,5 +1,5 @@
 import { api } from '@/trpc/server'
-import PostEdit from './Edit'
+import PostEdit from './post-edit'
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const post = await api.post.getOne.query({ id: Number(params.id) })

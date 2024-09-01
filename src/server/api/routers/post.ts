@@ -1,14 +1,14 @@
 import { z } from 'zod'
 
-import { ColorOption, ColorOptions, CREATE_MARK } from '@/common/select-option'
+import { type ColorOption, type ColorOptions, CREATE_MARK } from '@/common/select-option'
 import { createPostSchema, updatePostSchema } from '@/common/trpc-schema'
 import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
 } from '@/server/api/trpc'
-import { PrismaTX } from '@/server/db'
-import { Post } from '@prisma/client'
+import { type PrismaTX } from '@/server/db'
+import { type Post } from '@prisma/client'
 
 export const postRouter = createTRPCRouter({
   create: protectedProcedure

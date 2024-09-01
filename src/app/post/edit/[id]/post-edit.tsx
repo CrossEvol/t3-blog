@@ -18,7 +18,7 @@ import { TabsEnum } from '../../constants'
 import FabContainer from '../../fab-container'
 import PublishSelect from './publish-select'
 import UpdateOptions from './update-options'
-import { Tag, Topic } from '@prisma/client'
+import { type Tag, type Topic } from '@prisma/client'
 import chroma from 'chroma-js'
 
 const Editor = dynamic(() => import('../../../_components/rich-text-editor'), {

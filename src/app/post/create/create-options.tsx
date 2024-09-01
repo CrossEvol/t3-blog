@@ -1,5 +1,5 @@
 import { type PropsWithOpen } from '@/common/props'
-import { CreatePostForm } from '@/common/trpc-schema'
+import { type CreatePostForm } from '@/common/trpc-schema'
 import { Label } from '@/components/ui/label'
 import {
   Popover,

@@ -1,4 +1,4 @@
-import { UseFormReturn } from 'react-hook-form'
+import { type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
 const colorOptionSchema = z.object({
