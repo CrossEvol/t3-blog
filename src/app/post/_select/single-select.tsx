@@ -1,6 +1,6 @@
 import { ColourOption } from '@/data/select-data'
 import chroma from 'chroma-js'
-import React from 'react'
+import React, { useMemo } from 'react'
 import Select, {
   components,
   type SingleValue,
@@ -18,12 +18,15 @@ import { Label } from '@/components/ui/label'
 import { CirclePlus } from 'lucide-react'
 
 import { PropsWithSelect, type PropsWithOpen } from '@/common/props'
-import { ColorOption, ColorOptions } from '@/common/select-option'
+import { ColorOption, ColorOptions, CREATE_MARK } from '@/common/select-option'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { api } from '@/trpc/react'
 import { createOption } from './create-option'
 import NoneOptionSelect from './none-option-select'
+import { useAtom } from 'jotai'
+import { formAtom } from '../create/form-atom'
+import { Controller } from 'react-hook-form'
 
 interface CreateDialogProps extends PropsWithOpen {
   createNewOption: (value: string) => void
@@ -83,8 +86,7 @@ const SingleValue = ({
 )
 
 const SingleSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
-  const [selectedOption, setSelectedOption] =
-    React.useState<ColourOption | null>(null)
+  const [form] = useAtom(formAtom)
   const [colorOptions, setColorOptions] = React.useState(options)
   const [open, setOpen] = React.useState(false)
 
@@ -93,46 +95,54 @@ const SingleSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
       setOpen(true)
       return
     }
-    setSelectedOption(option)
+    form?.setValue('topic', option!)
   }
 
   const createNewOption = (newValue: string) => {
     const newOption = {
-      value: newValue,
+      value: `${CREATE_MARK}${newValue}`,
       label: newValue,
       color: chroma.random().hex(),
       isFixed: false,
     }
     setColorOptions([...colorOptions, newOption])
-    setSelectedOption(newOption)
+    form?.setValue('topic', newOption!)
   }
 
   return (
     <>
-      <Select
-        value={selectedOption}
-        isMulti={false}
-        onChange={handleChange}
-        isClearable
-        styles={{
-          singleValue: (base) => ({
-            ...base,
-            padding: 5,
-            borderRadius: 5,
-            background: selectedOption?.color,
-            color: 'white',
-            display: 'flex',
-          }),
-        }}
-        components={{ SingleValue }}
-        isSearchable
-        name="color"
-        options={colorOptions}
-      />
-      <CreateDialog
-        open={open}
-        setOpen={setOpen}
-        createNewOption={createNewOption}
+      <Controller
+        name="topic"
+        control={form?.control}
+        render={({ field }) => (
+          <>
+            <Select
+              value={field.value}
+              isMulti={false}
+              onChange={handleChange}
+              isClearable
+              styles={{
+                singleValue: (base) => ({
+                  ...base,
+                  padding: 5,
+                  borderRadius: 5,
+                  background: form?.getValues('topic').color,
+                  color: 'white',
+                  display: 'flex',
+                }),
+              }}
+              components={{ SingleValue }}
+              isSearchable
+              name="color"
+              options={colorOptions}
+            />
+            <CreateDialog
+              open={open}
+              setOpen={setOpen}
+              createNewOption={createNewOption}
+            />
+          </>
+        )}
       />
     </>
   )
@@ -161,7 +171,7 @@ const SingleSelect = () => {
         ...topics.map(
           (topic) =>
             ({
-              value: topic.name,
+              value: topic.id.toString(),
               label: topic.name,
               color: chroma.random().hex(),
             }) satisfies ColorOption,

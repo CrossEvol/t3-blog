@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 export type ColorOption = {
   readonly value: string
   readonly label: string
@@ -14,3 +16,11 @@ export type SelectOption = {
 }
 
 export type SelectOptions = SelectOption[]
+
+export const CREATE_MARK = '$$$'
+
+export const colorOptionSchema = z.object({
+  value: z.string(),
+  label: z.string(),
+  color: z.string(),
+})

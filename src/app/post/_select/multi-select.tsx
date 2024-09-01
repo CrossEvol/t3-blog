@@ -19,12 +19,14 @@ import { Label } from '@/components/ui/label'
 import { CirclePlus } from 'lucide-react'
 
 import { PropsWithOpen, PropsWithSelect } from '@/common/props'
-import { ColorOption, ColorOptions } from '@/common/select-option'
+import { ColorOption, ColorOptions, CREATE_MARK } from '@/common/select-option'
 import { Button } from '@/components/ui/button'
 import { api } from '@/trpc/react'
 import { atom, useAtom } from 'jotai'
 import NoneOptionSelect from './none-option-select'
 import { createOption } from './create-option'
+import { Controller, useForm } from 'react-hook-form'
+import { formAtom } from '../create/form-atom'
 
 export const tagsAtom = atom<string[]>([])
 
@@ -129,9 +131,7 @@ const MultiValueLabel = (props: MultiValueGenericProps<ColourOption>) => {
 }
 
 const MultiSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
-  const [selectedOptions, setSelectedOptions] = React.useState<ColorOption[]>(
-    [],
-  )
+  const [form] = useAtom(formAtom)
   const [colorOptions, setColorOptions] = React.useState(options)
   const [open, setOpen] = React.useState(false)
 
@@ -140,43 +140,52 @@ const MultiSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
       setOpen(true)
       return
     }
-    setSelectedOptions(options.map((option) => ({ ...option })))
+    form?.setValue(
+      'tags',
+      options.map((option) => ({ ...option })),
+    )
   }
 
   const createNewOptions = (newValues: string[]) => {
     const newOptions = newValues.map((newValue) => ({
-      value: newValue,
+      value: `${CREATE_MARK}${newValue}`,
       label: newValue,
       color: chroma.random().hex(),
       isFixed: false,
     }))
     setColorOptions([...colorOptions, ...newOptions])
-    setSelectedOptions([...selectedOptions, ...newOptions])
+    form?.setValue('tags', [...form.getValues('tags'), ...newOptions])
   }
 
   return (
-    <>
-      <Select
-        closeMenuOnSelect={false}
-        value={selectedOptions}
-        onChange={handleChange}
-        components={{ MultiValueLabel }}
-        styles={{
-          multiValueLabel: (base) => ({
-            ...base,
-            backgroundColor: colourOptions[2]?.color,
-            color: 'white',
-          }),
-        }}
-        isMulti
-        options={colorOptions}
-      />
-      <CreateDialog
-        open={open}
-        setOpen={setOpen}
-        createNewOptions={createNewOptions}
-      />
-    </>
+    <Controller
+      name="tags"
+      control={form?.control}
+      render={({ field }) => (
+        <>
+          <Select
+            closeMenuOnSelect={false}
+            value={field.value}
+            onChange={handleChange}
+            components={{ MultiValueLabel }}
+            styles={{
+              multiValueLabel: (base) => ({
+                ...base,
+                backgroundColor: colourOptions[2]?.color,
+                color: 'white',
+              }),
+            }}
+            isMulti
+            options={colorOptions}
+          />
+          <CreateDialog
+            open={open}
+            setOpen={setOpen}
+            createNewOptions={createNewOptions}
+          />
+        </>
+      )}
+    />
   )
 }
 
@@ -205,7 +214,7 @@ const MultiSelect = () => {
         ...tags.map(
           (tag) =>
             ({
-              value: tag.name,
+              value: tag.id.toString(),
               label: tag.name,
               color: chroma.random().hex(),
             }) satisfies ColorOption,

@@ -8,10 +8,18 @@ import {
 import { Switch } from '@/components/ui/switch'
 import MultiSelect from '../_select/multi-select'
 import SingleSelect from '../_select/single-select'
+import { Controller, useForm } from 'react-hook-form'
+import { useAtom } from 'jotai'
+import { formAtom } from './form-atom'
+import { Button } from '@/components/ui/button'
 
-interface IProps extends PropsWithOpen {}
+interface IProps extends PropsWithOpen {
+  actions?: React.ReactNode
+}
 
-const CreateOptions = ({ open, setOpen }: IProps) => {
+const CreateOptions = ({ open, setOpen, actions }: IProps) => {
+  const [form] = useAtom(formAtom)
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger></PopoverTrigger>
@@ -27,8 +35,19 @@ const CreateOptions = ({ open, setOpen }: IProps) => {
           </div>
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label htmlFor="public-or-not">Public Or Not</Label>
-            <Switch id="public-or-not" />
+            <Controller
+              name="published"
+              control={form?.control}
+              render={({ field }) => (
+                <Switch
+                  id="public-or-not"
+                  checked={field.value}
+                  onCheckedChange={(checked) => field.onChange(checked)}
+                />
+              )}
+            />
           </div>
+          <div>{actions}</div>
         </div>
       </PopoverContent>
     </Popover>
