@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
-import { FormAtom } from './create'
+import { type FormAtom } from './create'
 
 const formObjectAtom = atom<FormAtom>()
 const hasAssignedAtom = atom(false)

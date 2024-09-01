@@ -1,4 +1,4 @@
-import { ColorOption } from '@/common/select-option'
+import { type ColorOption } from '@/common/select-option'
 
 export const createOption = {
   value: 'create',

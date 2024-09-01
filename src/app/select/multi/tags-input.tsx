@@ -3,9 +3,7 @@ import React, { useState } from 'react'
 
 export const tagsAtom = atom<string[]>([])
 
-interface TagsInputProps {}
-
-const TagsInput: React.FC<TagsInputProps> = ({}) => {
+const TagsInput = () => {
   const [tags, setTags] = useAtom<string[]>(tagsAtom)
   const [inputValue, setInputValue] = useState<string>('')
 

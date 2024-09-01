@@ -1,6 +1,6 @@
 import React from 'react'
 import Tooltip from '@atlaskit/tooltip'
-import Select, { components, NoticeProps } from 'react-select'
+import Select, { components, type NoticeProps } from 'react-select'
 import chroma from 'chroma-js'
 
 const msgStyles = {

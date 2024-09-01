@@ -4,7 +4,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip'
-import { PropsWithChildren } from 'react'
+import { type PropsWithChildren } from 'react'
 
 interface IProps extends PropsWithChildren {
   content: string

@@ -18,7 +18,7 @@ interface IProps {
   createNewOptions: (values: string[]) => void
 }
 
-const createDialog = ({ open, setOpen, createNewOptions }: IProps) => {
+const CreateDialog = ({ open, setOpen, createNewOptions }: IProps) => {
   const [tags] = useAtom(tagsAtom)
 
   return (
@@ -53,4 +53,4 @@ const createDialog = ({ open, setOpen, createNewOptions }: IProps) => {
   )
 }
 
-export default createDialog
+export default CreateDialog

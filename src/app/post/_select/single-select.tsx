@@ -1,10 +1,10 @@
-import { ColourOption } from '@/data/select-data'
+import { type ColourOption } from '@/data/select-data'
 import chroma from 'chroma-js'
-import React, { useMemo } from 'react'
+import React from 'react'
 import Select, {
   components,
   type SingleValue,
-  SingleValueProps,
+  type SingleValueProps,
 } from 'react-select'
 
 import {
@@ -17,16 +17,20 @@ import {
 import { Label } from '@/components/ui/label'
 import { CirclePlus } from 'lucide-react'
 
-import { PropsWithSelect, type PropsWithOpen } from '@/common/props'
-import { ColorOption, ColorOptions, CREATE_MARK } from '@/common/select-option'
+import { type PropsWithOpen, type PropsWithSelect } from '@/common/props'
+import {
+  type ColorOption,
+  type ColorOptions,
+  CREATE_MARK,
+} from '@/common/select-option'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { api } from '@/trpc/react'
+import { useAtom } from 'jotai'
+import { Controller } from 'react-hook-form'
+import { formAtom } from '../create/form-atom'
 import { createOption } from './create-option'
 import NoneOptionSelect from './none-option-select'
-import { useAtom } from 'jotai'
-import { formAtom } from '../create/form-atom'
-import { Controller } from 'react-hook-form'
 
 interface CreateDialogProps extends PropsWithOpen {
   createNewOption: (value: string) => void
@@ -106,7 +110,7 @@ const SingleSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
       isFixed: false,
     }
     setColorOptions([...colorOptions, newOption])
-    form?.setValue('topic', newOption!)
+    form?.setValue('topic', newOption)
   }
 
   return (
@@ -162,7 +166,7 @@ const SingleSelect = () => {
     return null
   }
 
-  if (!topics || !topics.length) {
+  if (!topics?.length) {
     return <NoneOptionSelect />
   }
   return (

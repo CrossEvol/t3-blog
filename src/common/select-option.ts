@@ -1,5 +1,3 @@
-import { z } from 'zod'
-
 export type ColorOption = {
   readonly value: string
   readonly label: string

@@ -18,7 +18,7 @@ interface IProps {
   createNewOption: (value: string) => void
 }
 
-const createDialog = ({ open, setOpen, createNewOption }: IProps) => {
+const CreateDialog = ({ open, setOpen, createNewOption }: IProps) => {
   const [text, setText] = React.useState('')
 
   return (
@@ -58,4 +58,4 @@ const createDialog = ({ open, setOpen, createNewOption }: IProps) => {
   )
 }
 
-export default createDialog
+export default CreateDialog

@@ -12,8 +12,8 @@ import { CircleEllipsis } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import { Controller, useForm, UseFormReturn } from 'react-hook-form'
-import { z } from 'zod'
+import { Controller, useForm, type UseFormReturn } from 'react-hook-form'
+import { type z } from 'zod'
 import { TabsEnum } from '../constants'
 import FabContainer from '../fab-container'
 import CreateOptions from './create-options'
@@ -43,7 +43,7 @@ export const Create = () => {
       form.reset()
       router.push(`/post/${id}`)
     },
-    onError(error, variables, context) {
+    onError(error, _variables, _context) {
       console.log(error)
     },
   })
@@ -83,8 +83,10 @@ export const Create = () => {
 
   React.useEffect(() => {
     setForm(form)
-    return () => {}
-  }, [form])
+    return () => {
+      console.log()
+    }
+  }, [form, setForm])
 
   return (
     <>

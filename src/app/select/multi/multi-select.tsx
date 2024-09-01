@@ -1,10 +1,10 @@
-import { ColourOption, colourOptions } from '@/data/select-data'
+import { type ColourOption, colourOptions } from '@/data/select-data'
 import chroma from 'chroma-js'
 import React from 'react'
 import Select, {
   components,
-  MultiValue,
-  MultiValueGenericProps,
+  type MultiValue,
+  type MultiValueGenericProps,
 } from 'react-select'
 import CreateDialog from './create-dialog'
 import TooltipWrapper from '@/app/_components/tooltip-wrapper'

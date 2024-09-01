@@ -87,17 +87,19 @@ export const postRouter = createTRPCRouter({
               },
             })
           }
-          await tags
-            .filter((tag) => !tag.value.startsWith(CREATE_MARK))
-            .map(
-              async (tag) =>
-                await tx.tagsOnPosts.create({
-                  data: {
-                    tagId: Number(tag.value),
-                    postId: insertedPost.id,
-                  },
-                }),
-            )
+          await Promise.all(
+            tags
+              .filter((tag) => !tag.value.startsWith(CREATE_MARK))
+              .map(
+                async (tag) =>
+                  await tx.tagsOnPosts.create({
+                    data: {
+                      tagId: Number(tag.value),
+                      postId: insertedPost.id,
+                    },
+                  }),
+              ),
+          )
         }
 
         return insertedPost

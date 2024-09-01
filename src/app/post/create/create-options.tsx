@@ -1,4 +1,4 @@
-import { PropsWithOpen } from '@/common/props'
+import { type PropsWithOpen } from '@/common/props'
 import { Label } from '@/components/ui/label'
 import {
   Popover,
@@ -6,12 +6,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Switch } from '@/components/ui/switch'
+import { useAtom } from 'jotai'
+import { Controller } from 'react-hook-form'
 import MultiSelect from '../_select/multi-select'
 import SingleSelect from '../_select/single-select'
-import { Controller, useForm } from 'react-hook-form'
-import { useAtom } from 'jotai'
 import { formAtom } from './form-atom'
-import { Button } from '@/components/ui/button'
 
 interface IProps extends PropsWithOpen {
   actions?: React.ReactNode

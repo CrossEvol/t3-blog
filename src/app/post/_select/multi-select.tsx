@@ -1,11 +1,11 @@
 import TooltipWrapper from '@/app/_components/tooltip-wrapper'
-import { ColourOption, colourOptions } from '@/data/select-data'
+import { type ColourOption, colourOptions } from '@/data/select-data'
 import chroma from 'chroma-js'
 import React from 'react'
 import Select, {
   components,
-  MultiValue,
-  MultiValueGenericProps,
+  type MultiValue,
+  type MultiValueGenericProps,
 } from 'react-select'
 
 import {
@@ -18,21 +18,23 @@ import {
 import { Label } from '@/components/ui/label'
 import { CirclePlus } from 'lucide-react'
 
-import { PropsWithOpen, PropsWithSelect } from '@/common/props'
-import { ColorOption, ColorOptions, CREATE_MARK } from '@/common/select-option'
+import { type PropsWithOpen, type PropsWithSelect } from '@/common/props'
+import {
+  type ColorOption,
+  type ColorOptions,
+  CREATE_MARK,
+} from '@/common/select-option'
 import { Button } from '@/components/ui/button'
 import { api } from '@/trpc/react'
 import { atom, useAtom } from 'jotai'
-import NoneOptionSelect from './none-option-select'
-import { createOption } from './create-option'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller } from 'react-hook-form'
 import { formAtom } from '../create/form-atom'
+import { createOption } from './create-option'
+import NoneOptionSelect from './none-option-select'
 
 export const tagsAtom = atom<string[]>([])
 
-interface TagsInputProps {}
-
-const TagsInput: React.FC<TagsInputProps> = ({}) => {
+const TagsInput = () => {
   const [tags, setTags] = useAtom<string[]>(tagsAtom)
   const [inputValue, setInputValue] = React.useState<string>('')
 
@@ -209,7 +211,7 @@ const MultiSelect = () => {
     return null
   }
 
-  if (!tags || !tags.length) {
+  if (!tags?.length) {
     return <NoneOptionSelect />
   }
 

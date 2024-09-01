@@ -1,4 +1,4 @@
-import { SelectOptions } from './select-option'
+import { type SelectOptions } from './select-option'
 
 export interface PropsWithOpen {
   open: boolean
