@@ -1,10 +1,10 @@
 import React from 'react'
-import Create from './create'
+import PostCreate from './post-create'
 
 const Page = () => {
   return (
     <React.Fragment>
-      <Create />
+      <PostCreate />
     </React.Fragment>
   )
 }

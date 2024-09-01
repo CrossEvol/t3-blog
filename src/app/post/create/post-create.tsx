@@ -21,7 +21,7 @@ const Editor = dynamic(() => import('@/app/_components/rich-text-editor'), {
   ssr: false,
 })
 
-export const Create = () => {
+const PostCreate = () => {
   const form = useForm<z.infer<typeof createPostFormSchema>>({
     resolver: zodResolver(createPostFormSchema),
     defaultValues: {
@@ -145,4 +145,4 @@ export const Create = () => {
   )
 }
 
-export default Create
+export default PostCreate
