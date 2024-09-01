@@ -26,9 +26,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { api } from '@/trpc/react'
-import { useAtom } from 'jotai'
-import { Controller } from 'react-hook-form'
-import { formAtom } from '../create/form-atom'
 import { createOption } from './create-option'
 import NoneOptionSelect from './none-option-select'
 
@@ -89,8 +86,15 @@ const SingleValue = ({
   </>
 )
 
-const SingleSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
-  const [form] = useAtom(formAtom)
+interface SingleSelectUIProps
+  extends PropsWithSelect<ColorOptions>,
+    SingleSelectProps {}
+
+const SingleSelectUI = ({
+  options,
+  selectedOption,
+  setSelectedOption,
+}: SingleSelectUIProps) => {
   const [colorOptions, setColorOptions] = React.useState(options)
   const [open, setOpen] = React.useState(false)
 
@@ -99,7 +103,7 @@ const SingleSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
       setOpen(true)
       return
     }
-    form?.setValue('topic', option!)
+    setSelectedOption(option!)
   }
 
   const createNewOption = (newValue: string) => {
@@ -110,50 +114,49 @@ const SingleSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
       isFixed: false,
     }
     setColorOptions([...colorOptions, newOption])
-    form?.setValue('topic', newOption)
+    setSelectedOption(newOption)
   }
 
   return (
     <>
-      <Controller
-        name="topic"
-        control={form?.control}
-        render={({ field }) => (
-          <>
-            <Select
-              value={field.value}
-              isMulti={false}
-              onChange={handleChange}
-              isClearable
-              styles={{
-                singleValue: (base) => ({
-                  ...base,
-                  padding: 5,
-                  borderRadius: 5,
-                  background:
-                    form?.getValues('topic')?.color ?? createOption.color,
-                  color: 'white',
-                  display: 'flex',
-                }),
-              }}
-              components={{ SingleValue }}
-              isSearchable
-              name="color"
-              options={colorOptions}
-            />
-            <CreateDialog
-              open={open}
-              setOpen={setOpen}
-              createNewOption={createNewOption}
-            />
-          </>
-        )}
-      />
+      <>
+        <Select
+          value={selectedOption}
+          // value={field.value}
+          isMulti={false}
+          onChange={handleChange}
+          isClearable
+          styles={{
+            singleValue: (base) => ({
+              ...base,
+              padding: 5,
+              borderRadius: 5,
+              background: selectedOption?.color ?? createOption.color,
+              color: 'white',
+              display: 'flex',
+            }),
+          }}
+          components={{ SingleValue }}
+          isSearchable
+          name="color"
+          options={colorOptions}
+        />
+        <CreateDialog
+          open={open}
+          setOpen={setOpen}
+          createNewOption={createNewOption}
+        />
+      </>
     </>
   )
 }
 
-const SingleSelect = () => {
+interface SingleSelectProps {
+  selectedOption: ColorOption
+  setSelectedOption: (option: ColorOption) => void
+}
+
+const SingleSelect = (props: SingleSelectProps) => {
   const {
     isLoading,
     isError,
@@ -171,6 +174,7 @@ const SingleSelect = () => {
   }
   return (
     <SingleSelectUI
+      {...props}
       options={[
         createOption,
         ...topics.map(

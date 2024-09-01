@@ -132,8 +132,15 @@ const MultiValueLabel = (props: MultiValueGenericProps<ColourOption>) => {
   )
 }
 
-const MultiSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
-  const [form] = useAtom(formAtom)
+interface MultiSelectUIProps
+  extends PropsWithSelect<ColorOptions>,
+    MultiSelectProps {}
+
+const MultiSelectUI = ({
+  options,
+  selectedOptions,
+  setSelectedOptions,
+}: MultiSelectUIProps) => {
   const [colorOptions, setColorOptions] = React.useState(options)
   const [open, setOpen] = React.useState(false)
 
@@ -142,10 +149,7 @@ const MultiSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
       setOpen(true)
       return
     }
-    form?.setValue(
-      'tags',
-      options.map((option) => ({ ...option })),
-    )
+    setSelectedOptions(options.map((option) => ({ ...option })))
   }
 
   const createNewOptions = (newValues: string[]) => {
@@ -156,48 +160,49 @@ const MultiSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
       isFixed: false,
     }))
     setColorOptions([...colorOptions, ...newOptions])
-    form?.setValue('tags', [
-      ...form.getValues('tags'),
+    setSelectedOptions([
+      ...selectedOptions,
       ...newOptions.filter(
         (item) =>
-          !new Set(form.getValues('tags').map((t) => t.label)).has(item.label),
+          !new Set(selectedOptions.map((tagOption) => tagOption.label)).has(
+            item.label,
+          ),
       ),
     ])
   }
 
   return (
-    <Controller
-      name="tags"
-      control={form?.control}
-      render={({ field }) => (
-        <>
-          <Select
-            closeMenuOnSelect={false}
-            value={field.value}
-            onChange={handleChange}
-            components={{ MultiValueLabel }}
-            styles={{
-              multiValueLabel: (base) => ({
-                ...base,
-                backgroundColor: colourOptions[2]?.color,
-                color: 'white',
-              }),
-            }}
-            isMulti
-            options={colorOptions}
-          />
-          <CreateDialog
-            open={open}
-            setOpen={setOpen}
-            createNewOptions={createNewOptions}
-          />
-        </>
-      )}
-    />
+    <>
+      <Select
+        closeMenuOnSelect={false}
+        value={selectedOptions}
+        onChange={handleChange}
+        components={{ MultiValueLabel }}
+        styles={{
+          multiValueLabel: (base) => ({
+            ...base,
+            backgroundColor: colourOptions[2]?.color,
+            color: 'white',
+          }),
+        }}
+        isMulti
+        options={colorOptions}
+      />
+      <CreateDialog
+        open={open}
+        setOpen={setOpen}
+        createNewOptions={createNewOptions}
+      />
+    </>
   )
 }
 
-const MultiSelect = () => {
+interface MultiSelectProps {
+  selectedOptions: ColorOptions
+  setSelectedOptions: (options: ColorOptions) => void
+}
+
+const MultiSelect = (props: MultiSelectProps) => {
   const {
     isLoading,
     isError,
@@ -217,6 +222,7 @@ const MultiSelect = () => {
 
   return (
     <MultiSelectUI
+      {...props}
       options={[
         createOption,
         ...tags.map(

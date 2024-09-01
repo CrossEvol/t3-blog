@@ -12,11 +12,9 @@ import MultiSelect from '../_select/multi-select'
 import SingleSelect from '../_select/single-select'
 import { formAtom } from './form-atom'
 
-interface IProps extends PropsWithOpen {
-  actions?: React.ReactNode
-}
+interface IProps extends PropsWithOpen {}
 
-const CreateOptions = ({ open, setOpen, actions }: IProps) => {
+const CreateOptions = ({ open, setOpen }: IProps) => {
   const [form] = useAtom(formAtom)
 
   return (
@@ -26,11 +24,29 @@ const CreateOptions = ({ open, setOpen, actions }: IProps) => {
         <div className="space-y-2">
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label htmlFor="topic">Topic</Label>
-            <SingleSelect />
+            <Controller
+              name="topic"
+              control={form?.control}
+              render={({ field }) => (
+                <SingleSelect
+                  selectedOption={field.value}
+                  setSelectedOption={field.onChange}
+                />
+              )}
+            />
           </div>
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label htmlFor="tags">Tags</Label>
-            <MultiSelect />
+            <Controller
+              name="tags"
+              control={form?.control}
+              render={({ field }) => (
+                <MultiSelect
+                  selectedOptions={field.value}
+                  setSelectedOptions={field.onChange}
+                />
+              )}
+            />
           </div>
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label htmlFor="public-or-not">Public Or Not</Label>
@@ -46,7 +62,6 @@ const CreateOptions = ({ open, setOpen, actions }: IProps) => {
               )}
             />
           </div>
-          <div>{actions}</div>
         </div>
       </PopoverContent>
     </Popover>
