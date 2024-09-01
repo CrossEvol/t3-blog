@@ -1,6 +1,10 @@
 import { z } from 'zod'
 
-import { createTRPCRouter, publicProcedure } from '@/server/api/trpc'
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from '@/server/api/trpc'
 
 export const topicRouter = createTRPCRouter({
   statistics: publicProcedure.input(z.object({})).query(async ({ ctx }) => {
@@ -25,6 +29,29 @@ export const topicRouter = createTRPCRouter({
       id: topic.id,
       name: topic.name,
       count: topic._count.posts,
+    }))
+  }),
+
+  getManyForAdmin: protectedProcedure.query(async ({ ctx }) => {
+    return (
+      await ctx.db.topic.findMany({
+        orderBy: {
+          posts: {
+            _count: 'desc',
+          },
+        },
+        include: {
+          _count: {
+            select: {
+              posts: {},
+            },
+          },
+        },
+      })
+    ).map((topic) => ({
+      ...topic,
+      count: topic._count.posts,
+      _count: undefined,
     }))
   }),
 
@@ -66,6 +93,54 @@ export const topicRouter = createTRPCRouter({
             },
           },
         },
+      })
+    }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().min(1),
+        description: z.string().min(1),
+      }),
+    )
+    .mutation(async ({ ctx, input: { id, name, description } }) => {
+      const updateTopicResult = await ctx.db.topic.update({
+        where: { id },
+        data: {
+          name,
+          description,
+        },
+      })
+      return updateTopicResult
+    }),
+
+  delete: protectedProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.$transaction(async (tx) => {
+        const disconnectPosts = await tx.topic.update({
+          where: {
+            id: input.id,
+          },
+          data: {
+            posts: {
+              set: [],
+            },
+          },
+          include: {
+            posts: true,
+          },
+        })
+        if (!disconnectPosts.id) {
+          throw new Error('Disconnect Topic on Posts Failed.')
+        }
+        const deleteTopic = await tx.topic.delete({
+          where: {
+            id: input.id,
+          },
+        })
+        return deleteTopic
       })
     }),
 })
