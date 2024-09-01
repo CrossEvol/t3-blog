@@ -32,3 +32,5 @@ export const updatePostSchema = updatePostFormSchema.partial({
   topic: true,
   tags: true,
 })
+
+export type UpdatePostParams = z.infer<typeof updatePostSchema>

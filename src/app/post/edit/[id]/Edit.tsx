@@ -18,13 +18,15 @@ import { TabsEnum } from '../../constants'
 import FabContainer from '../../fab-container'
 import PublishSelect from './publish-select'
 import UpdateOptions from './update-options'
+import { Tag, Topic } from '@prisma/client'
+import chroma from 'chroma-js'
 
 const Editor = dynamic(() => import('../../../_components/rich-text-editor'), {
   ssr: false,
 })
 
 interface Props {
-  post: PostItem
+  post: PostItem & { topic: Topic | null; tags: Tag[] }
 }
 
 const PostEdit = ({ post }: Props) => {
@@ -35,6 +37,16 @@ const PostEdit = ({ post }: Props) => {
       title: post.title,
       content: post.content,
       published: post.published,
+      topic: {
+        value: post.topic?.id.toString(),
+        label: post.topic?.name,
+        color: chroma.random().hex(),
+      },
+      tags: post.tags.map((tag) => ({
+        value: tag.id.toString(),
+        label: tag.name,
+        color: chroma.random().hex(),
+      })),
     },
   })
   const router = useRouter()
@@ -65,15 +77,14 @@ const PostEdit = ({ post }: Props) => {
       <Separator orientation="vertical" />
       <Button
         onClick={() => {
-          // updatePost.mutate({
-          //   id: post.id,
-          //   title,
-          //   content: content,
-          //   published: pub === 'public',
-          // })
-
           console.log(form.getValues())
-          // updatePost.mutate({ ...form.getValues() })
+          updatePost.mutate({
+            ...form.getValues(),
+            topic:
+              form.getValues('topic') !== null
+                ? form.getValues('topic')
+                : undefined,
+          })
         }}
       >
         {updatePost.isLoading ? 'Publishing...' : 'Publish'}
