@@ -1,7 +1,17 @@
-import React from 'react'
+import { api } from '@/trpc/server'
+import { Tag } from '@prisma/client'
+import TagGrid from './tag-grid'
 
-const Tags = () => {
-  return <div>Tags</div>
+export type TagWithCount = Tag & { count: number }
+
+const Topics = async () => {
+  const tags = await api.tag.getManyForAdmin.query({})
+
+  return (
+    <div>
+      <TagGrid tags={tags} />
+    </div>
+  )
 }
 
-export default Tags
+export default Topics
