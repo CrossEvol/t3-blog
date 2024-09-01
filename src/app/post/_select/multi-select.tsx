@@ -154,7 +154,13 @@ const MultiSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
       isFixed: false,
     }))
     setColorOptions([...colorOptions, ...newOptions])
-    form?.setValue('tags', [...form.getValues('tags'), ...newOptions])
+    form?.setValue('tags', [
+      ...form.getValues('tags'),
+      ...newOptions.filter(
+        (item) =>
+          !new Set(form.getValues('tags').map((t) => t.label)).has(item.label),
+      ),
+    ])
   }
 
   return (

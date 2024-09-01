@@ -1,5 +1,6 @@
 'use client'
 
+import { createPostFormSchema, createPostSchema } from '@/common/trpc-schema'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -17,58 +18,41 @@ import { TabsEnum } from '../constants'
 import FabContainer from '../fab-container'
 import CreateOptions from './create-options'
 import { formAtom } from './form-atom'
-import { colorOptionSchema } from '@/common/select-option'
 
 const Editor = dynamic(() => import('@/app/_components/rich-text-editor'), {
   ssr: false,
 })
 
-const formSchema = z.object({
-  title: z.string(),
-  content: z.string(),
-  tags: z.array(colorOptionSchema),
-  topic: colorOptionSchema,
-  published: z.boolean(),
-})
-
-export type FormAtom = UseFormReturn<z.infer<typeof formSchema>>
+export type FormAtom = UseFormReturn<z.infer<typeof createPostFormSchema>>
 
 export const Create = () => {
   const [, setForm] = useAtom(formAtom)
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof createPostFormSchema>>({
+    resolver: zodResolver(createPostFormSchema),
     defaultValues: {
       title: '',
       content: '',
       published: false,
     },
   })
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
   const router = useRouter()
   const [open, setOpen] = useState(false)
 
   const createPost = api.post.create.useMutation({
     onSuccess: ({ id }) => {
-      setTitle('')
-      setContent('')
+      form.reset()
       router.push(`/post/${id}`)
+    },
+    onError(error, variables, context) {
+      console.log(error)
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof createPostFormSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
-  }
-
-  const submitData = async (e: React.SyntheticEvent) => {
-    e.preventDefault()
-    try {
-      createPost.mutate({ title, content })
-    } catch (error) {
-      console.error(error)
-    }
+    createPost.mutate({ ...values })
   }
 
   const FabContent = (
@@ -79,18 +63,14 @@ export const Create = () => {
       </TabsList>
       <Separator orientation="vertical" />
       <Button
-        disabled={
-          !form.getValues('content') ||
-          !form.getValues('title') ||
-          createPost.isLoading
-        }
         onClick={() => {
+          const safeParsedResult = createPostSchema.safeParse(form.getValues())
+          if (!safeParsedResult.success) {
+            console.error(safeParsedResult.error.errors)
+            return
+          }
           console.log(form.getValues())
-          // try {
-          //   createPost.mutate({ title, content })
-          // } catch (error) {
-          //   console.error(error)
-          // }
+          createPost.mutate({ ...form.getValues() })
         }}
       >
         {createPost.isLoading ? 'Creating...' : 'Create'}

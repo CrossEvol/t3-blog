@@ -126,7 +126,8 @@ const SingleSelectUI = ({ options }: PropsWithSelect<ColorOptions>) => {
                   ...base,
                   padding: 5,
                   borderRadius: 5,
-                  background: form?.getValues('topic').color,
+                  background:
+                    form?.getValues('topic')?.color ?? createOption.color,
                   color: 'white',
                   display: 'flex',
                 }),
