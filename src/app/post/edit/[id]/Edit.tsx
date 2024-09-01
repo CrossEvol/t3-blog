@@ -1,17 +1,23 @@
 'use client'
 
+import type { PostItem } from '@/app/_components/post-list'
+import { updatePostFormSchema } from '@/common/trpc-schema'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { api } from '@/trpc/react'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { CircleEllipsis } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
+import { type z } from 'zod'
 import { TabsEnum } from '../../constants'
 import FabContainer from '../../fab-container'
 import PublishSelect from './publish-select'
-import type { PostItem } from '@/app/_components/post-list'
+import UpdateOptions from './update-options'
 
 const Editor = dynamic(() => import('../../../_components/rich-text-editor'), {
   ssr: false,
@@ -22,14 +28,25 @@ interface Props {
 }
 
 const PostEdit = ({ post }: Props) => {
+  const form = useForm<z.infer<typeof updatePostFormSchema>>({
+    resolver: zodResolver(updatePostFormSchema),
+    defaultValues: {
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      published: post.published,
+    },
+  })
   const router = useRouter()
-  const [title, setTitle] = useState(post.title)
-  const [content, setContent] = useState(post.content)
+  const [open, setOpen] = useState(false)
   const [pub, setPub] = useState('public')
 
   const updatePost = api.post.update.useMutation({
     onSuccess: ({ id }) => {
       router.push(`/post/${id}`)
+    },
+    onError(error, _variables, _context) {
+      console.error(error)
     },
   })
 
@@ -48,16 +65,15 @@ const PostEdit = ({ post }: Props) => {
       <Separator orientation="vertical" />
       <Button
         onClick={() => {
-          try {
-            updatePost.mutate({
-              id: post.id,
-              title,
-              content: content,
-              published: pub === 'public',
-            })
-          } catch (error) {
-            console.error(error)
-          }
+          // updatePost.mutate({
+          //   id: post.id,
+          //   title,
+          //   content: content,
+          //   published: pub === 'public',
+          // })
+
+          console.log(form.getValues())
+          // updatePost.mutate({ ...form.getValues() })
         }}
       >
         {updatePost.isLoading ? 'Publishing...' : 'Publish'}
@@ -76,34 +92,60 @@ const PostEdit = ({ post }: Props) => {
             onSubmit={submitData}
             className="mx-auto flex min-w-full flex-col space-y-4"
           >
-            <h1 className="mb-4 text-2xl font-bold">Edit Draft</h1>
-            <input
-              autoFocus
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Title"
-              type="text"
-              value={title}
-              className="mb-2 w-full rounded border p-2"
-            />
-            <TabsContent value={TabsEnum.markdown}>
-              <Textarea
-                cols={50}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="Content"
-                rows={40}
-                value={content ?? ''}
-                className="mb-2 w-full rounded border p-2"
+            <div className="flex flex-row space-x-4 w-full items-center">
+              <UpdateOptions open={open} setOpen={setOpen} form={form} />
+              <Button
+                type="button"
+                size="sm"
+                className="px-3"
+                onClick={() => {
+                  setOpen(true)
+                }}
+              >
+                <span className="sr-only">Options</span>
+                <CircleEllipsis className="h-4 w-4" />
+              </Button>
+              <Controller
+                name="title"
+                control={form.control}
+                render={({ field }) => (
+                  <input
+                    autoFocus
+                    {...field}
+                    placeholder="Title"
+                    type="text"
+                    className="rounded border p-2 w-1/2"
+                  />
+                )}
               />
-            </TabsContent>
-            <TabsContent value={TabsEnum.editor}>
-              <div className="min-h-96 bg-white">
-                <Editor
-                  postId={post.id}
-                  content={content}
-                  setContent={setContent}
-                />
-              </div>
-            </TabsContent>
+              <h1 className="text-2xl font-bold">Edit Draft</h1>
+            </div>
+            <Controller
+              name="content"
+              control={form.control}
+              render={({ field }) => (
+                <>
+                  <TabsContent value={TabsEnum.markdown}>
+                    <Textarea
+                      {...field}
+                      cols={50}
+                      placeholder="Content"
+                      rows={40}
+                      className="mb-2 w-full rounded border p-2"
+                    />
+                  </TabsContent>
+                  <TabsContent value={TabsEnum.editor}>
+                    <div className="min-h-96 bg-white">
+                      <Editor
+                        postId={post.id}
+                        content={field.value}
+                        setContent={field.onChange}
+                      />
+                    </div>
+                  </TabsContent>
+                </>
+              )}
+            />
           </form>
         </div>
       </FabContainer>
