@@ -1,4 +1,5 @@
 import { type PropsWithOpen } from '@/common/props'
+import { CreatePostForm } from '@/common/trpc-schema'
 import { Label } from '@/components/ui/label'
 import {
   Popover,
@@ -6,17 +7,15 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Switch } from '@/components/ui/switch'
-import { useAtom } from 'jotai'
 import { Controller } from 'react-hook-form'
 import MultiSelect from '../_select/multi-select'
 import SingleSelect from '../_select/single-select'
-import { formAtom } from './form-atom'
 
-interface IProps extends PropsWithOpen {}
+interface IProps extends PropsWithOpen {
+  form: CreatePostForm
+}
 
-const CreateOptions = ({ open, setOpen }: IProps) => {
-  const [form] = useAtom(formAtom)
-
+const CreateOptions = ({ open, setOpen, form }: IProps) => {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger></PopoverTrigger>

@@ -27,8 +27,6 @@ import {
 import { Button } from '@/components/ui/button'
 import { api } from '@/trpc/react'
 import { atom, useAtom } from 'jotai'
-import { Controller } from 'react-hook-form'
-import { formAtom } from '../create/form-atom'
 import { createOption } from './create-option'
 import NoneOptionSelect from './none-option-select'
 

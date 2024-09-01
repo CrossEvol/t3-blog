@@ -1,3 +1,4 @@
+import { UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
 const colorOptionSchema = z.object({
@@ -5,6 +6,8 @@ const colorOptionSchema = z.object({
   label: z.string(),
   color: z.string(),
 })
+
+export type CreatePostForm = UseFormReturn<z.infer<typeof createPostFormSchema>>
 
 export const createPostFormSchema = z.object({
   title: z.string().min(1),
@@ -15,6 +18,17 @@ export const createPostFormSchema = z.object({
 })
 
 export const createPostSchema = createPostFormSchema.partial({
+  topic: true,
+  tags: true,
+})
+
+export type UpdatePostForm = UseFormReturn<z.infer<typeof updatePostFormSchema>>
+
+export const updatePostFormSchema = createPostFormSchema.extend({
+  id: z.number(),
+})
+
+export const updatePostSchema = updatePostFormSchema.partial({
   topic: true,
   tags: true,
 })

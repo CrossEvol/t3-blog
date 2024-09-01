@@ -122,7 +122,6 @@ const SingleSelectUI = ({
       <>
         <Select
           value={selectedOption}
-          // value={field.value}
           isMulti={false}
           onChange={handleChange}
           isClearable

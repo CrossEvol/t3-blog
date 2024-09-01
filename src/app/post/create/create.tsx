@@ -7,26 +7,21 @@ import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { api } from '@/trpc/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAtom } from 'jotai'
 import { CircleEllipsis } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
-import React, { useState } from 'react'
-import { Controller, useForm, type UseFormReturn } from 'react-hook-form'
+import { useState } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { type z } from 'zod'
 import { TabsEnum } from '../constants'
 import FabContainer from '../fab-container'
 import CreateOptions from './create-options'
-import { formAtom } from './form-atom'
 
 const Editor = dynamic(() => import('@/app/_components/rich-text-editor'), {
   ssr: false,
 })
 
-export type FormAtom = UseFormReturn<z.infer<typeof createPostFormSchema>>
-
 export const Create = () => {
-  const [, setForm] = useAtom(formAtom)
   const form = useForm<z.infer<typeof createPostFormSchema>>({
     resolver: zodResolver(createPostFormSchema),
     defaultValues: {
@@ -81,13 +76,6 @@ export const Create = () => {
     </>
   )
 
-  React.useEffect(() => {
-    setForm(form)
-    return () => {
-      console.log()
-    }
-  }, [form, setForm])
-
   return (
     <>
       <FabContainer components={FabContent}>
@@ -97,7 +85,7 @@ export const Create = () => {
             className="mx-auto flex min-w-full flex-col space-y-4"
           >
             <div className="flex flex-row space-x-4 w-full items-center">
-              <CreateOptions open={open} setOpen={setOpen} />
+              <CreateOptions open={open} setOpen={setOpen} form={form} />
               <Button
                 type="button"
                 size="sm"
