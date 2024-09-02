@@ -32,7 +32,7 @@ const PublishButton = ({ post }: Props) => {
     <>
       <button
         value="Edit"
-        className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-green-600 hover:text-white"
+        className="w-32 cursor-pointer border-0 font-bold bg-gray-200 px-8 py-4 text-center text-gray-700 hover:bg-green-600 hover:text-white"
         onClick={onSubmit}
       >
         {publishMutation.isLoading ? 'Publishing...' : 'Publish'}

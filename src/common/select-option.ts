@@ -22,3 +22,6 @@ export const safeOption = {
   label: '',
   color: '#f5eded',
 } satisfies ColorOption
+
+export const validOption = (option: ColorOption) =>
+  option.value === safeOption.value ? undefined : option

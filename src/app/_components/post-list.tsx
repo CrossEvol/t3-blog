@@ -1,3 +1,4 @@
+import { type Tag, type Topic } from '@prisma/client'
 import Post from './Post'
 
 export type PostItem = {
@@ -13,6 +14,9 @@ export type PostItem = {
   createdAt: Date
   updatedAt: Date
   authorId: string
+} & {
+  tags: Tag[]
+  topic: Topic | null
 }
 
 type Props = {

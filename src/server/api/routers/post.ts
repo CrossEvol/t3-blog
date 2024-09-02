@@ -70,7 +70,7 @@ export const postRouter = createTRPCRouter({
       return {
         ...post,
         author: post.author,
-        tags: post.tags.map((tag) => tag.tag) ?? [],
+        tags: post.tags.map((item) => item.tag) ?? [],
       }
     }),
 

@@ -28,9 +28,12 @@ export const updatePostFormSchema = createPostFormSchema.extend({
   id: z.number(),
 })
 
-export const updatePostSchema = updatePostFormSchema.partial({
-  topic: true,
-  tags: true,
-})
+export const updatePostSchema = updatePostFormSchema
+  .omit({ topic: true })
+  .extend({ topic: colorOptionSchema.nullable() })
+  .partial({
+    tags: true,
+    topic: true,
+  })
 
 export type UpdatePostParams = z.infer<typeof updatePostSchema>

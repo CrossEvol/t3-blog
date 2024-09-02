@@ -1,7 +1,7 @@
 'use client'
 
 import type { PostItem } from '@/app/_components/post-list'
-import { updatePostFormSchema } from '@/common/trpc-schema'
+import { updatePostFormSchema, updatePostSchema } from '@/common/trpc-schema'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -20,7 +20,7 @@ import PublishSelect from './publish-select'
 import UpdateOptions from './update-options'
 import { type Tag, type Topic } from '@prisma/client'
 import chroma from 'chroma-js'
-import { safeOption } from '@/common/select-option'
+import { safeOption, validOption } from '@/common/select-option'
 
 const Editor = dynamic(() => import('../../../_components/rich-text-editor'), {
   ssr: false,
@@ -80,12 +80,17 @@ const PostEdit = ({ post }: Props) => {
       <Separator orientation="vertical" />
       <Button
         onClick={() => {
+          const safeParsedResult = updatePostSchema.safeParse(form.getValues())
+          if (!safeParsedResult.success) {
+            console.error(safeParsedResult.error.errors)
+            return
+          }
           console.log(form.getValues())
           updatePost.mutate({
             ...form.getValues(),
             topic:
               form.getValues('topic') !== null
-                ? form.getValues('topic')
+                ? validOption(form.getValues('topic'))
                 : undefined,
           })
         }}

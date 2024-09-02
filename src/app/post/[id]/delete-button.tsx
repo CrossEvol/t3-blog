@@ -1,7 +1,7 @@
 'use client'
 
-import Dialog from '@/app/_components/Dialog'
 import type { Action } from '@/app/_components/Dialog'
+import Dialog from '@/app/_components/Dialog'
 import type { PostItem } from '@/app/_components/post-list'
 import { api } from '@/trpc/react'
 import { useRouter } from 'next/navigation'
@@ -42,7 +42,7 @@ const DeleteButton = ({ post }: Props) => {
     <>
       <button
         onClick={() => setOpen(true)}
-        className="w-32 cursor-pointer border-0 bg-gray-200 px-8 py-4 text-center text-gray-500 hover:bg-red-600 hover:text-white"
+        className="w-32 cursor-pointer border-0 font-bold bg-gray-200 px-8 py-4 text-center text-gray-700 hover:bg-red-600 hover:text-white"
       >
         {deletePost.isLoading ? 'Deleting...' : 'Delete'}
       </button>

@@ -65,7 +65,7 @@ const PostCreate = () => {
             return
           }
           console.log(form.getValues())
-          // createPost.mutate({ ...form.getValues() })
+          createPost.mutate({ ...form.getValues() })
         }}
       >
         {createPost.isLoading ? 'Creating...' : 'Create'}

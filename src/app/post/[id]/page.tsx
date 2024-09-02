@@ -1,10 +1,8 @@
 import CommentList from '@/app/post/_comment/CommentList'
-import Container from '@/app/post/_comment/Container'
 import { getServerAuthSession } from '@/server/auth'
 import { api } from '@/trpc/server'
 import CommentForm from '../_comment/CommentForm'
-import PostActions from './PostActions'
-import ShowPost from './ShowPost'
+import ShowPost from './show-post'
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const post = await api.post.getOne.query({ id: Number(params.id) })
@@ -17,15 +15,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const comments = await api.comment.getMany.query({ postId: post.id })
 
   return (
-    <div>
+    <div className="container space-y-4 mx-4">
       <ShowPost post={post} />
-      <PostActions post={post} />
-      <>
-        <Container>
-          <CommentForm session={session} postId={post.id} />
-          <CommentList post={post} comments={comments} />
-        </Container>
-      </>
+      <div className="w-1/2">
+        <CommentForm session={session} postId={post.id} />
+        <CommentList post={post} comments={comments} />
+      </div>
     </div>
   )
 }
