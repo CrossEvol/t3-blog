@@ -1,10 +1,10 @@
 'use client'
 
-import { addDays, format } from 'date-fns'
+import { format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
 import * as React from 'react'
 
-import { type SearchPostForm } from '@/common/trpc-schema'
+import { DatePresetEnum, type SearchPostForm } from '@/common/trpc-schema'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -27,7 +27,7 @@ interface IProps {
 }
 
 export function DatePickerWithPresets({ form }: IProps) {
-  const [date] = React.useState<Date>(form.getValues('date')!)
+  const [date, setDate] = React.useState<Date>(form.getValues('date')!)
 
   return (
     <Popover>
@@ -50,19 +50,17 @@ export function DatePickerWithPresets({ form }: IProps) {
           render={({ field }) => (
             <Select
               value={field.value}
-              onValueChange={(value) =>
-                field.onChange(addDays(new Date(), parseInt(value)))
-              }
+              onValueChange={(value) => field.onChange(value)}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent position="popper">
-                <SelectItem value="0">Today</SelectItem>
-                <SelectItem value="1">Tomorrow</SelectItem>
-                <SelectItem value="3">In 3 days</SelectItem>
-                <SelectItem value="7">In a week</SelectItem>
-                <SelectItem value="30">In a month</SelectItem>
+                {Object.entries(DatePresetEnum).map(([k, v]) => (
+                  <SelectItem key={k} value={v}>
+                    {v}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           )}
@@ -75,7 +73,10 @@ export function DatePickerWithPresets({ form }: IProps) {
               <Calendar
                 mode="single"
                 selected={field.value}
-                onSelect={field.onChange}
+                onSelect={(value) => {
+                  field.onChange(value)
+                  setDate(value!)
+                }}
               />
             )}
           />

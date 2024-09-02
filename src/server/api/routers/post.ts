@@ -1,11 +1,16 @@
 import { z } from 'zod'
 
+import { SearchTabEnum } from '@/app/search/constants'
 import {
   CREATE_MARK,
   type ColorOption,
   type ColorOptions,
 } from '@/common/select-option'
-import { createPostSchema, updatePostSchema } from '@/common/trpc-schema'
+import {
+  createPostSchema,
+  searchPostSchema,
+  updatePostSchema,
+} from '@/common/trpc-schema'
 import {
   createTRPCRouter,
   protectedProcedure,
@@ -237,6 +242,92 @@ export const postRouter = createTRPCRouter({
         where: { id: input.id },
         data: { published: true },
       })
+    }),
+
+  search: protectedProcedure
+    .input(searchPostSchema)
+    .mutation(async ({ ctx, input }) => {
+      const res = await ctx.db.post.findMany({
+        where: {
+          AND: [
+            {
+              title:
+                !!input.q && input.searchType === SearchTabEnum.Title
+                  ? input.q
+                  : undefined,
+            },
+            {
+              content:
+                !!input.q && input.searchType === SearchTabEnum.FullText
+                  ? input.q
+                  : undefined,
+            },
+            {
+              topic:
+                !!input.topics && input.topics.length > 0
+                  ? {
+                      name: {
+                        in: input.topics,
+                      },
+                    }
+                  : undefined,
+            },
+            {
+              tags:
+                !!input.tags && input.tags.length > 0
+                  ? {
+                      some: {
+                        tag: {
+                          name: {
+                            in: input.tags,
+                          },
+                        },
+                      },
+                    }
+                  : undefined,
+            },
+            {
+              OR:
+                !!input.startDay && !!input.endDay
+                  ? [
+                      {
+                        createdAt: {
+                          gt: input.startDay,
+                          lt: input.endDay,
+                        },
+                      },
+                      {
+                        updatedAt: {
+                          gt: input.startDay,
+                          lt: input.endDay,
+                        },
+                      },
+                    ]
+                  : undefined,
+            },
+          ],
+        },
+        orderBy: [{ updatedAt: 'desc' }, { createdAt: 'desc' }],
+        include: {
+          author: {
+            select: { name: true, email: true },
+          },
+          topic: {
+            select: { id: true, name: true },
+          },
+          tags: {
+            select: {
+              tag: {
+                select: {
+                  id: true,
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      })
+      return res
     }),
 })
 

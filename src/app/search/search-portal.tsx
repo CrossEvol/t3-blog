@@ -1,11 +1,16 @@
 'use client'
 
-import { DatePresetEnum, searchPostFormSchema } from '@/common/trpc-schema'
+import {
+  calculateDateRange,
+  DatePresetEnum,
+  searchPostFormSchema,
+} from '@/common/trpc-schema'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { api } from '@/trpc/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -29,11 +34,31 @@ const SearchPortal = () => {
     },
   })
 
+  const searchMutation = api.post.search.useMutation({
+    onSuccess(data, variables, context) {
+      console.log(data)
+    },
+    onError(error, variables, context) {
+      console.error(error)
+    },
+  })
+
   // 2. Define a submit handler.
   function onSubmit() {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(form.getValues())
+    const { startDay, endDay } = calculateDateRange(
+      form.getValues('datePreset')!,
+      form.getValues('date')!,
+    )
+    searchMutation.mutate({
+      ...form.getValues,
+      tags: form.getValues('tags')?.map((tag) => tag.label),
+      topics: form.getValues('topics')?.map((topic) => topic.label),
+      startDay,
+      endDay,
+    })
   }
 
   const SearchButton = (

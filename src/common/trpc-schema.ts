@@ -59,7 +59,7 @@ const searchTypeSchema = z.enum([SearchTabEnum.Title, SearchTabEnum.FullText])
 
 export const searchPostFormSchema = z
   .object({
-    q: z.string().min(1),
+    q: z.string(),
     tags: z.array(colorOptionSchema),
     topics: z.array(colorOptionSchema),
     published: z.boolean(),
@@ -70,3 +70,44 @@ export const searchPostFormSchema = z
   .partial()
 
 export type SearchPostForm = UseFormReturn<z.infer<typeof searchPostFormSchema>>
+
+export const searchPostSchema = searchPostFormSchema
+  .omit({ date: true, datePreset: true, tags: true, topics: true })
+  .extend({
+    startDay: z.date(),
+    endDay: z.date(),
+    tags: z.array(z.string()),
+    topics: z.array(z.string()),
+  })
+  .partial()
+
+export const calculateDateRange = (preset: DatePresetEnum, today: Date) => {
+  let startDay
+  let endDay
+  startDay = new Date(today)
+  endDay = new Date(today)
+  debugger
+
+  switch (preset) {
+    case DatePresetEnum.Today:
+      // Start and end are today
+      break
+    case DatePresetEnum.Tomorrow:
+      endDay.setDate(today.getDate() + 1)
+      break
+    case DatePresetEnum.Three:
+      endDay.setDate(today.getDate() + 3)
+      break
+    case DatePresetEnum.Week:
+      endDay.setDate(today.getDate() + 7)
+      break
+    case DatePresetEnum.Month:
+      endDay.setMonth(today.getMonth() + 1)
+      break
+    default:
+      startDay = undefined
+      endDay = undefined
+  }
+
+  return { startDay, endDay }
+}
