@@ -37,20 +37,20 @@ const ShowPost = async ({ post }: Props) => {
               { ...post.topic, keyID: `topic-${post.topic?.id}` },
             ]
               .filter((item) => item !== null)
-              .map((item) => (
+              .map((item) => 
                 <Badge
                   variant={'outline'}
                   key={item.keyID}
                   className="space-x-1"
                 >
-                  {item.keyID.startsWith('tag-') ? (
+                  {item.keyID.startsWith('tag-') ? 
                     <Bookmark />
-                  ) : (
+                   : 
                     <ChartBarStacked />
-                  )}
+                  }
                   <span>{item?.name}</span>
                 </Badge>
-              ))}
+              )}
           </div>
           <div className="bg-white p-8">
             <div className="prose prose-slate ">

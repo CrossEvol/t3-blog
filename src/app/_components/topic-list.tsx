@@ -24,7 +24,7 @@ const TopicList = ({ topics }: IProps) => {
       </div>
       <Separator />
       <div className="flex-wrap space-x-4 space-y-2">
-        {topics.map((topic) => (
+        {topics.map((topic) => 
           <Button
             size={'sm'}
             className="bg-gray-300 text-blue-500"
@@ -35,7 +35,7 @@ const TopicList = ({ topics }: IProps) => {
               <Badge className="ml-2 bg-blue-600">{topic.count}</Badge>
             </Link>
           </Button>
-        ))}
+        )}
       </div>
       <Separator />
     </div>

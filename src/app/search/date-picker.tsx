@@ -47,7 +47,7 @@ export function DatePickerWithPresets({ form }: IProps) {
         <Controller
           name="datePreset"
           control={form.control}
-          render={({ field }) => (
+          render={({ field }) => 
             <Select
               value={field.value}
               onValueChange={(value) => field.onChange(value)}
@@ -56,20 +56,20 @@ export function DatePickerWithPresets({ form }: IProps) {
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent position="popper">
-                {Object.entries(DatePresetEnum).map(([k, v]) => (
+                {Object.entries(DatePresetEnum).map(([k, v]) => 
                   <SelectItem key={k} value={v}>
                     {v}
                   </SelectItem>
-                ))}
+                )}
               </SelectContent>
             </Select>
-          )}
+          }
         />
         <div className="rounded-md border">
           <Controller
             name="date"
             control={form.control}
-            render={({ field }) => (
+            render={({ field }) => 
               <Calendar
                 mode="single"
                 selected={field.value}
@@ -78,7 +78,7 @@ export function DatePickerWithPresets({ form }: IProps) {
                   setDate(value!)
                 }}
               />
-            )}
+            }
           />
         </div>
       </PopoverContent>

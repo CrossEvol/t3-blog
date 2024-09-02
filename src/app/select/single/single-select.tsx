@@ -11,11 +11,11 @@ import CreateDialog from './create-dialog'
 const SingleValue = ({
   children,
   ...props
-}: SingleValueProps<ColourOption>) => (
+}: SingleValueProps<ColourOption>) => 
   <>
     <components.SingleValue {...props}>{children}</components.SingleValue>
   </>
-)
+
 
 const SingleSelect = () => {
   const [selectedOption, setSelectedOption] =

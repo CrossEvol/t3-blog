@@ -37,7 +37,7 @@ const CommentForm = ({ session, postId }: CommentFormProps) => {
       />
 
       <div className="mt-4 flex items-center">
-        {session ? (
+        {session ? 
           <div className="flex items-center space-x-6">
             <button
               disabled={createComment.isLoading || !text}
@@ -49,7 +49,7 @@ const CommentForm = ({ session, postId }: CommentFormProps) => {
               <button className="text-gray-500">Log Out</button>
             </Link>
           </div>
-        ) : (
+         : 
           <Link href={!session && '/api/auth/signin'}>
             <button
               type="button"
@@ -58,7 +58,7 @@ const CommentForm = ({ session, postId }: CommentFormProps) => {
               Log In
             </button>
           </Link>
-        )}
+        }
       </div>
     </form>
   )

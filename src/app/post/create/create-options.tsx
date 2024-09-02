@@ -26,12 +26,12 @@ const CreateOptions = ({ open, setOpen, form }: IProps) => {
             <Controller
               name="topic"
               control={form?.control}
-              render={({ field }) => (
+              render={({ field }) => 
                 <SingleSelect
                   selectedOption={field.value}
                   setSelectedOption={field.onChange}
                 />
-              )}
+              }
             />
           </div>
           <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -39,12 +39,12 @@ const CreateOptions = ({ open, setOpen, form }: IProps) => {
             <Controller
               name="tags"
               control={form?.control}
-              render={({ field }) => (
+              render={({ field }) => 
                 <MultiSelect
                   selectedOptions={field.value}
                   setSelectedOptions={field.onChange}
                 />
-              )}
+              }
             />
           </div>
           <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -52,13 +52,13 @@ const CreateOptions = ({ open, setOpen, form }: IProps) => {
             <Controller
               name="published"
               control={form?.control}
-              render={({ field }) => (
+              render={({ field }) => 
                 <Switch
                   id="public-or-not"
                   checked={field.value}
                   onCheckedChange={(checked) => field.onChange(checked)}
                 />
-              )}
+              }
             />
           </div>
         </div>

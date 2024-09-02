@@ -50,7 +50,7 @@ const PostCreate = () => {
     createPost.mutate({ ...values })
   }
 
-  const FabContent = (
+  const FabContent = 
     <>
       <TabsList>
         <TabsTrigger value={TabsEnum.markdown}>Markdown</TabsTrigger>
@@ -74,7 +74,7 @@ const PostCreate = () => {
         Cancel
       </Button>
     </>
-  )
+  
 
   return (
     <>
@@ -100,7 +100,7 @@ const PostCreate = () => {
               <Controller
                 name="title"
                 control={form.control}
-                render={({ field }) => (
+                render={({ field }) => 
                   <input
                     autoFocus
                     {...field}
@@ -108,14 +108,14 @@ const PostCreate = () => {
                     type="text"
                     className="rounded border p-2 w-1/2"
                   />
-                )}
+                }
               />
               <h1 className="text-2xl font-bold">New Draft</h1>
             </div>
             <Controller
               name="content"
               control={form.control}
-              render={({ field }) => (
+              render={({ field }) => 
                 <>
                   <TabsContent value={TabsEnum.markdown}>
                     <Textarea
@@ -136,7 +136,7 @@ const PostCreate = () => {
                     </div>
                   </TabsContent>
                 </>
-              )}
+              }
             />
           </form>
         </div>

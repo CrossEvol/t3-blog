@@ -24,12 +24,12 @@ const OptionsForm = ({ form }: IProps) => {
           <Controller
             name="topics"
             control={form.control}
-            render={({ field }) => (
+            render={({ field }) => 
               <MultiTopicsSelect
                 selectedOptions={field.value!}
                 setSelectedOptions={field.onChange}
               />
-            )}
+            }
           />
         </div>
       </div>
@@ -39,12 +39,12 @@ const OptionsForm = ({ form }: IProps) => {
           <Controller
             name="tags"
             control={form.control}
-            render={({ field }) => (
+            render={({ field }) => 
               <MultiTagsSelect
                 selectedOptions={field.value!}
                 setSelectedOptions={field.onChange}
               />
-            )}
+            }
           />
         </div>
       </div>
@@ -53,13 +53,13 @@ const OptionsForm = ({ form }: IProps) => {
         <Controller
           name="published"
           control={form.control}
-          render={({ field }) => (
+          render={({ field }) => 
             <Switch
               id="published-or-not"
               checked={field.value}
               onCheckedChange={field.onChange}
             />
-          )}
+          }
         />
       </div>
       <div className="grid w-full max-w-sm items-center gap-1.5">

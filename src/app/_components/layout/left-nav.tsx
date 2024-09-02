@@ -21,14 +21,14 @@ const LeftNav = ({ session }: Props) => {
       >
         Feed
       </Link>
-      {session?.user.role === Role.ADMIN && (
+      {session?.user.role === Role.ADMIN && 
         <Link
           href="/drafts"
           className={`${isActive('/drafts') && 'font-semibold text-black'}`}
         >
           Drafts
         </Link>
-      )}
+      }
     </div>
   )
 }

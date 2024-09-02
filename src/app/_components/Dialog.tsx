@@ -28,7 +28,7 @@ const Dialog = ({ title, content, actions, open }: DialogProps) => {
           </div>
           <div className="mb-6">{content}</div>
           <div className="flex justify-end">
-            {actions.map((action, index) => (
+            {actions.map((action, index) => 
               <button
                 key={index}
                 className={`mr-2 px-4 py-2 text-white ${
@@ -38,7 +38,7 @@ const Dialog = ({ title, content, actions, open }: DialogProps) => {
               >
                 {action.label}
               </button>
-            ))}
+            )}
           </div>
         </div>
       </div>

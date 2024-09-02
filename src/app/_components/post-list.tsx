@@ -26,14 +26,14 @@ type Props = {
 const PostList = ({ posts }: Props) => {
   return (
     <main className="space-y-8">
-      {posts.map((post) => (
+      {posts.map((post) => 
         <div
           key={post.id}
           className=" bg-white transition-shadow duration-100 ease-in hover:shadow-md"
         >
           <Post post={post} />
         </div>
-      ))}
+      )}
     </main>
   )
 }

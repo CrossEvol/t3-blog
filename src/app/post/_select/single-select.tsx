@@ -80,11 +80,11 @@ const CreateDialog = ({
 const SingleValue = ({
   children,
   ...props
-}: SingleValueProps<ColourOption>) => (
+}: SingleValueProps<ColourOption>) => 
   <>
     <components.SingleValue {...props}>{children}</components.SingleValue>
   </>
-)
+
 
 interface SingleSelectUIProps
   extends PropsWithSelect<ColorOptions>,

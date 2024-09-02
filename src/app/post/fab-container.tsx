@@ -2,7 +2,7 @@
 import { type PropsWithChildren, useEffect, useState } from 'react'
 
 interface IProps extends PropsWithChildren {
-  components: React.ReactNode;
+  components: React.ReactNode
 }
 
 export default function FabContainer({ children, components }: IProps) {

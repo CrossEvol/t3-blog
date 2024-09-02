@@ -52,7 +52,7 @@ const TagsInput = () => {
 
   return (
     <div className="border rounded-md p-2 flex flex-wrap items-center">
-      {tags.map((tag, index) => (
+      {tags.map((tag, index) => 
         <div
           key={index}
           className="bg-gray-200 text-gray-700 px-2  rounded-full flex items-center mr-2 my-2"
@@ -66,7 +66,7 @@ const TagsInput = () => {
             &times;
           </button>
         </div>
-      ))}
+      )}
       <input
         type="text"
         value={inputValue}

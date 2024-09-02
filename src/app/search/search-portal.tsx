@@ -69,11 +69,11 @@ const SearchPortal = ({ posts }: IProps) => {
     )
   }
 
-  const SearchButton = (
+  const SearchButton = 
     <Button type="submit" onClick={onSubmit}>
       Search
     </Button>
-  )
+  
 
   return (
     <div>
@@ -83,7 +83,7 @@ const SearchPortal = ({ posts }: IProps) => {
             <Controller
               name="searchType"
               control={form.control}
-              render={({ field }) => (
+              render={({ field }) => 
                 <Tabs
                   value={field.value}
                   onValueChange={field.onChange}
@@ -102,13 +102,13 @@ const SearchPortal = ({ posts }: IProps) => {
                       <Controller
                         name="q"
                         control={form.control}
-                        render={({ field }) => (
+                        render={({ field }) => 
                           <Input
                             {...field}
                             type="text"
                             placeholder="Search in Title ..."
                           />
-                        )}
+                        }
                       />
                       {SearchButton}
                     </div>
@@ -118,19 +118,19 @@ const SearchPortal = ({ posts }: IProps) => {
                       <Controller
                         name="q"
                         control={form.control}
-                        render={({ field }) => (
+                        render={({ field }) => 
                           <Input
                             {...field}
                             type="text"
                             placeholder="Search in FullText ..."
                           />
-                        )}
+                        }
                       />
                       {SearchButton}
                     </div>
                   </TabsContent>
                 </Tabs>
-              )}
+              }
             />
             <div className="flex items-center space-x-2">
               <Switch

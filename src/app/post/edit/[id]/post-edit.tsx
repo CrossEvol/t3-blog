@@ -69,7 +69,7 @@ const PostEdit = ({ post }: Props) => {
     e.preventDefault()
   }
 
-  const FabContent = (
+  const FabContent = 
     <>
       <TabsList>
         <TabsTrigger value={TabsEnum.markdown}>Markdown</TabsTrigger>
@@ -101,7 +101,7 @@ const PostEdit = ({ post }: Props) => {
         Cancel
       </Button>
     </>
-  )
+  
 
   return (
     <>
@@ -127,7 +127,7 @@ const PostEdit = ({ post }: Props) => {
               <Controller
                 name="title"
                 control={form.control}
-                render={({ field }) => (
+                render={({ field }) => 
                   <input
                     autoFocus
                     {...field}
@@ -135,14 +135,14 @@ const PostEdit = ({ post }: Props) => {
                     type="text"
                     className="rounded border p-2 w-1/2"
                   />
-                )}
+                }
               />
               <h1 className="text-2xl font-bold">Edit Draft</h1>
             </div>
             <Controller
               name="content"
               control={form.control}
-              render={({ field }) => (
+              render={({ field }) => 
                 <>
                   <TabsContent value={TabsEnum.markdown}>
                     <Textarea
@@ -163,7 +163,7 @@ const PostEdit = ({ post }: Props) => {
                     </div>
                   </TabsContent>
                 </>
-              )}
+              }
             />
           </form>
         </div>

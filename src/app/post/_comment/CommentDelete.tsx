@@ -28,7 +28,7 @@ const CommentDelete = ({ commentId, session, post }: IProps) => {
 
   return (
     <>
-      {(isAuthor || isAdmin) && (
+      {(isAuthor || isAdmin) && 
         <button
           className="font-semibold text-gray-600 hover:text-red-500"
           onClick={async () => await deleteComment.mutateAsync({ commentId })}
@@ -36,7 +36,7 @@ const CommentDelete = ({ commentId, session, post }: IProps) => {
         >
           {deleteComment.isLoading ? 'Deleting...' : 'X'}
         </button>
-      )}
+      }
     </>
   )
 }

@@ -24,7 +24,7 @@ const TagList = ({ tags }: IProps) => {
       </div>
       <Separator />
       <div className="flex-wrap space-x-4 space-y-2">
-        {tags.map((tag) => (
+        {tags.map((tag) => 
           <Button
             size={'sm'}
             className="bg-gray-300 text-blue-500"
@@ -35,7 +35,7 @@ const TagList = ({ tags }: IProps) => {
               <Badge className="ml-2 bg-blue-600">{tag.count}</Badge>
             </Link>
           </Button>
-        ))}
+        )}
       </div>
       <Separator />
     </div>

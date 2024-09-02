@@ -21,7 +21,7 @@ const ShowActions = ({ post, open, setOpen, user }: IProps) => {
       <PopoverTrigger></PopoverTrigger>
       <PopoverContent className="w-[28rem] mt-2">
         <div>
-          {user.name === post.author.name && (
+          {user.name === post.author.name && 
             <div className="flex justify-between">
               <Link href={`/post/edit/${post.id}`}>
                 <button
@@ -34,7 +34,7 @@ const ShowActions = ({ post, open, setOpen, user }: IProps) => {
               <PublishButton post={post} />
               <DeleteButton post={post} />
             </div>
-          )}
+          }
         </div>
       </PopoverContent>
     </Popover>

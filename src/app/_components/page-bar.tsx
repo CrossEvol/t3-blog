@@ -33,7 +33,7 @@ export default function PageBar({ count, current }: IProps) {
             href={current > 1 ? `/page/${current - 1}` : '#'}
           />
         </PaginationItem>
-        {pageIndices.map((index) => (
+        {pageIndices.map((index) => 
           <PaginationItem key={index}>
             <PaginationLink
               isActive={index === current}
@@ -42,12 +42,12 @@ export default function PageBar({ count, current }: IProps) {
               {index}
             </PaginationLink>
           </PaginationItem>
-        ))}
-        {current < pageCount ? (
+        )}
+        {current < pageCount ? 
           <PaginationItem>
             <PaginationEllipsis />
           </PaginationItem>
-        ) : null}
+         : null}
         <PaginationItem>
           <PaginationNext
             className="w-28 bg-blue-500 opacity-100 hover:bg-blue-500 hover:opacity-90 text-white"

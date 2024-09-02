@@ -92,7 +92,7 @@ const TopicGrid = ({ topics }: IProps) => {
       headerName: 'Actions',
       filter: null,
       field: 'actions',
-      cellRenderer: (params: ICellRendererParams<TopicColDef>) => (
+      cellRenderer: (params: ICellRendererParams<TopicColDef>) => 
         <div className="space-x-4">
           <Button variant={'outline'}>
             <Link href={`/topic/${params.data?.name}`}>Posts</Link>
@@ -104,7 +104,7 @@ const TopicGrid = ({ topics }: IProps) => {
             Delete
           </Button>
         </div>
-      ),
+      ,
       flex: 1,
       editable: false,
       sortable: false,

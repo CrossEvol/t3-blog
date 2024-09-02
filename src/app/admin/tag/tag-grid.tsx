@@ -92,7 +92,7 @@ const TagGrid = ({ tags }: IProps) => {
       headerName: 'Actions',
       filter: null,
       field: 'actions',
-      cellRenderer: (params: ICellRendererParams<TagColDef>) => (
+      cellRenderer: (params: ICellRendererParams<TagColDef>) => 
         <div className="space-x-4">
           <Button variant={'outline'}>
             <Link href={`/tag/${params.data?.name}`}>Posts</Link>
@@ -104,7 +104,7 @@ const TagGrid = ({ tags }: IProps) => {
             Delete
           </Button>
         </div>
-      ),
+      ,
       flex: 1,
       editable: false,
       sortable: false,
