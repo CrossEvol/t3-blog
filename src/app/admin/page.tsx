@@ -7,7 +7,7 @@ export function AdminPortal() {
   return (
     <div className="container space-y-4 min-h-96">
       <div className="hover:bg-slate-600">
-        <Link href={`/admin/topic`}>
+        <Link href={'/admin/topic'}>
           <Alert>
             <Terminal className="h-4 w-4" />
             <AlertTitle>Topic</AlertTitle>
@@ -18,7 +18,7 @@ export function AdminPortal() {
         </Link>
       </div>
       <div className="hover:bg-slate-600">
-        <Link href={`/admin/tag`}>
+        <Link href={'/admin/tag'}>
           <Alert>
             <Terminal className="h-4 w-4" />
             <AlertTitle>Tag</AlertTitle>

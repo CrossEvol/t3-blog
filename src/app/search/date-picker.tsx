@@ -1,10 +1,10 @@
 'use client'
 
-import * as React from 'react'
 import { addDays, format } from 'date-fns'
 import { Calendar as CalendarIcon } from 'lucide-react'
+import * as React from 'react'
 
-import { cn } from '@/lib/utils'
+import { type SearchPostForm } from '@/common/trpc-schema'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import {
@@ -19,9 +19,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
+import { Controller } from 'react-hook-form'
 
-export function DatePickerWithPresets() {
-  const [date, setDate] = React.useState<Date>()
+interface IProps {
+  form: SearchPostForm
+}
+
+export function DatePickerWithPresets({ form }: IProps) {
+  const [date] = React.useState<Date>(form.getValues('date')!)
 
   return (
     <Popover>
@@ -38,24 +44,41 @@ export function DatePickerWithPresets() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="flex w-auto flex-col space-y-2 p-2">
-        <Select
-          onValueChange={(value) =>
-            setDate(addDays(new Date(), parseInt(value)))
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select" />
-          </SelectTrigger>
-          <SelectContent position="popper">
-            <SelectItem value="0">Today</SelectItem>
-            <SelectItem value="1">Tomorrow</SelectItem>
-            <SelectItem value="3">In 3 days</SelectItem>
-            <SelectItem value="7">In a week</SelectItem>
-            <SelectItem value="30">In a month</SelectItem>
-          </SelectContent>
-        </Select>
+        <Controller
+          name="datePreset"
+          control={form.control}
+          render={({ field }) => (
+            <Select
+              value={field.value}
+              onValueChange={(value) =>
+                field.onChange(addDays(new Date(), parseInt(value)))
+              }
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Select" />
+              </SelectTrigger>
+              <SelectContent position="popper">
+                <SelectItem value="0">Today</SelectItem>
+                <SelectItem value="1">Tomorrow</SelectItem>
+                <SelectItem value="3">In 3 days</SelectItem>
+                <SelectItem value="7">In a week</SelectItem>
+                <SelectItem value="30">In a month</SelectItem>
+              </SelectContent>
+            </Select>
+          )}
+        />
         <div className="rounded-md border">
-          <Calendar mode="single" selected={date} onSelect={setDate} />
+          <Controller
+            name="date"
+            control={form.control}
+            render={({ field }) => (
+              <Calendar
+                mode="single"
+                selected={field.value}
+                onSelect={field.onChange}
+              />
+            )}
+          />
         </div>
       </PopoverContent>
     </Popover>

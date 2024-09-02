@@ -1,3 +1,4 @@
+import { SearchTabEnum } from '@/app/search/constants'
 import { type UseFormReturn } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -37,3 +38,35 @@ export const updatePostSchema = updatePostFormSchema
   })
 
 export type UpdatePostParams = z.infer<typeof updatePostSchema>
+
+export enum DatePresetEnum {
+  Today = 'Today',
+  Tomorrow = 'Tomorrow',
+  Three = 'In 3 days',
+  Week = 'In a week',
+  Month = 'In a month',
+}
+
+const datePresetSchema = z.enum([
+  DatePresetEnum.Today,
+  DatePresetEnum.Tomorrow,
+  DatePresetEnum.Three,
+  DatePresetEnum.Week,
+  DatePresetEnum.Month,
+])
+
+const searchTypeSchema = z.enum([SearchTabEnum.Title, SearchTabEnum.FullText])
+
+export const searchPostFormSchema = z
+  .object({
+    q: z.string().min(1),
+    tags: z.array(colorOptionSchema),
+    topics: z.array(colorOptionSchema),
+    published: z.boolean(),
+    searchType: searchTypeSchema,
+    date: z.date(),
+    datePreset: datePresetSchema,
+  })
+  .partial()
+
+export type SearchPostForm = UseFormReturn<z.infer<typeof searchPostFormSchema>>

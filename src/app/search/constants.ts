@@ -1,4 +1,4 @@
-export const TabEnum = {
+export const SearchTabEnum = {
   Title: 'Title',
   FullText: 'FullText',
 }

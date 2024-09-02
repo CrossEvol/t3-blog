@@ -1,3 +1,4 @@
+import { type SearchPostForm } from '@/common/trpc-schema'
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
@@ -9,15 +10,16 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
-import React from 'react'
 import OptionsForm from './options-form'
 
 interface IProps {
   open: boolean
   setOpen: (open: boolean) => void
+  form: SearchPostForm
+  onSubmit: () => void
 }
 
-const OptionsDrawer = ({ open, setOpen }: IProps) => {
+const OptionsDrawer = ({ open, setOpen, form, onSubmit }: IProps) => {
   return (
     <div>
       <Drawer open={open} onOpenChange={setOpen}>
@@ -28,12 +30,22 @@ const OptionsDrawer = ({ open, setOpen }: IProps) => {
             <DrawerDescription>This action cannot be undone.</DrawerDescription>
           </DrawerHeader>
           <div className="flex flex-col">
-            <OptionsForm />
+            <OptionsForm form={form} />
           </div>
           <DrawerFooter>
-            <Button>Submit</Button>
+            <Button
+              type="submit"
+              onClick={() => {
+                onSubmit()
+                setTimeout(() => setOpen(false), 200)
+              }}
+            >
+              Submit
+            </Button>
             <DrawerClose>
-              <Button variant="outline">Cancel</Button>
+              <div className="h-10 leading-10 rounded-md border-2 border-solid">
+                Cancel
+              </div>
             </DrawerClose>
           </DrawerFooter>
         </DrawerContent>
