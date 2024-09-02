@@ -246,8 +246,8 @@ export const postRouter = createTRPCRouter({
 
   search: protectedProcedure
     .input(searchPostSchema)
-    .mutation(async ({ ctx, input }) => {
-      const res = await ctx.db.post.findMany({
+    .query(async ({ ctx, input }) => {
+      const posts = await ctx.db.post.findMany({
         where: {
           AND: [
             {
@@ -327,7 +327,10 @@ export const postRouter = createTRPCRouter({
           },
         },
       })
-      return res
+      return posts.map((post) => ({
+        ...post,
+        tags: post.tags.map((t) => t.tag),
+      }))
     }),
 })
 

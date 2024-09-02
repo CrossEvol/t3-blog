@@ -81,12 +81,32 @@ export const searchPostSchema = searchPostFormSchema
   })
   .partial()
 
-export const calculateDateRange = (preset: DatePresetEnum, today: Date) => {
+export type SearchPostParams = z.infer<typeof searchPostSchema>
+
+export const postSearchParamsSchema = z
+  .object({
+    q: z.string(),
+    tags: z.array(z.string()),
+    topics: z.array(z.string()),
+    published: z.boolean(),
+    searchType: searchTypeSchema,
+    startDay: z.string(),
+    endDay: z.string(),
+  })
+  .partial()
+
+export type PostSearchParams = z.infer<typeof postSearchParamsSchema>
+
+export const calculateDateRange = (preset: DatePresetEnum, today?: Date) => {
   let startDay
   let endDay
+
+  if (!today) {
+    return { startDay, endDay }
+  }
+
   startDay = new Date(today)
   endDay = new Date(today)
-  debugger
 
   switch (preset) {
     case DatePresetEnum.Today:
@@ -110,4 +130,8 @@ export const calculateDateRange = (preset: DatePresetEnum, today: Date) => {
   }
 
   return { startDay, endDay }
+}
+
+export const safeDateParam = (date?: string) => {
+  return !!date ? new Date(date) : undefined
 }

@@ -10,16 +10,25 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { api } from '@/trpc/react'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { format } from 'date-fns'
+import { useRouter } from 'next/navigation'
+import querystring from 'query-string'
 import React from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { type z } from 'zod'
 import { SearchTabEnum } from './constants'
 import OptionsDrawer from './options-drawer'
+import { type SearchedPost } from './page'
 
-const SearchPortal = () => {
+interface IProps {
+  posts: SearchedPost[]
+}
+
+const SearchPortal = ({ posts }: IProps) => {
   const [optionsVisible, setOptionsVisible] = React.useState(false)
+  const router = useRouter()
+
   // 1. Define your form.
   const form = useForm<z.infer<typeof searchPostFormSchema>>({
     resolver: zodResolver(searchPostFormSchema),
@@ -27,19 +36,9 @@ const SearchPortal = () => {
       q: '',
       searchType: SearchTabEnum.Title,
       published: false,
-      date: new Date(),
       datePreset: DatePresetEnum.Today,
       tags: [],
       topics: [],
-    },
-  })
-
-  const searchMutation = api.post.search.useMutation({
-    onSuccess(data, variables, context) {
-      console.log(data)
-    },
-    onError(error, variables, context) {
-      console.error(error)
     },
   })
 
@@ -50,15 +49,24 @@ const SearchPortal = () => {
     console.log(form.getValues())
     const { startDay, endDay } = calculateDateRange(
       form.getValues('datePreset')!,
-      form.getValues('date')!,
+      form.getValues('date'),
     )
-    searchMutation.mutate({
-      ...form.getValues,
+
+    const searchParams = {
+      q: form.getValues('q'),
+      searchType: !!form.getValues('q')
+        ? form.getValues('searchType')
+        : undefined,
       tags: form.getValues('tags')?.map((tag) => tag.label),
       topics: form.getValues('topics')?.map((topic) => topic.label),
-      startDay,
-      endDay,
-    })
+      startDay: !!startDay ? format(startDay, 'yyyy-MM-dd') : undefined,
+      endDay: !!endDay ? format(endDay, 'yyyy-MM-dd') : undefined,
+    }
+
+    router.push(
+      '/search?' +
+        querystring.stringify(searchParams, { skipEmptyString: true }),
+    )
   }
 
   const SearchButton = (
@@ -91,15 +99,32 @@ const SearchPortal = () => {
                   </TabsList>
                   <TabsContent value={SearchTabEnum.Title}>
                     <div className="flex w-full max-w-sm items-center space-x-2">
-                      <Input type="email" placeholder="Search in Title ..." />
+                      <Controller
+                        name="q"
+                        control={form.control}
+                        render={({ field }) => (
+                          <Input
+                            {...field}
+                            type="text"
+                            placeholder="Search in Title ..."
+                          />
+                        )}
+                      />
                       {SearchButton}
                     </div>
                   </TabsContent>
                   <TabsContent value={SearchTabEnum.FullText}>
                     <div className="flex w-full max-w-sm items-center space-x-2">
-                      <Input
-                        type="email"
-                        placeholder="Search in FullText ..."
+                      <Controller
+                        name="q"
+                        control={form.control}
+                        render={({ field }) => (
+                          <Input
+                            {...field}
+                            type="text"
+                            placeholder="Search in FullText ..."
+                          />
+                        )}
                       />
                       {SearchButton}
                     </div>

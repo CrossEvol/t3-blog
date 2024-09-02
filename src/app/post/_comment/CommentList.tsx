@@ -1,12 +1,12 @@
-import type { Comment } from '@/interfaces'
+import type { PostItem } from '@/app/_components/post-list'
+import type { CommentModel } from '@/interfaces'
 import distanceToNow from '@/lib/dateRelative'
 import { getServerAuthSession } from '@/server/auth'
-import CommentDelete from './CommentDelete'
 import Image from 'next/image'
-import type { PostItem } from '@/app/_components/post-list'
+import CommentDelete from './CommentDelete'
 
 type CommentListProps = {
-  comments?: Comment[]
+  comments?: CommentModel[]
   post: PostItem
 }
 
