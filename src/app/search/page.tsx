@@ -7,6 +7,7 @@ export type SearchedPost = Post & {
   author: Pick<User, 'name' | 'email'>
   topic: Pick<Topic, 'id' | 'name'> | null
   tags: Pick<Tag, 'id' | 'name'>[]
+  comments: number
 }
 
 export type SearchParams = PostSearchParams
@@ -25,17 +26,21 @@ const Page = async ({ searchParams }: { searchParams: SearchParams }) => {
       : searchParams.topics
     : undefined
 
-  const posts = await api.post.search.query({
-    ...searchParams,
-    startDay,
-    endDay,
-    tags: tags,
-    topics: topics,
-  })
+  const hasSearched = Object.keys(searchParams).length !== 0
+
+  const posts = hasSearched
+    ? await api.post.search.query({
+        ...searchParams,
+        startDay,
+        endDay,
+        tags: tags,
+        topics: topics,
+      })
+    : []
 
   return (
     <div>
-      <SearchPortal posts={posts} />
+      <SearchPortal posts={posts} hasSearched={hasSearched} />
     </div>
   )
 }

@@ -250,6 +250,7 @@ export const postRouter = createTRPCRouter({
       const posts = await ctx.db.post.findMany({
         where: {
           AND: [
+            { published: true },
             {
               title:
                 !!input.q && input.searchType === SearchTabEnum.Title
@@ -312,6 +313,11 @@ export const postRouter = createTRPCRouter({
           author: {
             select: { name: true, email: true },
           },
+          _count: {
+            select: {
+              comments: {},
+            },
+          },
           topic: {
             select: { id: true, name: true },
           },
@@ -329,7 +335,9 @@ export const postRouter = createTRPCRouter({
       })
       return posts.map((post) => ({
         ...post,
+        comments: post._count.comments,
         tags: post.tags.map((t) => t.tag),
+        _count: undefined,
       }))
     }),
 })

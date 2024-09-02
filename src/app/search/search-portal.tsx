@@ -20,12 +20,14 @@ import { type z } from 'zod'
 import { SearchTabEnum } from './constants'
 import OptionsDrawer from './options-drawer'
 import { type SearchedPost } from './page'
+import SearchResult from './search-result'
 
 interface IProps {
   posts: SearchedPost[]
+  hasSearched: boolean
 }
 
-const SearchPortal = ({ posts }: IProps) => {
+const SearchPortal = ({ posts, hasSearched }: IProps) => {
   const [optionsVisible, setOptionsVisible] = React.useState(false)
   const router = useRouter()
 
@@ -69,11 +71,11 @@ const SearchPortal = ({ posts }: IProps) => {
     )
   }
 
-  const SearchButton = 
+  const SearchButton = (
     <Button type="submit" onClick={onSubmit}>
       Search
     </Button>
-  
+  )
 
   return (
     <div>
@@ -83,7 +85,7 @@ const SearchPortal = ({ posts }: IProps) => {
             <Controller
               name="searchType"
               control={form.control}
-              render={({ field }) => 
+              render={({ field }) => (
                 <Tabs
                   value={field.value}
                   onValueChange={field.onChange}
@@ -102,13 +104,13 @@ const SearchPortal = ({ posts }: IProps) => {
                       <Controller
                         name="q"
                         control={form.control}
-                        render={({ field }) => 
+                        render={({ field }) => (
                           <Input
                             {...field}
                             type="text"
                             placeholder="Search in Title ..."
                           />
-                        }
+                        )}
                       />
                       {SearchButton}
                     </div>
@@ -118,19 +120,19 @@ const SearchPortal = ({ posts }: IProps) => {
                       <Controller
                         name="q"
                         control={form.control}
-                        render={({ field }) => 
+                        render={({ field }) => (
                           <Input
                             {...field}
                             type="text"
                             placeholder="Search in FullText ..."
                           />
-                        }
+                        )}
                       />
                       {SearchButton}
                     </div>
                   </TabsContent>
                 </Tabs>
-              }
+              )}
             />
             <div className="flex items-center space-x-2">
               <Switch
@@ -147,6 +149,11 @@ const SearchPortal = ({ posts }: IProps) => {
             form={form}
             onSubmit={onSubmit}
           />
+          {hasSearched ? (
+            <div className="w-11/12">
+              <SearchResult posts={posts} />
+            </div>
+          ) : null}
         </div>
       </form>
     </div>
