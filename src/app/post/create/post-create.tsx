@@ -7,7 +7,7 @@ import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Textarea } from '@/components/ui/textarea'
 import { api } from '@/trpc/react'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CircleEllipsis } from 'lucide-react'
+import { CircleEllipsis, Import } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -50,7 +50,7 @@ const PostCreate = () => {
     createPost.mutate({ ...values })
   }
 
-  const FabContent = 
+  const FabContent = (
     <>
       <TabsList>
         <TabsTrigger value={TabsEnum.markdown}>Markdown</TabsTrigger>
@@ -74,7 +74,7 @@ const PostCreate = () => {
         Cancel
       </Button>
     </>
-  
+  )
 
   return (
     <>
@@ -100,7 +100,7 @@ const PostCreate = () => {
               <Controller
                 name="title"
                 control={form.control}
-                render={({ field }) => 
+                render={({ field }) => (
                   <input
                     autoFocus
                     {...field}
@@ -108,14 +108,23 @@ const PostCreate = () => {
                     type="text"
                     className="rounded border p-2 w-1/2"
                   />
-                }
+                )}
               />
               <h1 className="text-2xl font-bold">New Draft</h1>
+              <Button
+                variant={'outline'}
+                type="button"
+                size="sm"
+                className="px-3"
+              >
+                <span className="sr-only">Export</span>
+                <Import className="h-4 w-4" />
+              </Button>
             </div>
             <Controller
               name="content"
               control={form.control}
-              render={({ field }) => 
+              render={({ field }) => (
                 <>
                   <TabsContent value={TabsEnum.markdown}>
                     <Textarea
@@ -136,7 +145,7 @@ const PostCreate = () => {
                     </div>
                   </TabsContent>
                 </>
-              }
+              )}
             />
           </form>
         </div>

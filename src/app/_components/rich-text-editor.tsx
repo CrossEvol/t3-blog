@@ -5,8 +5,17 @@ import { useEditorStorage } from '@/hooks/useEditorStorage'
 import '@blocknote/core/fonts/inter.css'
 import { BlockNoteView } from '@blocknote/mantine'
 import '@blocknote/mantine/style.css'
-import { useCreateBlockNote } from '@blocknote/react'
+import {
+  BlockColorsItem,
+  DragHandleMenu,
+  RemoveBlockItem,
+  SideMenu,
+  SideMenuController,
+  useCreateBlockNote,
+} from '@blocknote/react'
 import React from 'react'
+import { ExportItem } from './export-item'
+import { ImportItem } from './import-item'
 
 type TmpFilesResponse = {
   status: string
@@ -91,11 +100,29 @@ const InnerRichTextEditor = ({ postId, content, setContent }: IProps) => {
   return (
     <BlockNoteView
       editor={editor}
+      sideMenu={false}
       onChange={async () => {
         setContent(await editor.blocksToMarkdownLossy(editor.document))
         await saveContent(`post-${postId}`, editor.document)
       }}
-    />
+    >
+      <SideMenuController
+        sideMenu={(props) => (
+          <SideMenu
+            {...props}
+            dragHandleMenu={(props) => (
+              <DragHandleMenu {...props}>
+                <RemoveBlockItem {...props}>Delete</RemoveBlockItem>
+                <BlockColorsItem {...props}>Colors</BlockColorsItem>
+                {/* Item which resets the hovered block's type. */}
+                <ExportItem {...props} postId={postId} content={content} />
+                <ImportItem {...props} />
+              </DragHandleMenu>
+            )}
+          />
+        )}
+      />
+    </BlockNoteView>
   )
 }
 
