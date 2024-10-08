@@ -5,17 +5,6 @@ const prisma = new PrismaClient()
 
 const initData = async () => {
   await prisma.$transaction(async (prisma) => {
-    // create users
-    const user = await prisma.user.create({
-      data: {
-        name: faker.internet.userName(),
-        password: faker.string.alphanumeric(10),
-        email: faker.internet.email(),
-        image: faker.image.avatar(),
-        role: 'USER',
-      },
-    })
-
     const admin = await prisma.user.create({
       data: {
         name: 'admin',
@@ -27,7 +16,7 @@ const initData = async () => {
     })
 
     // create topics
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 5; i++) {
       await prisma.topic.create({
         data: {
           name: faker.word.noun(),
@@ -36,7 +25,7 @@ const initData = async () => {
     }
 
     // create posts
-    for (let i = 0; i < 1000; i++) {
+    for (let i = 0; i < 2; i++) {
       await prisma.post.create({
         data: {
           title: faker.string.alpha({ length: { min: 10, max: 20 } }),
@@ -63,10 +52,10 @@ const initData = async () => {
     }
 
     // create tags
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < 5; i++) {
       await prisma.tag.create({
         data: {
-          name: faker.word.noun(),
+          name: faker.word.adjective(),
         },
       })
     }
@@ -74,7 +63,7 @@ const initData = async () => {
 }
 
 const connectData = async () => {
-  for (let i = 1; i <= 1000; i++) {
+  for (let i = 1; i <= 2; i++) {
     const post = await prisma.post.findUnique({
       where: {
         id: i,
@@ -86,13 +75,13 @@ const connectData = async () => {
       },
       data: {
         ...post,
-        topicId: faker.number.int({ min: 1, max: 20 }),
+        topicId: faker.number.int({ min: 1, max: 5 }),
       },
     })
     await prisma.tagsOnPosts.create({
       data: {
         postId: i,
-        tagId: faker.number.int({ min: 1, max: 40 }),
+        tagId: faker.number.int({ min: 1, max: 5 }),
       },
     })
   }

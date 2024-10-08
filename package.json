@@ -5,15 +5,16 @@
   "type": "module",
   "scripts": {
     "build": "next build",
-    "db:push": "prisma db push",
-    "db:studio": "prisma studio",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
     "db:gen": "npx prisma generate",
     "db:clean": "shx rm -rf node_modules/.prisma && shx rm -rf prisma/db.sqlite* && shx rm -rf prisma/migrations/*_init",
     "db:init": "prisma migrate dev --schema prisma/schema.prisma --name init",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed:supabase": "tsx prisma/supabase-seed.ts",
     "db:test": "tsx prisma/test.ts",
     "db:reset": "npm run db:clean && npm run db:init && npm run db:seed"
   },
